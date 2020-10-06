@@ -1,0 +1,30 @@
+{
+  "name": "@chharvey/parser",
+  "version": "0.0.0",
+  "description": "A parser generator.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chharvey/parser.git"
+  },
+  "keywords": [
+    "parser",
+    "syntactic",
+    "analysis",
+    "lexer",
+    "lexical",
+    "analysis",
+    "tokenizer",
+    "scanner",
+    "screener"
+  ],
+  "author": "Chris Harvey <chrisharvey2pi@gmail.com> (https://chharvey.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chharvey/parser/issues"
+  },
+  "homepage": "https://github.com/chharvey/parser#readme"
+}
