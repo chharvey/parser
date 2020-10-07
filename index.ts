@@ -9,5 +9,19 @@ export {Filebound} from './src/Filebound'
 
 export {Serializable} from './src/Serializable'
 export {Char} from './src/scanner/Char'
+export {
+	Token,
+	TokenFilebound,
+	TokenWhitespace,
+	TokenComment,
+} from './src/lexer/Token'
 
 export {Scanner} from './src/scanner/Scanner'
+export {Lexer} from './src/lexer/Lexer'
+
+export {ErrorCode} from './src/error/ErrorCode'
+export {
+	LexError,
+	LexError01,
+	LexError02,
+} from './src/error/LexError'
