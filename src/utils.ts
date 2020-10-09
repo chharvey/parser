@@ -1,4 +1,27 @@
 import {Filebound} from './Filebound'
+import type {GrammarSymbol} from './grammar/Grammar'
+
+
+
+/**
+ * Transform `TitleCase` into `MACRO_CASE`.
+ * @param   s the string to transform, in `AbcDef` format
+ * @returns   the string in `ABC_DEF` format
+ */
+export function titleToMacro(s: string): string {
+	return s.replace(/[A-Z]/g, '_$&').slice(1).toUpperCase();
+}
+
+
+
+/**
+ * Transform `MACRO_CASE` into `TitleCase`.
+ * @param   s the string to transform, in `ABC_DEF` format
+ * @returns   the string in `AbcDef` format
+ */
+export function macroToTitle(s: string): string {
+	return s.split('_').map((ss) => `${ ss[0] }${ ss.slice(1).toLowerCase() }`).join('');
+}
 
 
 
@@ -43,4 +66,21 @@ export function sanitizeContent(contents: string): string {
 		.replace(Filebound.SOT, '\u2402') // SYMBOL FOR START OF TEXT
 		.replace(Filebound.EOT, '\u2403') // SYMBOL FOR END   OF TEXT
 	;
+}
+
+
+
+/**
+ * Display a string of grammar symbols for debugging purposes.
+ *
+ * @param   arr the array of grammar symbols
+ * @returns     a string representing the sequence of those symbols
+ */
+export function stringOfSymbols(arr: readonly GrammarSymbol[]): string {
+	return arr.map((symbol) => (typeof symbol === 'string')
+		? `"${ symbol }"`
+			.replace(Filebound.SOT, '\u2402') // SYMBOL FOR START OF TEXT
+			.replace(Filebound.EOT, '\u2403') // SYMBOL FOR END   OF TEXT
+		: symbol.displayName
+	).join(' ');
 }

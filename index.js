@@ -13,6 +13,10 @@ const {
 const {Scanner} = require('./dist/scanner/Scanner.js')
 const {Lexer} = require('./dist/lexer/Lexer.js')
 
+const {Terminal} = require('./dist/grammar/Terminal.js')
+const {Production} = require('./dist/grammar/Production.js')
+const {Grammar} = require('./dist/grammar/Grammar.js')
+
 const {ErrorCode} = require('./dist/error/ErrorCode.js')
 const {
 	LexError,
@@ -35,6 +39,10 @@ module.exports = {
 
 	Scanner,
 	Lexer,
+
+	Terminal,
+	Production,
+	Grammar,
 
 	ErrorCode,
 	LexError,

@@ -19,6 +19,10 @@ export {
 export {Scanner} from './src/scanner/Scanner'
 export {Lexer} from './src/lexer/Lexer'
 
+export {Terminal} from './src/grammar/Terminal'
+export {Production} from './src/grammar/Production'
+export {Grammar} from './src/grammar/Grammar'
+
 export {ErrorCode} from './src/error/ErrorCode'
 export {
 	LexError,
