@@ -145,6 +145,7 @@ export class Parser {
 	/**
 	 * Main parsing function.
 	 * @returns a token representing the grammar’s goal symbol
+	 * @final
 	 */
 	parse(): ParseNode {
 		while (!this.iterator_result_token.done) {
@@ -174,6 +175,7 @@ export class Parser {
 	/**
 	 * View this Parser’s stack in a readable format.
 	 * @returns an array containing Token–Configuration pairs represented as strings
+	 * @final
 	 */
 	viewStack(): [string, Set<string>][] {
 		return this.stack.map(([symb, state]) => [

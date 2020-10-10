@@ -23,6 +23,7 @@ export type GrammarTerminal =
 /**
  * A formal grammar.
  * @see https://en.wikipedia.org/wiki/Formal_grammar
+ * @final
  */
 export class Grammar {
 	/** The productions of this Grammar decomposed into rules. There are likely many rules per production. */

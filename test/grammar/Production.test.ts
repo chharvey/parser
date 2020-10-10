@@ -1,7 +1,7 @@
 import * as assert from 'assert'
 
-import {Rule} from '../../src/grammar/Rule'
 import {Production} from '../../src/grammar/Production'
+import {Rule} from '../../src/grammar/Rule'
 import {
 	grammar,
 	ProductionUnit,
@@ -19,7 +19,7 @@ describe('Production', () => {
 				GrammarSymbol,
 				Production,
 			} from '@chharvey/parser';
-			import * as TERMINAL from './Terminal.class';
+			import * as TERMINAL from './Terminal';
 \t\t\t
 				export class ProductionUnit extends Production {
 					static readonly instance: ProductionUnit = new ProductionUnit();

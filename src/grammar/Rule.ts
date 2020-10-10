@@ -10,6 +10,7 @@ import type {GrammarSymbol} from './Grammar'
  * A Rule is a single instance of a {@link Production} in use:
  * it consists of the production’s nonterminal and a single choice,
  * the sequence of symbols that is to be replaced.
+ * @final
  */
 export class Rule {
 	/** The sequence of terminals/nonterminals on the right-hand side of the rule. */

@@ -32,7 +32,7 @@ export abstract class Production {
 				GrammarSymbol,
 				Production,
 			} from '@chharvey/parser';
-			import * as TERMINAL from './Terminal.class';
+			import * as TERMINAL from './Terminal';
 			${ jsons.map((json) => `
 				export class Production${ json.name } extends Production {
 					static readonly instance: Production${ json.name } = new Production${ json.name }();

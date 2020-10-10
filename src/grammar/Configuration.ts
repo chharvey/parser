@@ -14,6 +14,7 @@ import type {
  * A configuration is a grammar rule augmented with an additional symbol that tracks
  * our progress in identifying the right hand side.
  * @see http://www2.lawrence.edu/fast/GREGGJ/CMSC515/parsing/LR_parsing.html
+ * @final
  */
 export class Configuration {
 	/** The set of symbols before the current marker. */

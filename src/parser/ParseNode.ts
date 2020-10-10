@@ -56,7 +56,6 @@ export class ParseNode implements Serializable {
 
 	/**
 	 * Construct a new ParseNode object.
-	 * @param rule     The Rule used to create this ParseNode.
 	 * @param children The set of child inputs that creates this ParseNode.
 	 */
 	constructor (

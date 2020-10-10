@@ -27,7 +27,10 @@ export {Parser} from './src/parser/Parser'
 
 export {Terminal} from './src/grammar/Terminal'
 export {Production} from './src/grammar/Production'
-export {Grammar} from './src/grammar/Grammar'
+export {
+	Grammar,
+	GrammarSymbol,
+} from './src/grammar/Grammar';
 
 export {ErrorCode} from './src/error/ErrorCode'
 export {
