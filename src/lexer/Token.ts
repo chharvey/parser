@@ -1,5 +1,5 @@
 import * as utils from '../utils'
-import {Filebound} from '../Filebound'
+import {Filebound} from '../utils'
 import type {Serializable} from '../Serializable'
 import {Char} from '../scanner/Char'
 import type {Lexer} from './Lexer'

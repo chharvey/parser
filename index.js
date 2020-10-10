@@ -1,5 +1,4 @@
 const utils = require('./dist/utils.js')
-const {Filebound} = require('./dist/Filebound.js')
 
 const {Serializable} = require('./dist/Serializable.js')
 const {Char} = require('./dist/scanner/Char.js')
@@ -34,7 +33,7 @@ const {
 
 module.exports = {
 	utils,
-	Filebound,
+	Filebound: utils.Filebound,
 
 	Serializable,
 	Char,

@@ -1,4 +1,4 @@
-import {Filebound} from '../Filebound'
+import {Filebound} from '../utils'
 import {Char} from './Char'
 
 

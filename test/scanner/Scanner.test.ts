@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 
-import {Filebound} from '../../src/Filebound'
+import {Filebound} from '../../src/utils'
 import {Scanner} from '../../src/scanner/Scanner'
 import {
 	lastItem,

@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 
-import {Filebound} from '../../src/Filebound'
+import {Filebound} from '../../src/utils'
 import {Char} from '../../src/scanner/Char'
 import {Scanner} from '../../src/scanner/Scanner'
 import {

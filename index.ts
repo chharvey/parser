@@ -5,7 +5,7 @@
 
 
 export * as utils from './src/utils'
-export {Filebound} from './src/Filebound'
+export {Filebound} from './src/utils'
 
 export {Serializable} from './src/Serializable'
 export {Char} from './src/scanner/Char'

@@ -2,6 +2,7 @@ import type {
 	NonemptyArray,
 	EBNFObject,
 } from '../src/types'
+import {Filebound} from '../src/utils'
 import {Char} from '../src/scanner/Char'
 import {
 	Token,
@@ -151,8 +152,8 @@ export class ProductionGoal extends Production {
 	static readonly instance: ProductionGoal = new ProductionGoal();
 	get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 		return [
-			['\u0002', '\u0003'],
-			['\u0002', ProductionUnit.instance, '\u0003'],
+			[Filebound.SOT,                          Filebound.EOT],
+			[Filebound.SOT, ProductionUnit.instance, Filebound.EOT],
 		];
 	}
 }
