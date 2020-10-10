@@ -15,9 +15,11 @@ export {
 	TokenWhitespace,
 	TokenComment,
 } from './src/lexer/Token'
+export {ParseNode} from './src/parser/ParseNode'
 
 export {Scanner} from './src/scanner/Scanner'
 export {Lexer} from './src/lexer/Lexer'
+export {Parser} from './src/parser/Parser'
 
 export {Terminal} from './src/grammar/Terminal'
 export {Production} from './src/grammar/Production'
@@ -29,3 +31,7 @@ export {
 	LexError01,
 	LexError02,
 } from './src/error/LexError'
+export {
+	ParseError,
+	ParseError01,
+} from './src/error/ParseError'

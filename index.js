@@ -9,9 +9,11 @@ const {
 	TokenWhitespace,
 	TokenComment,
 } = require('./dist/lexer/Token.js')
+const {ParseNode} = require('./dist/parser/ParseNode.js')
 
 const {Scanner} = require('./dist/scanner/Scanner.js')
 const {Lexer} = require('./dist/lexer/Lexer.js')
+const {Parser} = require('./dist/parser/Parser.js')
 
 const {Terminal} = require('./dist/grammar/Terminal.js')
 const {Production} = require('./dist/grammar/Production.js')
@@ -23,6 +25,10 @@ const {
 	LexError01,
 	LexError02,
 } = require('./dist/error/LexError.js')
+const {
+	ParseError,
+	ParseError01,
+} = require('./dist/error/ParseError.js')
 
 
 
@@ -36,9 +42,11 @@ module.exports = {
 	TokenFilebound,
 	TokenWhitespace,
 	TokenComment,
+	ParseNode,
 
 	Scanner,
 	Lexer,
+	Parser,
 
 	Terminal,
 	Production,
@@ -48,4 +56,6 @@ module.exports = {
 	LexError,
 	LexError01,
 	LexError02,
+	ParseError,
+	ParseError01,
 }
