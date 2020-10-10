@@ -3,6 +3,7 @@ import * as assert from 'assert'
 import {Rule} from '../../src/grammar/Rule'
 import {Production} from '../../src/grammar/Production'
 import {
+	grammar,
 	ProductionUnit,
 } from '../samples'
 
@@ -11,17 +12,7 @@ import {
 describe('Production', () => {
 	describe('.fromJSON', () => {
 		it('returns a string representing new subclasses of Production.', () => {
-			assert.strictEqual(Production.fromJSON(JSON.parse(`
-				[
-					{
-						"name": "Unit",
-						"defn": [
-							[{"term": "NUMBER"}],
-							["'('", {"term": "OPERATOR"}, {"prod": "Unit"}, {"prod": "Unit"}, "')'"]
-						]
-					}
-				]
-			`)), (
+			assert.strictEqual(Production.fromJSON(grammar), (
 		`
 			import {
 				NonemptyArray,
@@ -38,6 +29,19 @@ describe('Production', () => {
 							${ `
 								[TERMINAL.TerminalNumber.instance],
 								['(', TERMINAL.TerminalOperator.instance, ProductionUnit.instance, ProductionUnit.instance, ')'],
+							`.replace(/\s+/g, '') }
+						];
+					}
+				}
+\t\t\t
+				export class ProductionGoal extends Production {
+					static readonly instance: ProductionGoal = new ProductionGoal();
+					/** @implements Production */
+					get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+						return [
+							${ `
+								['\\u0002',                          '\\u0003'],
+								['\\u0002', ProductionUnit.instance, '\\u0003'],
 							`.replace(/\s+/g, '') }
 						];
 					}
