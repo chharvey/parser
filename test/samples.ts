@@ -1,7 +1,7 @@
 import type {
 	NonemptyArray,
 	EBNFObject,
-} from '../src/types'
+} from '../src/types.d'
 import {Filebound} from '../src/utils'
 import {Char} from '../src/scanner/Char'
 import {

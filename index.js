@@ -1,6 +1,5 @@
 const utils = require('./dist/utils.js')
 
-const {Serializable} = require('./dist/Serializable.js')
 const {Char} = require('./dist/scanner/Char.js')
 const {
 	Token,
@@ -35,7 +34,6 @@ module.exports = {
 	utils,
 	Filebound: utils.Filebound,
 
-	Serializable,
 	Char,
 	Token,
 	TokenFilebound,

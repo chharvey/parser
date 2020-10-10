@@ -1,6 +1,6 @@
 import type {
 	NonemptyArray,
-} from '../types'
+} from '../types.d'
 import {Terminal} from './Terminal'
 import {Production} from './Production'
 import type {Rule} from './Rule'

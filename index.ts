@@ -4,6 +4,10 @@
 
 
 
+export {
+	NonemptyArray,
+	EBNFObject,
+} from './src/types.d'
 export * as utils from './src/utils'
 export {Filebound} from './src/utils'
 

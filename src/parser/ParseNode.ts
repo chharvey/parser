@@ -1,6 +1,6 @@
 import type {
 	EBNFObject,
-} from '../types'
+} from '../types.d'
 import * as utils from '../utils'
 import type {Serializable} from '../Serializable'
 import type {Token} from '../lexer/Token'

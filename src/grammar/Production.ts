@@ -3,7 +3,7 @@ import * as xjs from 'extrajs'
 import type {
 	NonemptyArray,
 	EBNFObject,
-} from '../types'
+} from '../types.d'
 import * as utils from '../utils'
 import {Rule} from './Rule'
 import type {
