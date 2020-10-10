@@ -1,8 +1,8 @@
-import * as xjs from 'extrajs'
+import * as xjs from 'extrajs';
 
-import * as utils from '../utils'
-import type {Production} from './Production'
-import type {GrammarSymbol} from './Grammar'
+import * as utils from '../utils';
+import type {Production} from './Production';
+import type {GrammarSymbol} from './Grammar';
 
 
 

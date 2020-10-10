@@ -1,6 +1,6 @@
-import type {Char} from '../scanner/Char'
-import type {Token} from '../lexer/Token'
-import {ErrorCode} from './ErrorCode'
+import type {Char} from '../scanner/Char';
+import type {Token} from '../lexer/Token';
+import {ErrorCode} from './ErrorCode';
 
 
 

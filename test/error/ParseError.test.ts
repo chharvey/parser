@@ -1,4 +1,4 @@
-import * as assert from 'assert'
+import * as assert from 'assert';
 
 import type {Char} from '../../src/scanner/Char';
 import {Token} from '../../src/lexer/Token';
@@ -8,7 +8,7 @@ import {
 } from '../../src/error/ParseError';
 import {
 	MyLexer,
-} from '../samples'
+} from '../samples';
 
 
 

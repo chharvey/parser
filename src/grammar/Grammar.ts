@@ -1,10 +1,10 @@
 import type {
 	NonemptyArray,
-} from '../types.d'
-import {Terminal} from './Terminal'
-import {Production} from './Production'
-import type {Rule} from './Rule'
-import {Configuration} from './Configuration'
+} from '../types.d';
+import {Terminal} from './Terminal';
+import {Production} from './Production';
+import type {Rule} from './Rule';
+import {Configuration} from './Configuration';
 
 
 

@@ -1,10 +1,10 @@
-import * as assert from 'assert'
+import * as assert from 'assert';
 
-import {Filebound} from '../../src/utils'
-import {Scanner} from '../../src/scanner/Scanner'
+import {Filebound} from '../../src/utils';
+import {Scanner} from '../../src/scanner/Scanner';
 import {
 	lastItem,
-} from '../helpers'
+} from '../helpers';
 
 
 

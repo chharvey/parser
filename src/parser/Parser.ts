@@ -2,20 +2,20 @@ import {
 	Token,
 	TokenWhitespace,
 	TokenComment,
-} from '../lexer/Token'
-import {ParseNode} from './ParseNode'
-import type {Lexer} from '../lexer/Lexer'
-import {Terminal} from '../grammar/Terminal'
-import type {Production} from '../grammar/Production'
-import type {Rule} from '../grammar/Rule'
-import type {Configuration} from '../grammar/Configuration'
+} from '../lexer/Token';
+import {ParseNode} from './ParseNode';
+import type {Lexer} from '../lexer/Lexer';
+import {Terminal} from '../grammar/Terminal';
+import type {Production} from '../grammar/Production';
+import type {Rule} from '../grammar/Rule';
+import type {Configuration} from '../grammar/Configuration';
 import type {
 	GrammarSymbol,
 	Grammar,
-} from '../grammar/Grammar'
+} from '../grammar/Grammar';
 import {
 	ParseError01,
-} from '../error/ParseError'
+} from '../error/ParseError';
 
 
 

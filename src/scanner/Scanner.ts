@@ -1,5 +1,5 @@
-import {Filebound} from '../utils'
-import {Char} from './Char'
+import {Filebound} from '../utils';
+import {Char} from './Char';
 
 
 

@@ -1,11 +1,11 @@
-import * as assert from 'assert'
+import * as assert from 'assert';
 
-import type {Token} from '../../src/lexer/Token'
+import type {Token} from '../../src/lexer/Token';
 import {
 	MyLexer,
 	TerminalNumber,
 	TerminalOperator,
-} from '../samples'
+} from '../samples';
 
 
 

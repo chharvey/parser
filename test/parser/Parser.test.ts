@@ -1,15 +1,15 @@
-import * as assert from 'assert'
+import * as assert from 'assert';
 
 import {
 	TokenFilebound,
-} from '../../src/lexer/Token'
-import type {ParseNode} from '../../src/parser/ParseNode'
+} from '../../src/lexer/Token';
+import type {ParseNode} from '../../src/parser/ParseNode';
 import {
 	ParseError01,
-} from '../../src/error/ParseError'
+} from '../../src/error/ParseError';
 import {
 	MyParser,
-} from '../samples'
+} from '../samples';
 
 
 

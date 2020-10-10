@@ -1,11 +1,11 @@
-import * as utils from '../utils'
-import {Filebound} from '../utils'
-import type {Serializable} from '../Serializable'
-import {Char} from '../scanner/Char'
-import type {Lexer} from './Lexer'
+import * as utils from '../utils';
+import {Filebound} from '../utils';
+import type {Serializable} from '../Serializable';
+import {Char} from '../scanner/Char';
+import type {Lexer} from './Lexer';
 import {
 	LexError02,
-} from '../error/LexError'
+} from '../error/LexError';
 
 
 

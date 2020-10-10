@@ -1,9 +1,9 @@
 import type {
 	EBNFObject,
-} from '../types.d'
-import * as utils from '../utils'
-import type {Serializable} from '../Serializable'
-import type {Token} from '../lexer/Token'
+} from '../types.d';
+import * as utils from '../utils';
+import type {Serializable} from '../Serializable';
+import type {Token} from '../lexer/Token';
 
 
 
@@ -59,7 +59,7 @@ export class ParseNode implements Serializable {
 	 * @param children The set of child inputs that creates this ParseNode.
 	 */
 	constructor (
-		readonly children: readonly (Token|ParseNode)[],
+		readonly children: readonly (Token | ParseNode)[],
 	) {
 	}
 

@@ -1,5 +1,5 @@
-import * as utils from '../utils'
-import type {Token} from '../lexer/Token'
+import * as utils from '../utils';
+import type {Token} from '../lexer/Token';
 
 
 
@@ -17,8 +17,8 @@ export abstract class Terminal {
 
 	/**
 	 * Does the given Token satisfy this Terminal?
-	 * @param   candidate - a Token to test
-	 * @returns             does the given Token satisfy this Terminal?
+	 * @param   candidate a Token to test
+	 * @returns           does the given Token satisfy this Terminal?
 	 */
 	abstract match(candidate: Token): boolean;
 }

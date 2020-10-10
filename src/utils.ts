@@ -1,4 +1,4 @@
-import type {GrammarSymbol} from './grammar/Grammar'
+import type {GrammarSymbol} from './grammar/Grammar';
 
 
 

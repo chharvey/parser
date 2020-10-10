@@ -1,7 +1,7 @@
-import * as utils from '../utils'
-import {Filebound} from '../utils'
-import type {Serializable} from '../Serializable'
-import type {Scanner} from './Scanner'
+import * as utils from '../utils';
+import {Filebound} from '../utils';
+import type {Serializable} from '../Serializable';
+import type {Scanner} from './Scanner';
 
 
 

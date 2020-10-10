@@ -1,13 +1,13 @@
-import {Char} from '../scanner/Char'
+import {Char} from '../scanner/Char';
 import {
 	Token,
 	TokenFilebound,
 	TokenWhitespace,
-} from './Token'
-import {Scanner} from '../scanner/Scanner'
+} from './Token';
+import {Scanner} from '../scanner/Scanner';
 import {
 	LexError01,
-} from '../error/LexError'
+} from '../error/LexError';
 
 
 

@@ -1,13 +1,13 @@
-import * as xjs from 'extrajs'
+import * as xjs from 'extrajs';
 
-import * as utils from '../utils'
-import type {Token} from '../lexer/Token'
-import {Terminal} from './Terminal'
-import type {Rule} from './Rule'
+import * as utils from '../utils';
+import type {Token} from '../lexer/Token';
+import {Terminal} from './Terminal';
+import type {Rule} from './Rule';
 import type {
 	GrammarSymbol,
 	GrammarTerminal,
-} from './Grammar'
+} from './Grammar';
 
 
 /**

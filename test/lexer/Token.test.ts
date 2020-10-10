@@ -1,12 +1,12 @@
-import * as assert from 'assert'
+import * as assert from 'assert';
 
 import {
 	LexError02,
-} from '../../src/error/LexError'
+} from '../../src/error/LexError';
 import {
 	MyLexer,
 	MyTokenComment,
-} from '../samples'
+} from '../samples';
 
 
 

@@ -1,14 +1,14 @@
-import * as xjs from 'extrajs'
+import * as xjs from 'extrajs';
 
 import type {
 	NonemptyArray,
 	EBNFObject,
-} from '../types.d'
-import * as utils from '../utils'
-import {Rule} from './Rule'
+} from '../types.d';
+import * as utils from '../utils';
+import {Rule} from './Rule';
 import type {
 	GrammarSymbol,
-} from './Grammar'
+} from './Grammar';
 
 
 

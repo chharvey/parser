@@ -1,22 +1,22 @@
-import * as assert from 'assert'
+import * as assert from 'assert';
 
-import {Filebound} from '../../src/utils'
+import {Filebound} from '../../src/utils';
 import {
 	Token,
 	TokenFilebound,
 	TokenWhitespace,
-} from '../../src/lexer/Token'
-import {Lexer} from '../../src/lexer/Lexer'
+} from '../../src/lexer/Token';
+import {Lexer} from '../../src/lexer/Lexer';
 import {
 	LexError01,
-} from '../../src/error/LexError'
+} from '../../src/error/LexError';
 import {
 	lastItem,
-} from '../helpers'
+} from '../helpers';
 import {
 	MyLexer,
 	MyTokenComment,
-} from '../samples'
+} from '../samples';
 
 
 

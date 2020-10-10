@@ -1,11 +1,11 @@
-import * as assert from 'assert'
+import * as assert from 'assert';
 
-import {Production} from '../../src/grammar/Production'
-import {Rule} from '../../src/grammar/Rule'
+import {Production} from '../../src/grammar/Production';
+import {Rule} from '../../src/grammar/Rule';
 import {
 	grammar,
 	ProductionUnit,
-} from '../samples'
+} from '../samples';
 
 
 
@@ -48,9 +48,9 @@ describe('Production', () => {
 				}
 \t\t\t
 		`
-			))
-		})
-	})
+			));
+		});
+	});
 
 	describe('#displayName', () => {
 		it('returns the display name.', () => {
