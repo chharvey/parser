@@ -7,7 +7,7 @@ import type {Lexer} from '../../src/lexer/Lexer';
 
 
 
-export class MyTokenNumber extends Token {
+export class TokenNumber extends Token {
 	constructor (lexer: Lexer) {
 		super('NUMBER', lexer, ...lexer.advance());
 		while (!this.lexer.isDone && /[0-9]/.test(this.lexer.c0.source)) {
@@ -18,7 +18,7 @@ export class MyTokenNumber extends Token {
 
 
 
-export class MyTokenComment extends TokenComment {
+export class TokenCommentSample extends TokenComment {
 	constructor (lexer: Lexer) {
 		super(lexer, '[', ']');
 	}

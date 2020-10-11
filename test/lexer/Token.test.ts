@@ -4,8 +4,8 @@ import {
 	LexError02,
 } from '../../src/error/LexError';
 import {
-	MyLexer,
-	MyTokenComment,
+	LexerSample,
+	TokenCommentSample,
 } from '../sample/';
 
 
@@ -20,15 +20,15 @@ describe('Token', () => {
 				[unfinished multiline containing U+0003 END OF TEXT
 				\u0003
 				comment
-			`].map((source) => new MyLexer(source)).forEach((lexer) => {
-				assert.throws(() => new MyTokenComment(lexer), LexError02);
+			`].map((source) => new LexerSample(source)).forEach((lexer) => {
+				assert.throws(() => new TokenCommentSample(lexer), LexError02);
 			});
 		});
 	});
 
 	describe('#serialize', () => {
 		specify('TokenComment', () => {
-			assert.strictEqual([...new MyLexer(`
+			assert.strictEqual([...new LexerSample(`
 				[multiline
 				comment]
 			`).generate()][2].serialize(), `

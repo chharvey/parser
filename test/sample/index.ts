@@ -9,8 +9,8 @@ export const grammar: EBNFObject[] = require('./syntax.json');
 
 
 export {
-	MyTokenNumber,
-	MyTokenComment,
+	TokenNumber,
+	TokenCommentSample,
 } from './Token';
 
 
@@ -22,11 +22,11 @@ export {
 
 
 
-export {MyLexer} from './Lexer';
+export {LexerSample} from './Lexer';
 
 
 
-export {MyParser} from './Parser';
+export {ParserSample} from './Parser';
 
 
 

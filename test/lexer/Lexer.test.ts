@@ -14,8 +14,8 @@ import {
 	lastItem,
 } from '../helpers';
 import {
-	MyLexer,
-	MyTokenComment,
+	LexerSample,
+	TokenCommentSample,
 } from '../sample/';
 
 
@@ -23,7 +23,7 @@ import {
 describe('Lexer', () => {
 	describe('#generate', () => {
 		it('recognizes `TokenFilebound` conditions.', () => {
-			const tokens: Token[] = [...new MyLexer(`
+			const tokens: Token[] = [...new LexerSample(`
 				5  +  30 \u000d
 				6 ^ 2 +) 37 *
 				( 4 * \u000d9 ^ 3
@@ -47,28 +47,28 @@ describe('Lexer', () => {
 
 		context('recognizes `TokenComment` conditions.', () => {
 			it('recognizes empty multiline comment.', () => {
-				const tokens: Token[] = [...new MyLexer(`
+				const tokens: Token[] = [...new LexerSample(`
 					[]
 					[ ]
 				`).generate()];
-				assert.ok(tokens[2] instanceof MyTokenComment);
-				assert.ok(tokens[4] instanceof MyTokenComment);
+				assert.ok(tokens[2] instanceof TokenCommentSample);
+				assert.ok(tokens[4] instanceof TokenCommentSample);
 				assert.strictEqual(tokens[2].source, '[]');
 				assert.strictEqual(tokens[4].source, '[ ]');
 			});
 
 			it('recognizes nonempty multiline comment.', () => {
-				const comment: Token = [...new MyLexer(`
+				const comment: Token = [...new LexerSample(`
 					[multiline
 					that has contents
 					comment]
 				`).generate()][2];
-				assert.ok(comment instanceof MyTokenComment);
+				assert.ok(comment instanceof TokenCommentSample);
 			});
 		});
 
 		it('rejects unrecognized characters.', () => {
-			assert.throws(() => [...new MyLexer(`-`).generate()], LexError01);
+			assert.throws(() => [...new LexerSample(`-`).generate()], LexError01);
 		});
 	});
 });

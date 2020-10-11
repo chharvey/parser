@@ -8,7 +8,7 @@ import {
 	ParseError01,
 } from '../../src/error/ParseError';
 import {
-	MyParser,
+	ParserSample,
 } from '../sample/';
 
 
@@ -17,14 +17,14 @@ describe('Parser', () => {
 	describe('#parse', () => {
 		context('Goal ::= #x02 #x03', () => {
 			it('returns only file bounds.', () => {
-				const tree: ParseNode = new MyParser(``).parse();
+				const tree: ParseNode = new ParserSample(``).parse();
 				assert.strictEqual(tree.children.length, 2);
 				tree.children.forEach((child) => assert.ok(child instanceof TokenFilebound));
 			});
 		});
 
 		it('rejects unexpected tokens.', () => {
-			assert.throws(() => new MyParser(`(+ 3 4 5)`).parse(), ParseError01);
+			assert.throws(() => new ParserSample(`(+ 3 4 5)`).parse(), ParseError01);
 		});
 	});
 });

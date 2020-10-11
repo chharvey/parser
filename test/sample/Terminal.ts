@@ -9,7 +9,7 @@ import * as TOKEN from './Token';
 export class TerminalNumber extends Terminal {
 	static readonly instance: TerminalNumber = new TerminalNumber();
 	match(candidate: Token): boolean {
-		return candidate instanceof TOKEN.MyTokenNumber;
+		return candidate instanceof TOKEN.TokenNumber;
 	}
 }
 
