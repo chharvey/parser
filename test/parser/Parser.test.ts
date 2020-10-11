@@ -9,6 +9,7 @@ import type {ParseNode} from '../../src/parser/ParseNode';
 import {
 	ParseError01,
 } from '../../src/error/ParseError';
+import {PARSER as EBNF} from '../../src/ebnf/'
 import {
 	assert_arrayLength,
 } from '../helpers';
@@ -69,6 +70,126 @@ describe('Parser', () => {
 				assert.deepStrictEqual(
 					[open.source, op.source, left.source, right.source, close.source],
 					[`(`,         `+`,       `( * 2 3 )`, `5`,          `)`],
+				);
+			});
+		});
+
+		describe('ParserEBNF', () => {
+			specify('Goal ::= #x02 Production* #x03;', () => {
+				const goal: ParseNode = new EBNF.ParserEBNF(`
+					Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
+					Goal ::= #x02 Unit? #x03;
+				`).parse();
+				/*
+					<Goal>
+						<FILEBOUND>␂</FILEBOUND>
+						<Goal__0__List>
+							<Goal__0__List>
+								<Production source="Unit ::= NUMBER | "(" OPERATOR Unit Unit ")" ;">...</Production>
+							</Goal__0__List>
+							<Production source="Goal ::= #x02 Unit ? #x03 ;">...</Production>
+						</Goal__0__List>
+						<FILEBOUND>␃</FILEBOUND>
+					</Goal>
+				*/
+				assert.ok(goal instanceof EBNF.ParseNodeGoal);
+				assert_arrayLength(goal.children, 3, 'goal should have 3 children');
+				const [sot, prod_list, eot]: readonly [Token, EBNF.ParseNodeGoal__0__List, Token] = goal.children;
+				assert.ok(sot instanceof TokenFilebound);
+				assert.ok(eot instanceof TokenFilebound);
+				assert.deepStrictEqual(
+					[sot.source,    eot.source],
+					[Filebound.SOT, Filebound.EOT],
+				);
+				assert_arrayLength(prod_list.children, 2, 'outer production list should have 2 children');
+				const [first, second]: readonly [EBNF.ParseNodeGoal__0__List, EBNF.ParseNodeProduction] = prod_list.children;
+				assert_arrayLength(first.children, 1, 'inner production list should have 1 child');
+				const prod: EBNF.ParseNodeProduction = first.children[0];
+				assert.deepStrictEqual(
+					[prod.source,                                      second.source],
+					[`Unit ::= NUMBER | "(" OPERATOR Unit Unit ")" ;`, `Goal ::= #x02 Unit ? #x03 ;`],
+				);
+			});
+
+			specify('Production ::= NonterminalName "::=" "|" Definition ";";', () => {
+				const prod: EBNF.ParseNodeProduction = (new EBNF.ParserEBNF(`
+					Unit ::=
+						| NUMBER
+						| "(" OPERATOR Unit Unit ")"
+					;
+				`).parse()
+					.children[1] as EBNF.ParseNodeGoal__0__List)
+					.children[0] as EBNF.ParseNodeProduction
+				;
+				/*
+					<Production>
+						<NonterminalName source="Unit">...<NonterminalName>
+						<PUNCTUATOR>::=<PUNCTUATOR>
+						<PUNCTUATOR>|<PUNCTUATOR>
+						<Definition source='NUMBER | "(" OPERATOR Unit Unit ")"'>...<Definition>
+						<PUNCTUATOR>;<PUNCTUATOR>
+					</Production>
+				*/
+				assert_arrayLength(prod.children, 5, 'production should have 5 children');
+				const children: readonly [EBNF.ParseNodeNonterminalName, Token, Token, EBNF.ParseNodeDefinition, Token] = prod.children;
+				assert.deepStrictEqual(
+					children.map((c) => c.source),
+					['Unit', '::=', '|', 'NUMBER | "(" OPERATOR Unit Unit ")"', ';'],
+				);
+			});
+
+			specify('Altern ::= Altern "|" Concat;', () => {
+				const altern: EBNF.ParseNodeAltern = ((((new EBNF.ParserEBNF(`
+					Unit ::=
+						| NUMBER
+						| "(" OPERATOR Unit Unit ")"
+					;
+				`).parse()
+					.children[1] as EBNF.ParseNodeGoal__0__List)
+					.children[0] as EBNF.ParseNodeProduction)
+					.children[3]) as EBNF.ParseNodeDefinition)
+					.children[0]
+				;
+				/*
+					<Altern>
+						<Altern source="NUMBER">...<Altern>
+						<PUNCTUATOR>|<PUNCTUATOR>
+						<Concat source='"(" OPERATOR Unit Unit ")"'>...<Concat>
+					</Altern>
+				*/
+				assert_arrayLength(altern.children, 3, 'altern should have 3 children');
+				const children: readonly [EBNF.ParseNodeAltern, Token, EBNF.ParseNodeConcat] = altern.children;
+				assert.deepStrictEqual(
+					children.map((c) => c.source),
+					['NUMBER', '|', '"(" OPERATOR Unit Unit ")"'],
+				);
+			});
+
+			specify('Order ::= Order Item;', () => {
+				const order: EBNF.ParseNodeOrder = (((((new EBNF.ParserEBNF(`
+					Unit ::=
+						| NUMBER
+						| "(" OPERATOR Unit Unit ")"
+					;
+				`).parse()
+					.children[1] as EBNF.ParseNodeGoal__0__List)
+					.children[0] as EBNF.ParseNodeProduction)
+					.children[3]) as EBNF.ParseNodeDefinition)
+					.children[0]
+					.children[2] as EBNF.ParseNodeConcat)
+					.children[0] as EBNF.ParseNodeOrder
+				;
+				/*
+					<Order>
+						<Order source='"(" OPERATOR Unit Unit'>...<Order>
+						<Item source='")"'>...<Item>
+					</Order>
+				*/
+				assert_arrayLength(order.children, 2, 'order should have 2 children');
+				const children: readonly [EBNF.ParseNodeOrder, EBNF.ParseNodeItem] = order.children;
+				assert.deepStrictEqual(
+					children.map((c) => c.source),
+					['"(" OPERATOR Unit Unit', '")"'],
 				);
 			});
 		});
