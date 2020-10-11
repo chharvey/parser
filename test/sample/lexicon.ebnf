@@ -1,0 +1,8 @@
+Punctuator
+	:::= "(" | ")" | "^" | "*" | "+";
+
+Number
+	:::= [0-9]+;
+
+Comment
+	:::= "[" [^#5d]* "]"; // any character except U+005d RIGHT SQUARE BRACKET
