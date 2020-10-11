@@ -10,8 +10,8 @@ import {
 	LexError02,
 } from '../../src/error/LexError';
 import {
-	MyLexer,
-} from '../samples';
+	LexerSample,
+} from '../sample/';
 
 
 
@@ -28,7 +28,7 @@ describe('LexError', () => {
 			const src: string = `unfinished`;
 			const chars: Char[] = [...new Scanner(src).generate()].slice(2, -2); // slice off line normalization
 			assert.strictEqual(
-				new LexError02(new Token('TOKEN', new MyLexer(src), chars[0], ...chars.slice(1))).message,
+				new LexError02(new Token('TOKEN', new LexerSample(src), chars[0], ...chars.slice(1))).message,
 				'Found end of file before end of TOKEN: \`unfinished\`.',
 			);
 		});

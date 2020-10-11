@@ -28,6 +28,8 @@ const {
 	ParseError01,
 } = require('./dist/error/ParseError.js');
 
+const {generate} = require('./dist/main.js')
+
 
 
 module.exports = {
@@ -55,4 +57,6 @@ module.exports = {
 	LexError02,
 	ParseError,
 	ParseError01,
+
+	generate,
 };

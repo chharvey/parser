@@ -1,0 +1,68 @@
+
+		
+			/*----------------------------------------------------------------/
+			| WARNING: Do not manually update this file!
+			| It is auto-generated via
+			| <@chharvey/parser//src/main.ts>.
+			| If you need to make updates, make them there.
+			/----------------------------------------------------------------*/
+		
+		
+		import type {
+			NonemptyArray,
+		} from '../../src/types.d';
+		import type {Token} from '../../src/lexer/Token';
+		import {ParseNode} from '../../src/parser/ParseNode';
+		import {Parser} from '../../src/parser/Parser';
+		import {Production} from '../../src/grammar/Production';
+		import {
+			Grammar,
+			GrammarSymbol,
+		} from '../../src/grammar/Grammar';
+		import {LexerSample} from './Lexer';
+		import * as TERMINAL from './Terminal';
+		
+			export class ProductionUnit extends Production {
+				static readonly instance: ProductionUnit = new ProductionUnit();
+				/** @implements Production */
+				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+					return [
+						[TERMINAL.TerminalNumber.instance],['(',TERMINAL.TerminalOperator.instance,ProductionUnit.instance,ProductionUnit.instance,')'],
+					];
+				}
+			}
+		
+			export class ProductionGoal extends Production {
+				static readonly instance: ProductionGoal = new ProductionGoal();
+				/** @implements Production */
+				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+					return [
+						['\u0002','\u0003'],['\u0002',ProductionUnit.instance,'\u0003'],
+					];
+				}
+			}
+		
+		
+			export class ParseNodeUnit extends ParseNode {
+				declare children:
+					readonly [Token] | readonly [Token,Token,ParseNodeUnit,ParseNodeUnit,Token]
+				;
+			}
+		
+			export class ParseNodeGoal extends ParseNode {
+				declare children:
+					readonly [Token,Token] | readonly [Token,ParseNodeUnit,Token]
+				;
+			}
+		
+		export class ParserSample extends Parser {
+			constructor (source: string) {
+				super(source, LexerSample, new Grammar([
+					ProductionUnit.instance,ProductionGoal.instance
+				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
+					[ProductionUnit.instance, ParseNodeUnit],[ProductionGoal.instance, ParseNodeGoal]
+				]));
+			}
+		}
+	
+	

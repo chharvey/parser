@@ -42,3 +42,5 @@ export {
 	ParseError,
 	ParseError01,
 } from './src/error/ParseError';
+
+export {generate} from './src/main';

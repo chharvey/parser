@@ -20,34 +20,26 @@ import type {
  */
 export abstract class Production {
 	/**
-	 * Takes a list of JSON objects representing syntactic productions
+	 * Takes a JSON object representing a syntactic production
 	 * and returns a string in TypeScript language representing subclasses of {@link Production}.
-	 * @param   json JSON objects representing a production
+	 * @param   json a JSON object representing a production
 	 * @returns      a string to print to a TypeScript file
 	 */
-	static fromJSON(jsons: EBNFObject[]): string {
+	static fromJSON(json: EBNFObject): string {
 		return `
-			import {
-				NonemptyArray,
-				GrammarSymbol,
-				Production,
-			} from '@chharvey/parser';
-			import * as TERMINAL from './Terminal';
-			${ jsons.map((json) => `
-				export class Production${ json.name } extends Production {
-					static readonly instance: Production${ json.name } = new Production${ json.name }();
-					/** @implements Production */
-					get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
-						return [
-							${ json.defn.map((seq) => `[${ seq.map((it) =>
-								(typeof it === 'string') ? it :
-								('term' in it) ? `TERMINAL.Terminal${ utils.macroToTitle(it.term) }.instance` :
-								`Production${ it.prod }.instance`
-							) }]`) },
-						];
-					}
+			export class Production${ json.name } extends Production {
+				static readonly instance: Production${ json.name } = new Production${ json.name }();
+				/** @implements Production */
+				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+					return [
+						${ json.defn.map((seq) => `[${ seq.map((it) =>
+							(typeof it === 'string') ? it :
+							('term' in it) ? `TERMINAL.Terminal${ utils.macroToTitle(it.term) }.instance` :
+							`Production${ it.prod }.instance`
+						) }]`) },
+					];
 				}
-			`).join('') }
+			}
 		`;
 	}
 

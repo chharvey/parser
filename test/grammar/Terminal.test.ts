@@ -2,10 +2,10 @@ import * as assert from 'assert';
 
 import type {Token} from '../../src/lexer/Token';
 import {
-	MyLexer,
+	LexerSample,
 	TerminalNumber,
 	TerminalOperator,
-} from '../samples';
+} from '../sample/';
 
 
 
@@ -19,7 +19,7 @@ describe('Terminal', () => {
 
 	describe('#match', () => {
 		it('returns whether a token satisfies a terminal.', () => {
-			const tokens: Token[] = [...new MyLexer(`
+			const tokens: Token[] = [...new LexerSample(`
 				42 *
 			`).generate()];
 			assert.ok( TerminalNumber  .instance.match(tokens[2]));

@@ -1,0 +1,16 @@
+[
+	{
+		"name": "Unit",
+		"defn": [
+			[{"term": "NUMBER"}],
+			["'('", {"term": "OPERATOR"}, {"prod": "Unit"}, {"prod": "Unit"}, "')'"]
+		]
+	},
+	{
+		"name": "Goal",
+		"defn": [
+			["'\\u0002'",                   "'\\u0003'"],
+			["'\\u0002'", {"prod": "Unit"}, "'\\u0003'"]
+		]
+	}
+]

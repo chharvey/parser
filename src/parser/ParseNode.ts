@@ -17,28 +17,22 @@ import type {Token} from '../lexer/Token';
  */
 export class ParseNode implements Serializable {
 	/**
-	 * Takes a list of JSON objects representing syntactic productions
+	 * Takes a JSON object representing a syntactic production
 	 * and returns a string in TypeScript language representing subclasses of {@link ParseNode}.
-	 * @param   json JSON objects representing a production
+	 * @param   json a JSON object representing a production
 	 * @returns      a string to print to a TypeScript file
 	 */
-	static fromJSON(jsons: EBNFObject[]): string {
+	static fromJSON(json: EBNFObject): string {
 		return `
-			import {
-				Token,
-				ParseNode,
-			} from '@chharvey/parser';
-			${ jsons.map((json) => `
-				export class ParseNode${ json.name } extends ParseNode {
-					declare children:
-						${ json.defn.map((seq) => `readonly [${ seq.map((it) =>
-							(typeof it === 'string' || 'term' in it)
-								? `Token`
-								: `ParseNode${ it.prod }`
-						) }]`).join(' | ') }
-					;
-				}
-			`).join('') }
+			export class ParseNode${ json.name } extends ParseNode {
+				declare children:
+					${ json.defn.map((seq) => `readonly [${ seq.map((it) =>
+						(typeof it === 'string' || 'term' in it)
+							? `Token`
+							: `ParseNode${ it.prod }`
+					) }]`).join(' | ') }
+				;
+			}
 		`;
 	}
 

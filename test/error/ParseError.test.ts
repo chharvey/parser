@@ -7,8 +7,8 @@ import {
 	ParseError01,
 } from '../../src/error/ParseError';
 import {
-	MyLexer,
-} from '../samples';
+	LexerSample,
+} from '../sample/';
 
 
 
@@ -18,7 +18,7 @@ describe('ParseError', () => {
 			const src: string = `lookahead`;
 			const chars: Char[] = [...new Scanner(src).generate()].slice(2, -2); // slice off line normalization
 			assert.strictEqual(
-				new ParseError01(new Token('TOKEN', new MyLexer(src), chars[0], ...chars.slice(1))).message,
+				new ParseError01(new Token('TOKEN', new LexerSample(src), chars[0], ...chars.slice(1))).message,
 				'Unexpected token: \`lookahead\` at line 1 col 1.',
 			);
 		});
