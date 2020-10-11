@@ -7,11 +7,11 @@ export type EBNFObject = {
 	readonly defn: EBNFChoice,
 };
 
-type EBNFChoice = NonemptyArray<EBNFSequence>;
+export type EBNFChoice = NonemptyArray<EBNFSequence>;
 
-type EBNFSequence = NonemptyArray<EBNFItem>;
+export type EBNFSequence = NonemptyArray<EBNFItem>;
 
-type EBNFItem =
+export type EBNFItem =
 	| string
 	| { readonly term: string }
 	| { readonly prod: string }
