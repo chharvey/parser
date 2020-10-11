@@ -3,6 +3,7 @@ import * as assert from 'assert';
 import {ParseNode} from '../../src/parser/ParseNode';
 import {
 	grammar,
+	ParserSample,
 } from '../sample/';
 
 
@@ -25,6 +26,36 @@ describe('ParseNode', () => {
 			}
 		`
 			]);
+		});
+	});
+
+	describe('#serialize', () => {
+		it('prints a readable string.', () => {
+			assert.strictEqual(new ParserSample(`(+ (* 2 3) 5)`).parse().serialize(), `
+				<Goal line="0" col="1" source="␂ ( + ( * 2 3 ) 5 ) ␃">
+					<FILEBOUND line="0" col="1">␂</FILEBOUND>
+					<Unit line="1" col="1" source="( + ( * 2 3 ) 5 )">
+						<PUNCTUATOR line="1" col="1">(</PUNCTUATOR>
+						<PUNCTUATOR line="1" col="2">+</PUNCTUATOR>
+						<Unit line="1" col="4" source="( * 2 3 )">
+							<PUNCTUATOR line="1" col="4">(</PUNCTUATOR>
+							<PUNCTUATOR line="1" col="5">*</PUNCTUATOR>
+							<Unit line="1" col="7" source="2">
+								<NUMBER line="1" col="7">2</NUMBER>
+							</Unit>
+							<Unit line="1" col="9" source="3">
+								<NUMBER line="1" col="9">3</NUMBER>
+							</Unit>
+							<PUNCTUATOR line="1" col="10">)</PUNCTUATOR>
+						</Unit>
+						<Unit line="1" col="12" source="5">
+							<NUMBER line="1" col="12">5</NUMBER>
+						</Unit>
+						<PUNCTUATOR line="1" col="13">)</PUNCTUATOR>
+					</Unit>
+					<FILEBOUND line="2" col="1">␃</FILEBOUND>
+				</Goal>
+			`.replace(/\n\t*/g, ''));
 		});
 	});
 });
