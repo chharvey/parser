@@ -15,18 +15,7 @@ export {
 
 
 
-export {
-	ParseNodeUnit,
-	ParseNodeGoal,
-} from './ParseNode';
-
-
-
 export {LexerSample} from './Lexer';
-
-
-
-export {ParserSample} from './Parser';
 
 
 
@@ -38,6 +27,9 @@ export {
 
 
 export {
+	ParseNodeUnit,
+	ParseNodeGoal,
+	ParserSample,
 	ProductionUnit,
 	ProductionGoal,
-} from './Production'
+} from './Parser.auto'

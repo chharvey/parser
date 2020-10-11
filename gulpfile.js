@@ -1,3 +1,6 @@
+const fs   = require('fs');
+const path = require('path');
+
 const gulp       = require('gulp');
 const mocha      = require('gulp-mocha');
 const typedoc    = require('gulp-typedoc');
@@ -17,6 +20,47 @@ function dist() {
 	;
 }
 
+async function pretest() {
+	const {generate} = require('./dist/main.js');
+	const grammar = require('./test/sample/syntax.json');
+	function preamble(srcpath) {
+		return `
+			/*----------------------------------------------------------------/
+			| WARNING: Do not manually update this file!
+			| It is auto-generated via
+			| <${ srcpath }>.
+			| If you need to make updates, make them there.
+			/----------------------------------------------------------------*/
+		`;
+	}
+	return fs.promises.writeFile(path.join(__dirname, './test/sample/Parser.auto.ts'), `
+		${ preamble('@chharvey/parser//src/main.ts') }
+		${ generate(grammar, 'Sample').replace(`
+		import {
+			NonemptyArray,
+			Token,
+			ParseNode,
+			Parser,
+			Production,
+			Grammar,
+			GrammarSymbol,
+		} from '@chharvey/parser';
+		`, `
+		import type {
+			NonemptyArray,
+		} from '../../src/types.d';
+		import type {Token} from '../../src/lexer/Token';
+		import {ParseNode} from '../../src/parser/ParseNode';
+		import {Parser} from '../../src/parser/Parser';
+		import {Production} from '../../src/grammar/Production';
+		import {
+			Grammar,
+			GrammarSymbol,
+		} from '../../src/grammar/Grammar';
+		`) }
+	`);
+}
+
 function test() {
 	return gulp.src('./test/**/*.ts')
 		.pipe(mocha({
@@ -25,6 +69,8 @@ function test() {
 	;
 }
 
+const testall = gulp.series(pretest, test)
+
 function docs() {
 	return gulp.src('./src/**/*.ts')
 		.pipe(typedoc(tsconfig.typedocOptions))
@@ -32,8 +78,7 @@ function docs() {
 }
 
 const build = gulp.parallel(
-	dist,
-	test,
+	gulp.series(dist, testall),
 	docs,
 );
 
@@ -42,6 +87,8 @@ const build = gulp.parallel(
 module.exports = {
 	build,
 		dist,
-		test,
+		testall,
+			pretest,
+			test,
 		docs,
 };
