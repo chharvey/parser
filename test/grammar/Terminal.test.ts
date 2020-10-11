@@ -5,7 +5,7 @@ import {
 	MyLexer,
 	TerminalNumber,
 	TerminalOperator,
-} from '../samples';
+} from '../sample/';
 
 
 

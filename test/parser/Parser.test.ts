@@ -9,7 +9,7 @@ import {
 } from '../../src/error/ParseError';
 import {
 	MyParser,
-} from '../samples';
+} from '../sample/';
 
 
 

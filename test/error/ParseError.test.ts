@@ -8,7 +8,7 @@ import {
 } from '../../src/error/ParseError';
 import {
 	MyLexer,
-} from '../samples';
+} from '../sample/';
 
 
 

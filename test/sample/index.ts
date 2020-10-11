@@ -1,22 +1,22 @@
 import type {
 	NonemptyArray,
 	EBNFObject,
-} from '../src/types.d';
-import {Filebound} from '../src/utils';
-import {Char} from '../src/scanner/Char';
+} from '../../src/types.d';
+import {Filebound} from '../../src/utils';
+import {Char} from '../../src/scanner/Char';
 import {
 	Token,
 	TokenComment,
-} from '../src/lexer/Token';
-import {ParseNode} from '../src/parser/ParseNode';
-import {Lexer} from '../src/lexer/Lexer';
-import {Parser} from '../src/parser/Parser';
-import {Terminal} from '../src/grammar/Terminal';
-import {Production} from '../src/grammar/Production';
+} from '../../src/lexer/Token';
+import {ParseNode} from '../../src/parser/ParseNode';
+import {Lexer} from '../../src/lexer/Lexer';
+import {Parser} from '../../src/parser/Parser';
+import {Terminal} from '../../src/grammar/Terminal';
+import {Production} from '../../src/grammar/Production';
 import {
 	GrammarSymbol,
 	Grammar,
-} from '../src/grammar/Grammar';
+} from '../../src/grammar/Grammar';
 
 
 

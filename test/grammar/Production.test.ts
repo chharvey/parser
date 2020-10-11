@@ -5,7 +5,7 @@ import {Rule} from '../../src/grammar/Rule';
 import {
 	grammar,
 	ProductionUnit,
-} from '../samples';
+} from '../sample/';
 
 
 

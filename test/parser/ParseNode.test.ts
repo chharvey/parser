@@ -3,7 +3,7 @@ import * as assert from 'assert';
 import {ParseNode} from '../../src/parser/ParseNode';
 import {
 	grammar,
-} from '../samples';
+} from '../sample/';
 
 
 

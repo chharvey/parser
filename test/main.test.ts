@@ -5,7 +5,7 @@ import {Production} from '../src/grammar/Production';
 import {generate} from '../src/main';
 import {
 	grammar,
-} from './samples';
+} from './sample/';
 
 
 

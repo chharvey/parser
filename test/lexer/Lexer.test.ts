@@ -16,7 +16,7 @@ import {
 import {
 	MyLexer,
 	MyTokenComment,
-} from '../samples';
+} from '../sample/';
 
 
 

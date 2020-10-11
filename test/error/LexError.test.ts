@@ -11,7 +11,7 @@ import {
 } from '../../src/error/LexError';
 import {
 	MyLexer,
-} from '../samples';
+} from '../sample/';
 
 
 
