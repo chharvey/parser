@@ -1,8 +1,10 @@
 import * as assert from 'assert';
 
+import type {
+	EBNFObject,
+} from '../../src/types.d';
 import {ParseNode} from '../../src/parser/ParseNode';
 import {
-	grammar,
 	ParserSample,
 } from '../sample/';
 
@@ -11,7 +13,24 @@ import {
 describe('ParseNode', () => {
 	describe('.fromJSON', () => {
 		it('returns a string representing new subclasses of ParseNode.', () => {
-			assert.deepStrictEqual(grammar.map((prod) => ParseNode.fromJSON(prod)), [
+			assert.deepStrictEqual(JSON.parse(`
+				[
+					{
+						"name": "Unit",
+						"defn": [
+							[{"term": "NUMBER"}],
+							["'('", {"term": "OPERATOR"}, {"prod": "Unit"}, {"prod": "Unit"}, "')'"]
+						]
+					},
+					{
+						"name": "Goal",
+						"defn": [
+							["'\\\\u0002'",                   "'\\\\u0003'"],
+							["'\\\\u0002'", {"prod": "Unit"}, "'\\\\u0003'"]
+						]
+					}
+				]
+			`).map((prod: EBNFObject) => ParseNode.fromJSON(prod)), [
 		`
 			export class ParseNodeUnit extends ParseNode {
 				declare children:

@@ -3,6 +3,11 @@ import * as assert from 'assert';
 import type {ParseNode} from '../../src/parser/ParseNode';
 import {ASTNode} from '../../src/validator/ASTNode';
 import {
+	PARSER,
+	ParserEBNF,
+	Decorator,
+} from '../../src/ebnf/';
+import {
 	ParseNodeUnit,
 	ParserSample,
 } from '../sample';
@@ -37,6 +42,34 @@ describe('ASTNode', () => {
 					</>
 				</>
 			`.replace(/\n\t*/g, ''));
+		});
+	});
+
+	describe('ASTNodeGoal', () => {
+		describe('#transform', () => {
+			specify('SemanticGoal ::= SemanticProduction*;', () => {
+				assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+					Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
+					Goal ::= #x02 Unit? #x03;
+				`).parse() as PARSER.ParseNodeGoal).transform(), JSON.parse(`
+					[
+						{
+							"name": "Unit",
+							"defn": [
+								[{"term": "NUMBER"}],
+								["'('", {"term": "OPERATOR"}, {"prod": "Unit"}, {"prod": "Unit"}, "')'"]
+							]
+						},
+						{
+							"name": "Goal",
+							"defn": [
+								["'\\\\u0002'",                   "'\\\\u0003'"],
+								["'\\\\u0002'", {"prod": "Unit"}, "'\\\\u0003'"]
+							]
+						}
+					]
+				`));
+			});
 		});
 	});
 });

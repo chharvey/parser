@@ -9,7 +9,10 @@ import type {ParseNode} from '../../src/parser/ParseNode';
 import {
 	ParseError01,
 } from '../../src/error/ParseError';
-import {PARSER as EBNF} from '../../src/ebnf/'
+import {
+	PARSER as EBNF,
+	ParserEBNF,
+} from '../../src/ebnf/';
 import {
 	assert_arrayLength,
 } from '../helpers';
@@ -76,7 +79,7 @@ describe('Parser', () => {
 
 		describe('ParserEBNF', () => {
 			specify('Goal ::= #x02 Production* #x03;', () => {
-				const goal: ParseNode = new EBNF.ParserEBNF(`
+				const goal: ParseNode = new ParserEBNF(`
 					Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 					Goal ::= #x02 Unit? #x03;
 				`).parse();
@@ -85,9 +88,9 @@ describe('Parser', () => {
 						<FILEBOUND>␂</FILEBOUND>
 						<Goal__0__List>
 							<Goal__0__List>
-								<Production source="Unit ::= NUMBER | "(" OPERATOR Unit Unit ")" ;">...</Production>
+								<Production source='Unit ::= NUMBER | "(" OPERATOR Unit Unit ")" ;'>...</Production>
 							</Goal__0__List>
-							<Production source="Goal ::= #x02 Unit ? #x03 ;">...</Production>
+							<Production source='Goal ::= #x02 Unit ? #x03 ;'>...</Production>
 						</Goal__0__List>
 						<FILEBOUND>␃</FILEBOUND>
 					</Goal>
@@ -112,7 +115,7 @@ describe('Parser', () => {
 			});
 
 			specify('Production ::= NonterminalName "::=" "|" Definition ";";', () => {
-				const prod: EBNF.ParseNodeProduction = (new EBNF.ParserEBNF(`
+				const prod: EBNF.ParseNodeProduction = (new ParserEBNF(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
@@ -139,7 +142,7 @@ describe('Parser', () => {
 			});
 
 			specify('Altern ::= Altern "|" Concat;', () => {
-				const altern: EBNF.ParseNodeAltern = ((((new EBNF.ParserEBNF(`
+				const altern: EBNF.ParseNodeAltern = ((((new ParserEBNF(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
@@ -166,7 +169,7 @@ describe('Parser', () => {
 			});
 
 			specify('Order ::= Order Item;', () => {
-				const order: EBNF.ParseNodeOrder = (((((new EBNF.ParserEBNF(`
+				const order: EBNF.ParseNodeOrder = (((((new ParserEBNF(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
