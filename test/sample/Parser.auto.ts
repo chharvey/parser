@@ -1,5 +1,5 @@
 
-		
+			
 			/*----------------------------------------------------------------/
 			| WARNING: Do not manually update this file!
 			| It is auto-generated via
@@ -7,7 +7,7 @@
 			| If you need to make updates, make them there.
 			/----------------------------------------------------------------*/
 		
-		
+			
 		import type {
 			NonemptyArray,
 		} from '../../src/types.d';
@@ -19,7 +19,7 @@
 			Grammar,
 			GrammarSymbol,
 		} from '../../src/grammar/Grammar';
-		import {LexerSample} from './Lexer';
+			import {LexerSample} from './Lexer';
 		import * as TERMINAL from './Terminal';
 		
 			export class ProductionUnit extends Production {
@@ -58,11 +58,11 @@
 		export class ParserSample extends Parser {
 			constructor (source: string) {
 				super(source, LexerSample, new Grammar([
-					ProductionUnit.instance,ProductionGoal.instance
+					ProductionUnit.instance,ProductionGoal.instance,
 				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
-					[ProductionUnit.instance, ParseNodeUnit],[ProductionGoal.instance, ParseNodeGoal]
+					[ProductionUnit.instance, ParseNodeUnit],[ProductionGoal.instance, ParseNodeGoal],
 				]));
 			}
 		}
 	
-	
+		

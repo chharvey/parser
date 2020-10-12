@@ -13,6 +13,26 @@ import type {Token} from '../lexer/Token';
  * - the group of child inputs ({@link Token}s and/or other ParseNodes)
  * - the line number and column index where the text code of the node starts
  *
+ * A ParseNode is an arrangement of Tokens in a tree structure.
+ * For example, parsing the expression `5 + 2 * 3` might yield the following tree:
+ * ```xml
+ * <ParseNodeAdd>
+ * 	<ParseNodeAdd>
+ * 		<ParseNodeMult>
+ * 			<NUMBER>5</NUMBER>
+ * 		</ParseNodeMult>
+ * 	</ParseNodeAdd>
+ * 	<PUNCTUATOR>+</PUNCTUATOR>
+ * 	<ParseNodeMult>
+ * 		<ParseNodeMult>
+ * 			<NUMBER>2</NUMBER>
+ * 		</ParseNodeMult>
+ * 		<PUNCTUATOR>*</PUNCTUATOR>
+ * 		<NUMBER>3</NUMBER>
+ * 	</ParseNodeMult>
+ * </ParseNodeAdd>
+ * ```
+ *
  * @see http://parsingintro.sourceforge.net/#contents_item_8.2
  */
 export class ParseNode implements Serializable {

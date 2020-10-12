@@ -1,13 +1,3 @@
-import type {
-	EBNFObject,
-} from '../../src/types.d';
-
-
-
-export const grammar: EBNFObject[] = require('./syntax.json');
-
-
-
 export {
 	TokenNumber,
 	TokenCommentSample,
