@@ -22,7 +22,7 @@ function dist() {
 
 async function pretest() {
 	const {generate} = require('./dist/main.js');
-	const grammar = require('./test/sample/syntax.json');
+	const grammar = fs.promises.readFile(path.join(__dirname, './test/sample/syntax.ebnf'), 'utf8');
 	function preamble(srcpath) {
 		return `
 			/*----------------------------------------------------------------/
@@ -35,7 +35,7 @@ async function pretest() {
 	}
 	return fs.promises.writeFile(path.join(__dirname, './test/sample/Parser.auto.ts'), `
 		${ preamble('@chharvey/parser//src/main.ts') }
-		${ generate(grammar, 'Sample').replace(`
+		${ generate(await grammar, 'Sample').replace(`
 		import {
 			NonemptyArray,
 			Token,

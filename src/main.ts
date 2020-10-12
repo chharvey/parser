@@ -3,9 +3,15 @@ import type {
 } from './types';
 import {ParseNode} from './parser/ParseNode';
 import {Production} from './grammar/Production';
+import {
+	PARSER,
+	ParserEBNF,
+	Decorator,
+} from './ebnf/';
 
 
-export function generate(jsons: EBNFObject[], langname: string = 'Lang'): string {
+export function generate(ebnf: string, langname: string = 'Lang'): string {
+	const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse() as PARSER.ParseNodeGoal).transform()
 	return `
 		import {
 			NonemptyArray,
@@ -23,9 +29,9 @@ export function generate(jsons: EBNFObject[], langname: string = 'Lang'): string
 		export class Parser${ langname } extends Parser {
 			constructor (source: string) {
 				super(source, Lexer${ langname }, new Grammar([
-					${ jsons.map((json) => `Production${ json.name }.instance`) }
+					${ jsons.map((json) => `Production${ json.name }.instance`) },
 				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
-					${ jsons.map((json) => `[Production${ json.name }.instance, ParseNode${ json.name }]`) }
+					${ jsons.map((json) => `[Production${ json.name }.instance, ParseNode${ json.name }]`) },
 				]));
 			}
 		}

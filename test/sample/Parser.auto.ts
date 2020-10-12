@@ -58,9 +58,9 @@
 		export class ParserSample extends Parser {
 			constructor (source: string) {
 				super(source, LexerSample, new Grammar([
-					ProductionUnit.instance,ProductionGoal.instance
+					ProductionUnit.instance,ProductionGoal.instance,
 				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
-					[ProductionUnit.instance, ParseNodeUnit],[ProductionGoal.instance, ParseNodeGoal]
+					[ProductionUnit.instance, ParseNodeUnit],[ProductionGoal.instance, ParseNodeGoal],
 				]));
 			}
 		}
