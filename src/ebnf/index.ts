@@ -22,7 +22,7 @@ export {
 	TerminalCharClass,
 } from './Terminal';
 
-export * as PARSER from './Parser';
-export {ParserEBNF} from './Parser';
+export * as PARSER from './Parser.auto';
+export {ParserEBNF} from './Parser.auto';
 
 export {Decorator} from './Decorator';

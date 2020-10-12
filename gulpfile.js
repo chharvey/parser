@@ -22,7 +22,8 @@ function dist() {
 
 async function pretest() {
 	const {generate} = require('./dist/main.js');
-	const grammar = fs.promises.readFile(path.join(__dirname, './test/sample/syntax.ebnf'), 'utf8');
+	const grammar_sample = fs.promises.readFile(path.join(__dirname, './test/sample/syntax.ebnf'), 'utf8');
+	const grammar_ebnf   = fs.promises.readFile(path.join(__dirname, './src/ebnf/syntax.ebnf'),    'utf8');
 	function preamble(srcpath) {
 		return `
 			/*----------------------------------------------------------------/
@@ -33,9 +34,36 @@ async function pretest() {
 			/----------------------------------------------------------------*/
 		`;
 	}
-	return fs.promises.writeFile(path.join(__dirname, './test/sample/Parser.auto.ts'), `
-		${ preamble('@chharvey/parser//src/main.ts') }
-		${ generate(await grammar, 'Sample').replace(`
+	return Promise.all([
+		fs.promises.writeFile(path.join(__dirname, './src/ebnf/Parser.auto.ts'), `
+			${ preamble('@chharvey/parser//src/main.ts') }
+			${ generate(await grammar_ebnf, 'EBNF').replace(`
+		import {
+			NonemptyArray,
+			Token,
+			ParseNode,
+			Parser,
+			Production,
+			Grammar,
+			GrammarSymbol,
+		} from '@chharvey/parser';
+		`, `
+		import type {
+			NonemptyArray,
+		} from '../types.d';
+		import type {Token} from '../lexer/Token';
+		import {ParseNode} from '../parser/ParseNode';
+		import {Parser} from '../parser/Parser';
+		import {Production} from '../grammar/Production';
+		import {
+			Grammar,
+			GrammarSymbol,
+		} from '../grammar/Grammar';
+			`) }
+		`),
+		fs.promises.writeFile(path.join(__dirname, './test/sample/Parser.auto.ts'), `
+			${ preamble('@chharvey/parser//src/main.ts') }
+			${ generate(await grammar_sample, 'Sample').replace(`
 		import {
 			NonemptyArray,
 			Token,
@@ -57,8 +85,9 @@ async function pretest() {
 			Grammar,
 			GrammarSymbol,
 		} from '../../src/grammar/Grammar';
-		`) }
-	`);
+			`) }
+		`),
+	]);
 }
 
 function test() {

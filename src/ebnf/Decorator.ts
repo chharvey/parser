@@ -9,7 +9,7 @@ import {
 	Binop,
 } from './ASTNode';
 import * as ASTNODE from './ASTNode';
-import * as PARSER from './Parser';
+import * as PARSER from './Parser.auto';
 
 
 
