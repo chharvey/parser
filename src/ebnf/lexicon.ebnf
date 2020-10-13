@@ -24,7 +24,7 @@ CharCode
 	:::= "#x" [0-9a-f]+;
 
 String
-	:::= #x22 [^"]* #x22; // U+0022 QUOTATION MARK
+	:::= #x22 [^"#x03]* #x22; // U+0022 QUOTATION MARK
 
 Char
 	:::= [#x20-#x5c#x5e-#7e]; // excluding U+005D RIGHT SQUARE BRAKET
@@ -33,4 +33,4 @@ CharClass
 	:::= "[" "^"? (Char | CharCode | Char "-" Char | CharCode "-" CharCode)+ "]";
 
 Comment
-	:::= "//" [^#x0a#03]* #x0a;
+	:::= "//" [^#x0a#x03]* #x0a;
