@@ -7,7 +7,6 @@ import {ParseNode} from '../src/parser/ParseNode';
 import {Production} from '../src/grammar/Production';
 import {generate} from '../src/main';
 import {
-	PARSER,
 	ParserEBNF,
 	Decorator,
 } from '../src/ebnf/';
@@ -20,7 +19,7 @@ describe('generate', () => {
 			Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 			Goal ::= #x02 Unit? #x03;
 		`;
-		const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse() as PARSER.ParseNodeGoal).transform();
+		const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse()).transform();
 		assert.strictEqual(generate(ebnf, 'Sample'), (
 	`
 		import {
@@ -44,6 +43,8 @@ describe('generate', () => {
 					[ProductionUnit.instance, ParseNodeUnit],[ProductionGoal.instance, ParseNodeGoal],
 				]));
 			}
+			// @ts-expect-error
+			declare parse(): ParseNodeGoal;
 		}
 	`
 		));

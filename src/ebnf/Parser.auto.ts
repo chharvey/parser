@@ -319,6 +319,8 @@
 					[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],[ProductionParameterSet.instance, ParseNodeParameterSet],[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],[ProductionArgumentSet.instance, ParseNodeArgumentSet],[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],[ProductionConditionSet.instance, ParseNodeConditionSet],[ProductionReference.instance, ParseNodeReference],[ProductionUnit.instance, ParseNodeUnit],[ProductionUnary.instance, ParseNodeUnary],[ProductionItem.instance, ParseNodeItem],[ProductionOrder.instance, ParseNodeOrder],[ProductionConcat.instance, ParseNodeConcat],[ProductionAltern.instance, ParseNodeAltern],[ProductionDefinition.instance, ParseNodeDefinition],[ProductionNonterminalName.instance, ParseNodeNonterminalName],[ProductionProduction.instance, ParseNodeProduction],[ProductionGoal__0__List.instance, ParseNodeGoal__0__List],[ProductionGoal.instance, ParseNodeGoal],
 				]));
 			}
+			// @ts-expect-error
+			declare parse(): ParseNodeGoal;
 		}
 	
 		

@@ -63,6 +63,8 @@
 					[ProductionUnit.instance, ParseNodeUnit],[ProductionGoal.instance, ParseNodeGoal],
 				]));
 			}
+			// @ts-expect-error
+			declare parse(): ParseNodeGoal;
 		}
 	
 		

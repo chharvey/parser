@@ -1,7 +1,6 @@
 import * as assert from 'assert';
 
 import {
-	PARSER,
 	ParserEBNF,
 	ASTNODE,
 	Binop,
@@ -19,7 +18,7 @@ describe('Decorator', () => {
 			const goal: ASTNODE.ASTNodeGoal = Decorator.decorate(new ParserEBNF(`
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
-			`).parse() as PARSER.ParseNodeGoal);
+			`).parse());
 
 			specify('Goal ::= #x02 Production* #x03;', () => {
 				/*

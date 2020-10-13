@@ -3,7 +3,6 @@ import * as assert from 'assert';
 import type {ParseNode} from '../../src/parser/ParseNode';
 import {ASTNode} from '../../src/validator/ASTNode';
 import {
-	PARSER,
 	ParserEBNF,
 	Decorator,
 } from '../../src/ebnf/';
@@ -51,7 +50,7 @@ describe('ASTNode', () => {
 				assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
 					Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 					Goal ::= #x02 Unit? #x03;
-				`).parse() as PARSER.ParseNodeGoal).transform(), JSON.parse(`
+				`).parse()).transform(), JSON.parse(`
 					[
 						{
 							"name": "Unit",
