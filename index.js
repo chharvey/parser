@@ -8,6 +8,7 @@ const {
 	TokenComment,
 } = require('./dist/lexer/Token.js');
 const {ParseNode} = require('./dist/parser/ParseNode.js');
+const {ASTNode} = require('./dist/validator/ASTNode');
 
 const {Scanner} = require('./dist/scanner/Scanner.js');
 const {Lexer} = require('./dist/lexer/Lexer.js');
@@ -42,6 +43,7 @@ module.exports = {
 	TokenWhitespace,
 	TokenComment,
 	ParseNode,
+	ASTNode,
 
 	Scanner,
 	Lexer,
