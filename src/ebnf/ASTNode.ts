@@ -308,7 +308,7 @@ export class ASTNodeNonterminal extends ASTNodeEBNF {
 	 */
 	expand(): ConcreteNonterminal[] {
 		return [...new Array(2 ** this.params.length)].map((_, count) => new ConcreteNonterminal(
-			this.source,
+			this.name,
 			[...count.toString(2).padStart(this.params.length, '0')].map((d, i) =>
 				[this.params[i], !!+d] as const
 			).filter(([_param, b]) => !!b).map(([param, _b]) => param),

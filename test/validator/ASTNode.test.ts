@@ -3,6 +3,7 @@ import * as assert from 'assert';
 import type {ParseNode} from '../../src/parser/ParseNode';
 import {ASTNode} from '../../src/validator/ASTNode';
 import {
+	ASTNODE,
 	ParserEBNF,
 	Decorator,
 } from '../../src/ebnf/';
@@ -41,6 +42,45 @@ describe('ASTNode', () => {
 					</>
 				</>
 			`.replace(/\n\t*/g, ''));
+		});
+	});
+
+	describe('ASTNodeNonterminal', () => {
+		describe('#expand', () => {
+			it('spilts into several names.', () => {
+				assert.deepStrictEqual(
+					Decorator.decorate(new ParserEBNF(`
+						NonTerm<Param> ::= TERM;
+					`).parse()).children[0].children[0].expand().map((cn) => cn.toString()),
+					['NonTerm', 'NonTerm_Param'],
+				);
+			});
+		});
+	});
+
+	describe('ASTNodeProduction', () => {
+		describe('#transform', () => {
+			it('spilts nonterminal parameters into several productions.', () => {
+				const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF(`
+					NonTerm<Param> ::= TERM;
+				`).parse()).children[0]
+				assert.deepStrictEqual(prod.transform(), JSON.parse(`
+					[
+						{
+							"name": "${ prod.children[0].expand()[0].toString() }",
+							"defn": [
+								[{"term": "TERM"}]
+							]
+						},
+						{
+							"name": "${ prod.children[0].expand()[1].toString() }",
+							"defn": [
+								[{"term": "TERM"}]
+							]
+						}
+					]
+				`));
+			});
 		});
 	});
 
