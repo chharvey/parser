@@ -1,0 +1,8 @@
+// NUMBER   ::= [./lexicon.ebnf#Number];
+// OPERATOR ::= [./lexicon.ebnf#Punctuator];
+
+Unit
+	::= NUMBER | "(" OPERATOR Unit Unit ")";
+
+Goal
+	::= #x02 Unit? #x03;
