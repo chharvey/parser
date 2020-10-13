@@ -4,14 +4,13 @@ import type {
 import {ParseNode} from './parser/ParseNode';
 import {Production} from './grammar/Production';
 import {
-	PARSER,
 	ParserEBNF,
 	Decorator,
 } from './ebnf/';
 
 
 export function generate(ebnf: string, langname: string = 'Lang'): string {
-	const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse() as PARSER.ParseNodeGoal).transform()
+	const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse()).transform()
 	return `
 		import {
 			NonemptyArray,
@@ -34,6 +33,8 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 					${ jsons.map((json) => `[Production${ json.name }.instance, ParseNode${ json.name }]`) },
 				]));
 			}
+			// @ts-expect-error
+			declare parse(): ParseNodeGoal;
 		}
 	`;
 }

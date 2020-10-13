@@ -1,7 +1,7 @@
+import {Filebound} from '../utils';
 import {Char} from '../scanner/Char';
 import {
 	Token,
-	TokenFilebound,
 	TokenComment,
 } from '../lexer/Token';
 import type {Lexer} from '../lexer/Lexer';
@@ -61,7 +61,7 @@ export class TokenString extends Token {
 	constructor (lexer: Lexer) {
 		super('STRING', lexer, ...lexer.advance());
 		while (!this.lexer.isDone && !Char.eq(TokenString.DELIM, this.lexer.c0)) {
-			if (Char.inc(TokenFilebound.CHARS, this.lexer.c0)) {
+			if (Char.eq(Filebound.EOT, this.lexer.c0)) {
 				throw new LexError02(this);
 			};
 			this.advance();
@@ -79,7 +79,7 @@ export class TokenCharClass extends Token {
 	constructor (lexer: Lexer) {
 		super('CHARCLASS', lexer, ...lexer.advance());
 		while (!this.lexer.isDone && !Char.eq(TokenCharClass.DELIM_END, this.lexer.c0)) {
-			if (Char.inc(TokenFilebound.CHARS, this.lexer.c0)) {
+			if (Char.eq(Filebound.EOT, this.lexer.c0)) {
 				throw new LexError02(this);
 			};
 			this.advance();

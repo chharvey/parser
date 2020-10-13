@@ -20,6 +20,7 @@ export {
 	TokenComment,
 } from './src/lexer/Token';
 export {ParseNode} from './src/parser/ParseNode';
+export {ASTNode} from './src/validator/ASTNode';
 
 export {Scanner} from './src/scanner/Scanner';
 export {Lexer} from './src/lexer/Lexer';
