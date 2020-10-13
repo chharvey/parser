@@ -106,3 +106,6 @@ dist
 
 # Generated documentation & style guides
 docs/api/
+
+# Checked-in to `gh-pages`
+!docs/api/

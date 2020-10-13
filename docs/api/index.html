@@ -1,0 +1,675 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>@chharvey/parser</title>
+	<meta name="description" content="Documentation for @chharvey/parser">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">@chharvey/parser</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>@chharvey/parser</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#parser" id="parser" style="color: inherit; text-decoration: none;">
+					<h1>parser</h1>
+				</a>
+				<p>A parser generator.</p>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<a href="#step-1-define-a-lexicon" id="step-1-define-a-lexicon" style="color: inherit; text-decoration: none;">
+					<h3>Step 1: Define A Lexicon</h3>
+				</a>
+				<p>The lexicon of your language describes how tokens are formed from a string of characters.
+					In formal language theory, a lexicon is defined by a Regular Grammar and governed by a “finite state automaton”
+				(Type-3 in the <a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky Hierarchy</a>).</p>
+				<p>In this walkthrough we’ll define a simple s-expression language using only positive integers and
+					the operators <code>^</code>, <code>*</code>, and <code>+</code>.
+					For example, to write “the sum of 500 and the product of 2 and 30”, you would write <code>(+ 500 (* 2 30))</code>.
+					(Conventionally, this would be written <code>500 + 2 * 30</code>.)
+					Being such a simple language, there are only three types of tokens: numbers, operators, and grouping symbols.
+				The lexicon of this language is described by the following EBNF:</p>
+				<pre><code><span class="hljs-title">NUMBER   ::</span>:= [<span class="hljs-number">0</span>-<span class="hljs-number">9</span>]+<span class="hljs-comment">;</span>
+<span class="hljs-title">OPERATOR ::</span>:= <span class="hljs-string">&quot;^&quot;</span> | <span class="hljs-string">&quot;*&quot;</span> | <span class="hljs-string">&quot;+&quot;</span><span class="hljs-comment">;</span>
+<span class="hljs-title">GROUPING ::</span>:= <span class="hljs-string">&quot;(&quot;</span> | <span class="hljs-string">&quot;)&quot;</span><span class="hljs-comment">;</span></code></pre>
+				<p>In practice, you’d implement a lexicon by writing a combination of loops and conditional statements.
+					This is called a lexer, and the process is called Lexical Analysis.
+				<em>(Pseudo-code below — do not take seriously!)</em></p>
+				<pre><code class="language-ts"><span class="hljs-keyword">const</span> input: <span class="hljs-built_in">string</span> = <span class="hljs-string">&#x27;(+ 500 (* 2 30))&#x27;</span>;
+<span class="hljs-keyword">let</span> i: <span class="hljs-built_in">number</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">let</span> current_character: <span class="hljs-built_in">string</span> = input[i];
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">advance</span>(<span class="hljs-params">t: <span class="hljs-built_in">string</span></span>): <span class="hljs-title">void</span> </span>{
+    t += current_character;
+    current_character = input[++i];
+}
+
+<span class="hljs-keyword">const</span> tokens: <span class="hljs-built_in">string</span>[] = [];
+<span class="hljs-keyword">while</span> (i &lt; input.length) {
+    <span class="hljs-keyword">let</span> token: <span class="hljs-built_in">string</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+
+    <span class="hljs-comment">/* WHITESPACE */</span>
+    <span class="hljs-keyword">while</span> (<span class="hljs-regexp">/\s/</span>.test(current_character)) {
+        advance(token);
+    }
+
+    <span class="hljs-comment">/* NUMBER :::= [0-9]+; */</span>
+    <span class="hljs-keyword">while</span> (<span class="hljs-regexp">/[0-9]/</span>.test(current_character)) {
+        advance(token);
+    };
+
+    <span class="hljs-comment">/* OPERATOR :::= &quot;^&quot; | &quot;*&quot; | &quot;+&quot;; */</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\^|\*|\+/</span>.test(current_character)) {
+        advance(token);
+    };
+
+    <span class="hljs-comment">/* GROUPING :::= &quot;(&quot; | &quot;)&quot;; */</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\(|\)/</span>.test(current_character)) {
+        advance(token);
+    };
+
+    tokens.push(token);
+};</code></pre>
+				<p>Once done, and after filtering out whitespace, the lexer would return the following sequence of tokens:</p>
+				<pre><code class="language-ts">[<span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;+&#x27;</span>, <span class="hljs-string">&#x27;500&#x27;</span>, <span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;*&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;30&#x27;</span>, <span class="hljs-string">&#x27;)&#x27;</span>, <span class="hljs-string">&#x27;)&#x27;</span>]</code></pre>
+				<p>(Note that a lexer only creates tokens, it does not care how they are arranged.
+					Thus the following code would lex sucessfully even if not syntactically well-formed:
+				<code>500) + *(2 30 ()</code>.)</p>
+				<p>Hopefully the pseudo-code above gave you a good idea of lexical analysis,
+					but unfortunatly it’s not that simple.
+				To define a usable lexer, extend this project’s <code>Lexer</code> class, and write your own token classes using <code>Token</code>.</p>
+				<a href="#step-1a-define-token-types" id="step-1a-define-token-types" style="color: inherit; text-decoration: none;">
+					<h4>Step 1a: Define Token Types</h4>
+				</a>
+				<p>First let’s tackle the tokens. Each kind of token (<code>NUMBER</code>, <code>OPERATOR</code>, <code>GROUPING</code>) must be a subclass of <code>Token</code>,
+					where the constructor takes a lexer and the first character of the token, and then
+				describes what the lexer should do next. See the <a href="./docs/api/">Token API</a> for details.</p>
+				<pre><code class="language-ts"><span class="hljs-comment">//-- file: Token.ts</span>
+<span class="hljs-keyword">import</span> {
+    Token,
+    Lexer,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
+
+<span class="hljs-comment">/** NUMBER :::= [0-9]+; */</span>
+<span class="hljs-keyword">class</span> TokenNumber <span class="hljs-keyword">extends</span> Token {
+    <span class="hljs-keyword">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
+        <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;NUMBER&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
+        <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">this</span>.lexer.isDone &amp;&amp; <span class="hljs-regexp">/[0-9]/</span>.test(<span class="hljs-built_in">this</span>.lexer.c0.source)) {
+            <span class="hljs-built_in">this</span>.advance();
+        };
+    }
+}
+<span class="hljs-comment">/** OPERATOR :::= &quot;^&quot; | &quot;*&quot; | &quot;+&quot;; */</span>
+<span class="hljs-keyword">class</span> TokenOperator <span class="hljs-keyword">extends</span> Token {
+    <span class="hljs-keyword">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
+        <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;OPERATOR&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
+        <span class="hljs-comment">// since only 1 character, no need to advance</span>
+    }
+}
+<span class="hljs-comment">/** GROUPING :::= &quot;(&quot; | &quot;)&quot;; */</span>
+<span class="hljs-keyword">class</span> TokenGrouping <span class="hljs-keyword">extends</span> Token {
+    <span class="hljs-keyword">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
+        <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;GROUPING&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
+        <span class="hljs-comment">// since only 1 character, no need to advance</span>
+    }
+}</code></pre>
+				<a href="#step-1b-define-the-lexer" id="step-1b-define-the-lexer" style="color: inherit; text-decoration: none;">
+					<h4>Step 1b: Define The Lexer</h4>
+				</a>
+				<p>The name of your lexer must be <code>Lexer‹id›</code>, where <code>‹id›</code> is some identifier. Here we’ll use <code>LexerSExpr</code>.
+					(The <code>‹id›</code> is important because we’ll use it when generating our parser later.)
+				Put the conditions of the psuedo-code above into this lexer’s <code>generate_do()</code> method.</p>
+				<pre><code class="language-ts"><span class="hljs-comment">//-- file: Lexer.ts</span>
+<span class="hljs-keyword">import</span> {
+    Char,
+    Token,
+    Lexer,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> TOKEN <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Token&#x27;</span>;
+
+<span class="hljs-keyword">class</span> LexerSExpr <span class="hljs-keyword">extends</span> Lexer {
+    <span class="hljs-keyword">protected</span> generate_do(): Token | <span class="hljs-literal">null</span> {
+        <span class="hljs-keyword">return</span> (
+            (<span class="hljs-regexp">/[0-9]/</span>.test(<span class="hljs-built_in">this</span>.c0.source))       ? TOKEN.TokenNumber  (<span class="hljs-built_in">this</span>) :
+            (Char.inc([<span class="hljs-string">&#x27;^&#x27;</span>, <span class="hljs-string">&#x27;*&#x27;</span>, <span class="hljs-string">&#x27;+&#x27;</span>], <span class="hljs-built_in">this</span>.c0)) ? TOKEN.TokenOperator(<span class="hljs-built_in">this</span>) :
+            (Char.inc([<span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;)&#x27;</span>],      <span class="hljs-built_in">this</span>.c0)) ? TOKEN.TokenGrouping(<span class="hljs-built_in">this</span>) :
+            <span class="hljs-literal">null</span>
+        );
+    }
+}</code></pre>
+				<p>If we want to check if our lexer is working property, we can call its <code>generate()</code> method,
+				which returns a generator of tokens.</p>
+				<pre><code class="language-ts"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testLexer</span>(<span class="hljs-params"></span>): <span class="hljs-title">void</span> </span>{
+    <span class="hljs-built_in">console</span>.log([...new LexerSExpr(<span class="hljs-string">&#x27;(+ 500 (* 2 30))&#x27;</span>).generate()].map(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> token.serialize()));
+}</code></pre>
+				<p>We can expect this sequence of tokens:</p>
+				<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FILEBOUND</span>&gt;</span><span class="hljs-symbol">&amp;#x02;</span><span class="hljs-tag">&lt;/<span class="hljs-name">FILEBOUND</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>(<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">OPERATOR</span>&gt;</span>+<span class="hljs-tag">&lt;/<span class="hljs-name">OPERATOR</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>(<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">OPERATOR</span>&gt;</span>*<span class="hljs-tag">&lt;/<span class="hljs-name">OPERATOR</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>)<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>)<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">FILEBOUND</span>&gt;</span><span class="hljs-symbol">&amp;#x03;</span><span class="hljs-tag">&lt;/<span class="hljs-name">FILEBOUND</span>&gt;</span></code></pre>
+				<a href="#step-2-define-a-syntax" id="step-2-define-a-syntax" style="color: inherit; text-decoration: none;">
+					<h3>Step 2: Define A Syntax</h3>
+				</a>
+				<p>A language’s syntax describes how tokens should be arranged into a tree (called a parse tree).
+					A syntax is defined by a Context-Free Gramar and governed by a “non-deterministic pushdown automaton”
+				(Type-2 in the <a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky Hierarchy</a>).</p>
+				<p>With step 1, we had to write everything by hand. (I haven’t gotten around to automating that step yet.)
+					Thankfully, step 2 is all automatic, which is good because defining a syntax by hand is <em>a lot</em> of work.
+					That’s why this project exists! I could probably go on forever about how parsers and this parser generator work.
+				But suffice it to say, the parser generator reads and parses EBNF, using a parser that it itself generates.</p>
+				<p>To get started, create an EBNF file defining the syntax of your language.
+				For example, our s-expression language is defined like this:</p>
+				<pre><code><span class="hljs-comment">//-- file: syntax.ebnf</span>
+
+<span class="hljs-built_in">Unit</span>
+    ::= NUMBER | <span class="hljs-string">&quot;(&quot;</span> OPERATOR <span class="hljs-built_in">Unit</span> <span class="hljs-built_in">Unit</span> <span class="hljs-string">&quot;)&quot;</span>;
+
+Goal
+    ::= #x02 <span class="hljs-built_in">Unit</span>? #x03;</code></pre>
+				<p>Formatting conventions:</p>
+				<ul>
+					<li>Terminal literals (strings) are enclosed in <code>&quot;double-quotes&quot;</code>.</li>
+					<li>Terminal variables (defined separately in our lexical grammar) are in <code>MACRO_CASE</code>.</li>
+					<li>Nonterminal variables are in <code>TitleCase</code>.</li>
+					<li>A <code>Goal</code> symbol must exist, and must start with <code>#x02</code> (<strong>U+0002 START OF TEXT</strong>) and end with <code>#x03</code> (<strong>U+0003 END OF TEXT</strong>).</li>
+					<li>Comments are like <code>// line comments in js</code>.</li>
+					<li>For more details, see the <a href="./docs/spec/notation.md">specification</a>.</li>
+				</ul>
+				<p>Before we can use our parser, it needs to be generated first.
+					This project’s generator takes an EBNF string and outputs another string in TypeScript format,
+				which we’ll write to file.</p>
+				<pre><code class="language-ts"><span class="hljs-comment">//-- file: main.ts</span>
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;fs&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;path&#x27;</span>;
+<span class="hljs-keyword">import</span> {
+    generate,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">beforeRun</span>(<span class="hljs-params"></span>): <span class="hljs-title">void</span> </span>{
+    <span class="hljs-keyword">const</span> grammar: <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">string</span>&gt; = fs.promises.readFile(path.join(__dirname, <span class="hljs-string">&#x27;./syntax.ebnf&#x27;</span>), <span class="hljs-string">&#x27;utf8&#x27;</span>);
+    <span class="hljs-keyword">await</span> fs.promises.writeFile(
+        path.join(__dirname, <span class="hljs-string">&#x27;./Parser.auto.ts&#x27;</span>),
+        generate(<span class="hljs-keyword">await</span> grammar, <span class="hljs-string">&#x27;SExpr&#x27;</span>), <span class="hljs-comment">// custom identifier from our lexer name</span>
+    );
+}</code></pre>
+				<p>After our parser and all its components are written to file, even though it’s auto-generated,
+					it’s a good idea to check it in to version control.
+				This is because you’ll import from it when using it:</p>
+				<pre><code class="language-ts"><span class="hljs-comment">//-- file: main.ts</span>
+<span class="hljs-keyword">import</span> {ParserSExpr} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Parser.auto&#x27;</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>): <span class="hljs-title">void</span> </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">new</span> ParserSExpr(<span class="hljs-string">&#x27;(+ 5 (* 2 3))&#x27;</span>).parse().serialize());
+}</code></pre>
+				<p>We can expect a parse tree like the following:</p>
+				<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Goal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">FILEBOUND</span>&gt;</span><span class="hljs-symbol">&amp;#x02;</span><span class="hljs-tag">&lt;/<span class="hljs-name">FILEBOUND</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Unit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>(<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">OPERATOR</span>&gt;</span>+<span class="hljs-tag">&lt;/<span class="hljs-name">OPERATOR</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Unit</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Unit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Unit</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>(<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">OPERATOR</span>&gt;</span>*<span class="hljs-tag">&lt;/<span class="hljs-name">OPERATOR</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">Unit</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">Unit</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">Unit</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">Unit</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>)<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Unit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>)<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Unit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">FILEBOUND</span>&gt;</span><span class="hljs-symbol">&amp;#x03;</span><span class="hljs-tag">&lt;/<span class="hljs-name">FILEBOUND</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Goal</span>&gt;</span></code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="enums/binop.html" class="tsd-kind-icon">Binop</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/filebound.html" class="tsd-kind-icon">Filebound</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/unop.html" class="tsd-kind-icon">Unop</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnode.html" class="tsd-kind-icon">ASTNode</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodearg.html" class="tsd-kind-icon">ASTNode<wbr>Arg</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodecondition.html" class="tsd-kind-icon">ASTNode<wbr>Condition</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodeconst.html" class="tsd-kind-icon">ASTNode<wbr>Const</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodeebnf.html" class="tsd-kind-icon">ASTNodeEBNF</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodeexpr.html" class="tsd-kind-icon">ASTNode<wbr>Expr</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodegoal.html" class="tsd-kind-icon">ASTNode<wbr>Goal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodeitem.html" class="tsd-kind-icon">ASTNode<wbr>Item</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodenonterminal.html" class="tsd-kind-icon">ASTNode<wbr>Nonterminal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodeop.html" class="tsd-kind-icon">ASTNode<wbr>Op</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodeopbin.html" class="tsd-kind-icon">ASTNode<wbr>OpBin</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodeopun.html" class="tsd-kind-icon">ASTNode<wbr>OpUn</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodeparam.html" class="tsd-kind-icon">ASTNode<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnodeproduction.html" class="tsd-kind-icon">ASTNode<wbr>Production</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/astnoderef.html" class="tsd-kind-icon">ASTNode<wbr>Ref</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/char.html" class="tsd-kind-icon">Char</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/concretenonterminal.html" class="tsd-kind-icon">Concrete<wbr>Nonterminal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/configuration.html" class="tsd-kind-icon">Configuration</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/decorator.html" class="tsd-kind-icon">Decorator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/grammar.html" class="tsd-kind-icon">Grammar</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/lexerror.html" class="tsd-kind-icon">Lex<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/lexerror01.html" class="tsd-kind-icon">Lex<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/lexerror02.html" class="tsd-kind-icon">Lex<wbr>Error02</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/lexer.html" class="tsd-kind-icon">Lexer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/lexerebnf.html" class="tsd-kind-icon">LexerEBNF</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parseerror01.html" class="tsd-kind-icon">Parse<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenode.html" class="tsd-kind-icon">Parse<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodealtern.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Altern</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeargumentset.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Argument<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeargumentset__0__list.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Argument<wbr>Set__0__<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeconcat.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Concat</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeconditionset.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Condition<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeconditionset__0__list.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Condition<wbr>Set__0__<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodedefinition.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodegoal.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Goal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodegoal__0__list.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Goal__0__<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeitem.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Item</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodenonterminalname.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Nonterminal<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeorder.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Order</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeparameterset.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Parameter<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeparameterset__0__list.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Parameter<wbr>Set__0__<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeproduction.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Production</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodereference.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Reference</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeunary.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Unary</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parsenodeunit.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Unit</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parser.html" class="tsd-kind-icon">Parser</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/parserebnf.html" class="tsd-kind-icon">ParserEBNF</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/production.html" class="tsd-kind-icon">Production</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionaltern.html" class="tsd-kind-icon">Production<wbr>Altern</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionargumentset.html" class="tsd-kind-icon">Production<wbr>Argument<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionargumentset__0__list.html" class="tsd-kind-icon">Production<wbr>Argument<wbr>Set__0__<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionconcat.html" class="tsd-kind-icon">Production<wbr>Concat</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionconditionset.html" class="tsd-kind-icon">Production<wbr>Condition<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionconditionset__0__list.html" class="tsd-kind-icon">Production<wbr>Condition<wbr>Set__0__<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productiondefinition.html" class="tsd-kind-icon">Production<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productiongoal.html" class="tsd-kind-icon">Production<wbr>Goal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productiongoal__0__list.html" class="tsd-kind-icon">Production<wbr>Goal__0__<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionitem.html" class="tsd-kind-icon">Production<wbr>Item</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionnonterminalname.html" class="tsd-kind-icon">Production<wbr>Nonterminal<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionorder.html" class="tsd-kind-icon">Production<wbr>Order</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionparameterset.html" class="tsd-kind-icon">Production<wbr>Parameter<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionparameterset__0__list.html" class="tsd-kind-icon">Production<wbr>Parameter<wbr>Set__0__<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionproduction.html" class="tsd-kind-icon">Production<wbr>Production</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionreference.html" class="tsd-kind-icon">Production<wbr>Reference</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionunary.html" class="tsd-kind-icon">Production<wbr>Unary</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/productionunit.html" class="tsd-kind-icon">Production<wbr>Unit</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rule.html" class="tsd-kind-icon">Rule</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/scanner.html" class="tsd-kind-icon">Scanner</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/terminal.html" class="tsd-kind-icon">Terminal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/terminalcharclass.html" class="tsd-kind-icon">Terminal<wbr>Char<wbr>Class</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/terminalcharcode.html" class="tsd-kind-icon">Terminal<wbr>Char<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/terminalidentifier.html" class="tsd-kind-icon">Terminal<wbr>Identifier</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/terminalstring.html" class="tsd-kind-icon">Terminal<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/token.html" class="tsd-kind-icon">Token</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/tokencharclass.html" class="tsd-kind-icon">Token<wbr>Char<wbr>Class</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/tokencharcode.html" class="tsd-kind-icon">Token<wbr>Char<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/tokencomment.html" class="tsd-kind-icon">Token<wbr>Comment</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/tokencommentebnf.html" class="tsd-kind-icon">Token<wbr>CommentEBNF</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/tokenfilebound.html" class="tsd-kind-icon">Token<wbr>Filebound</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/tokenidentifier.html" class="tsd-kind-icon">Token<wbr>Identifier</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/tokenpunctuator.html" class="tsd-kind-icon">Token<wbr>Punctuator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/tokenstring.html" class="tsd-kind-icon">Token<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/tokenwhitespace.html" class="tsd-kind-icon">Token<wbr>Whitespace</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/serializable.html" class="tsd-kind-icon">Serializable</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#ebnfchoice" class="tsd-kind-icon">EBNFChoice</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#ebnfitem" class="tsd-kind-icon">EBNFItem</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#ebnfobject" class="tsd-kind-icon">EBNFObject</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#ebnfsequence" class="tsd-kind-icon">EBNFSequence</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#errorcodeconstructorproperties" class="tsd-kind-icon">Error<wbr>Code<wbr>Constructor<wbr>Properties</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#grammarsymbol" class="tsd-kind-icon">Grammar<wbr>Symbol</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#grammarterminal" class="tsd-kind-icon">Grammar<wbr>Terminal</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#nonemptyarray" class="tsd-kind-icon">Nonempty<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#state" class="tsd-kind-icon">State</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#nonemptyarray_flatmap" class="tsd-kind-icon">Nonempty<wbr>Array_<wbr>flat<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#arrayrandom" class="tsd-kind-icon">array<wbr>Random</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#dedent" class="tsd-kind-icon">dedent</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#generate" class="tsd-kind-icon">generate</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#macrototitle" class="tsd-kind-icon">macro<wbr>ToTitle</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#randombool" class="tsd-kind-icon">random<wbr>Bool</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#randomchar" class="tsd-kind-icon">random<wbr>Char</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#randomint" class="tsd-kind-icon">random<wbr>Int</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#sanitizecontent" class="tsd-kind-icon">sanitize<wbr>Content</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#stringofsymbols" class="tsd-kind-icon">string<wbr>OfSymbols</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#stringifyattributes" class="tsd-kind-icon">stringify<wbr>Attributes</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#titletomacro" class="tsd-kind-icon">title<wbr>ToMacro</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#utf16encoding" class="tsd-kind-icon">utf16<wbr>Encoding</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
