@@ -13,6 +13,11 @@ import * as TOKEN from './Token';
 
 
 
+const PARAM_SEPARATOR: string = '_';
+const SUB_SEPARATOR:   string = '__';
+
+
+
 export enum Unop {
 	PLUS,
 	STAR,
@@ -142,7 +147,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 					/* with arguments */
 					? this.args.map((arg) =>
 						(arg.append === true || arg.append === 'inherit' && nt.hasSuffix(arg))
-							? `_${ arg.source }`
+							? `${ PARAM_SEPARATOR }${ arg.source }`
 							: ''
 					).join('')
 					/* no arguments */
@@ -196,7 +201,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 
 	/** @implements ASTNodeExpr */
 	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
-		const name: string = `${ nt }__${ nt.subCount }__List`;
+		const name: string = `${ nt }${ SUB_SEPARATOR }${ nt.subCount }${ SUB_SEPARATOR }List`;
 		const trans: EBNFChoice = this.operand.transform(nt, data);
 		return new Map<Unop, () => EBNFChoice>([
 			[Unop.PLUS, () => {
@@ -239,7 +244,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 			[Unop.OPT, () => {
 				return [
 					['\'\''],
-					...this.operand.transform(nt, data),
+					...trans,
 				];
 			}],
 		]).get(this.operator)!();
@@ -303,7 +308,7 @@ export class ASTNodeNonterminal extends ASTNodeEBNF {
 
 	/**
 	 * Expands this nonterminal in its abstract form into a set of nonterminals with concrete parameters.
-	 * E.g., expands `N<X, Y>` into `[N, N__X, N__Y, N__X__Y]`.
+	 * E.g., expands `N<X, Y>` into `[N, N_X, N_Y, N_X_Y]`.
 	 * @returns an array of objects representing nonterminals
 	 */
 	expand(): ConcreteNonterminal[] {
@@ -377,7 +382,7 @@ class ConcreteNonterminal {
 
 	/** @override */
 	toString(): string {
-		return `${ this.name }${ this.suffixes.map((s) => `_${ s.source }`).join('') }`;
+		return `${ this.name }${ this.suffixes.map((s) => `${ PARAM_SEPARATOR }${ s.source }`).join('') }`;
 	}
 
 	hasSuffix(p: ASTNodeParam | ASTNodeArg | ASTNodeCondition): boolean {
