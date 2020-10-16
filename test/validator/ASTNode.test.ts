@@ -1,5 +1,8 @@
 import * as assert from 'assert';
 
+import type {
+	EBNFChoice,
+} from '../../src/types.d';
 import type {ParseNode} from '../../src/parser/ParseNode';
 import {ASTNode} from '../../src/validator/ASTNode';
 import {
@@ -42,6 +45,49 @@ describe('ASTNode', () => {
 					</>
 				</>
 			`.replace(/\n\t*/g, ''));
+		});
+	});
+
+	describe('ASTNodeExpr', () => {
+		describe('#transform', () => {
+			describe('ASTNodeRef', () => {
+				function makeProductionDefn(ebnf: string): EBNFChoice {
+					return Decorator.decorate(new ParserEBNF(ebnf).parse()).children[0].transform()[0].defn;
+				}
+				it('returns a terminal for a MACRO_CASE identifier.', () => {
+					assert.deepStrictEqual(
+						makeProductionDefn(`
+							Alpha ::= ALPHA;
+						`),
+						[
+							[{term: 'ALPHA'}],
+						],
+					);
+				});
+				it('returns a production for a TitleCase identifier, no arguments.', () => {
+					assert.deepStrictEqual(
+						makeProductionDefn(`
+							Beta ::= Bravo;
+						`),
+						[
+							[{prod: 'Bravo'}],
+						],
+					);
+				});
+				it('appends arguments for a TitleCase identifier, with single argument.', () => {
+					assert.deepStrictEqual(
+						makeProductionDefn(`
+							Gamma ::=
+								  Charlie0<+Cee>
+								. Charlie1<-Dee>
+							;
+						`),
+						[
+							[{prod: 'Charlie0_Cee'}, {prod: 'Charlie1'}],
+						],
+					);
+				});
+			});
 		});
 	});
 
