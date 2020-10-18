@@ -47,13 +47,81 @@ describe('ASTNode', () => {
 
 	describe('ASTNodeNonterminal', () => {
 		describe('#expand', () => {
-			it('spilts into several names.', () => {
-				assert.deepStrictEqual(
-					Decorator.decorate(new ParserEBNF(`
-						NonTerm<Param> ::= TERM;
-					`).parse()).children[0].children[0].expand().map((cn) => cn.toString()),
-					['NonTerm', 'NonTerm_Param'],
-				);
+			function testExpand(ebnf: string): string[] {
+				return Decorator.decorate(new ParserEBNF(ebnf).parse())
+					.children[0]
+					.children[0]
+					.expand().map((cn) => cn.toString())
+				;
+			}
+			it('if no params, returns the nonterminal name.', () => {
+				assert.deepStrictEqual(testExpand(`
+					NonTerm ::= TERM;
+				`), [
+					'NonTerm',
+				]);
+			});
+			it('with param, spilts into several names.', () => {
+				assert.deepStrictEqual(testExpand(`
+					NonTerm<Param> ::= TERM;
+				`), [
+					'NonTerm',
+					'NonTerm_Param',
+				]);
+			});
+			it('expands combinatorially for multiple params in a set.', () => {
+				assert.deepStrictEqual([
+					testExpand(`
+						NonTerm<Param1, Param2> ::= TERM;
+					`),
+					testExpand(`
+						NonTerm<Param1, Param2, Param3> ::= TERM;
+					`),
+				], [
+					[
+						'NonTerm',
+						'NonTerm_Param2',
+						'NonTerm_Param1',
+						'NonTerm_Param1_Param2',
+					],
+					[
+						'NonTerm',
+						'NonTerm_Param3',
+						'NonTerm_Param2',
+						'NonTerm_Param2_Param3',
+						'NonTerm_Param1',
+						'NonTerm_Param1_Param3',
+						'NonTerm_Param1_Param2',
+						'NonTerm_Param1_Param2_Param3',
+					],
+				]);
+			});
+			it('expands combinatorially for multiple param sets.', () => {
+				assert.deepStrictEqual([
+					testExpand(`
+						NonTerm<Param1><Param2> ::= TERM;
+					`),
+					testExpand(`
+						NonTerm<Param1><Param2><Param3> ::= TERM;
+					`),
+				], [
+					[
+						'NonTerm',
+						'NonTerm_Param2',
+						'NonTerm_Param1',
+						'NonTerm_Param1_Param2',
+					],
+					[
+						'NonTerm',
+						'NonTerm_Param3',
+						'NonTerm_Param2',
+						'NonTerm_Param2_Param3',
+						'NonTerm_Param1',
+						'NonTerm_Param1_Param3',
+						'NonTerm_Param1_Param2',
+						'NonTerm_Param1_Param2_Param3',
+					],
+				]);
 			});
 		});
 	});
