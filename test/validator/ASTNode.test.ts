@@ -87,19 +87,303 @@ describe('ASTNode', () => {
 						],
 					);
 				});
+				it('appends arguments for a TitleCase identifier, with multiple arguments.', () => {
+					assert.deepStrictEqual([
+						makeProductionDefn(`
+							Delta ::= Delta0<+Eee, +Eff>;
+						`),
+						makeProductionDefn(`
+							Delta ::= Delta1<+Eee, -Eff>;
+						`),
+						makeProductionDefn(`
+							Delta ::= Delta2<-Eee, +Eff>;
+						`),
+						makeProductionDefn(`
+							Delta ::= Delta3<-Eee, -Eff>;
+						`),
+					], [
+						[
+							[{prod: 'Delta0_Eff'}],
+							[{prod: 'Delta0_Eee'}],
+							[{prod: 'Delta0_Eee_Eff'}],
+						],
+						[
+							[{prod: 'Delta1'}],
+							[{prod: 'Delta1_Eee'}],
+							[{prod: 'Delta1_Eee'}],
+						],
+						[
+							[{prod: 'Delta2_Eff'}],
+							[{prod: 'Delta2'}],
+							[{prod: 'Delta2_Eff'}],
+						],
+						[
+							[{prod: 'Delta3'}],
+							[{prod: 'Delta3'}],
+							[{prod: 'Delta3'}],
+						],
+					]);
+					assert.deepStrictEqual([
+						makeProductionDefn(`
+							Epsilon ::= Echo0<+Eee, +Eff, +Gee>;
+						`),
+						makeProductionDefn(`
+							Epsilon ::= Echo1<+Eee, +Eff, -Gee>;
+						`),
+						makeProductionDefn(`
+							Epsilon ::= Echo2<+Eee, -Eff, +Gee>;
+						`),
+						makeProductionDefn(`
+							Epsilon ::= Echo3<+Eee, -Eff, -Gee>;
+						`),
+						makeProductionDefn(`
+							Epsilon ::= Echo4<-Eee, +Eff, +Gee>;
+						`),
+						makeProductionDefn(`
+							Epsilon ::= Echo5<-Eee, +Eff, -Gee>;
+						`),
+						makeProductionDefn(`
+							Epsilon ::= Echo6<-Eee, -Eff, +Gee>;
+						`),
+						makeProductionDefn(`
+							Epsilon ::= Echo7<-Eee, -Eff, -Gee>;
+						`),
+					], [
+						[
+							[{prod: 'Echo0_Gee'}],
+							[{prod: 'Echo0_Eff'}],
+							[{prod: 'Echo0_Eff_Gee'}],
+							[{prod: 'Echo0_Eee'}],
+							[{prod: 'Echo0_Eee_Gee'}],
+							[{prod: 'Echo0_Eee_Eff'}],
+							[{prod: 'Echo0_Eee_Eff_Gee'}],
+						],
+						[
+							[{prod: 'Echo1'}],
+							[{prod: 'Echo1_Eff'}],
+							[{prod: 'Echo1_Eff'}],
+							[{prod: 'Echo1_Eee'}],
+							[{prod: 'Echo1_Eee'}],
+							[{prod: 'Echo1_Eee_Eff'}],
+							[{prod: 'Echo1_Eee_Eff'}],
+						],
+						[
+							[{prod: 'Echo2_Gee'}],
+							[{prod: 'Echo2'}],
+							[{prod: 'Echo2_Gee'}],
+							[{prod: 'Echo2_Eee'}],
+							[{prod: 'Echo2_Eee_Gee'}],
+							[{prod: 'Echo2_Eee'}],
+							[{prod: 'Echo2_Eee_Gee'}],
+						],
+						[
+							[{prod: 'Echo3'}],
+							[{prod: 'Echo3'}],
+							[{prod: 'Echo3'}],
+							[{prod: 'Echo3_Eee'}],
+							[{prod: 'Echo3_Eee'}],
+							[{prod: 'Echo3_Eee'}],
+							[{prod: 'Echo3_Eee'}],
+						],
+						[
+							[{prod: 'Echo4_Gee'}],
+							[{prod: 'Echo4_Eff'}],
+							[{prod: 'Echo4_Eff_Gee'}],
+							[{prod: 'Echo4'}],
+							[{prod: 'Echo4_Gee'}],
+							[{prod: 'Echo4_Eff'}],
+							[{prod: 'Echo4_Eff_Gee'}],
+						],
+						[
+							[{prod: 'Echo5'}],
+							[{prod: 'Echo5_Eff'}],
+							[{prod: 'Echo5_Eff'}],
+							[{prod: 'Echo5'}],
+							[{prod: 'Echo5'}],
+							[{prod: 'Echo5_Eff'}],
+							[{prod: 'Echo5_Eff'}],
+						],
+						[
+							[{prod: 'Echo6_Gee'}],
+							[{prod: 'Echo6'}],
+							[{prod: 'Echo6_Gee'}],
+							[{prod: 'Echo6'}],
+							[{prod: 'Echo6_Gee'}],
+							[{prod: 'Echo6'}],
+							[{prod: 'Echo6_Gee'}],
+						],
+						[
+							[{prod: 'Echo7'}],
+							[{prod: 'Echo7'}],
+							[{prod: 'Echo7'}],
+							[{prod: 'Echo7'}],
+							[{prod: 'Echo7'}],
+							[{prod: 'Echo7'}],
+							[{prod: 'Echo7'}],
+						],
+					]);
+				});
+				it('appends arguments for a TitleCase identifier, with multiple argument sets.', () => {
+					assert.deepStrictEqual([
+						makeProductionDefn(`
+							Zeta ::= Foxtrot0<+Ach><+Eye>;
+						`),
+						makeProductionDefn(`
+							Zeta ::= Foxtrot1<+Ach><-Eye>;
+						`),
+						makeProductionDefn(`
+							Zeta ::= Foxtrot2<-Ach><+Eye>;
+						`),
+						makeProductionDefn(`
+							Zeta ::= Foxtrot3<-Ach><-Eye>;
+						`),
+					], [
+						[
+							[{prod: 'Foxtrot0_Ach_Eye'}],
+						],
+						[
+							[{prod: 'Foxtrot1_Ach'}],
+						],
+						[
+							[{prod: 'Foxtrot2_Eye'}],
+						],
+						[
+							[{prod: 'Foxtrot3'}],
+						],
+					]);
+					assert.deepStrictEqual([
+						makeProductionDefn(`
+							Eta ::= Golf0<+Jay><+Kay><+Ell>;
+						`),
+						makeProductionDefn(`
+							Eta ::= Golf1<+Jay><+Kay><-Ell>;
+						`),
+						makeProductionDefn(`
+							Eta ::= Golf2<+Jay><-Kay><+Ell>;
+						`),
+						makeProductionDefn(`
+							Eta ::= Golf3<+Jay><-Kay><-Ell>;
+						`),
+						makeProductionDefn(`
+							Eta ::= Golf4<-Jay><+Kay><+Ell>;
+						`),
+						makeProductionDefn(`
+							Eta ::= Golf5<-Jay><+Kay><-Ell>;
+						`),
+						makeProductionDefn(`
+							Eta ::= Golf6<-Jay><-Kay><+Ell>;
+						`),
+						makeProductionDefn(`
+							Eta ::= Golf7<-Jay><-Kay><-Ell>;
+						`),
+					], [
+						[
+							[{prod: 'Golf0_Jay_Kay_Ell'}],
+						],
+						[
+							[{prod: 'Golf1_Jay_Kay'}],
+						],
+						[
+							[{prod: 'Golf2_Jay_Ell'}],
+						],
+						[
+							[{prod: 'Golf3_Jay'}],
+						],
+						[
+							[{prod: 'Golf4_Kay_Ell'}],
+						],
+						[
+							[{prod: 'Golf5_Kay'}],
+						],
+						[
+							[{prod: 'Golf6_Ell'}],
+						],
+						[
+							[{prod: 'Golf7'}],
+						],
+					]);
+				});
 			});
 		});
 	});
 
 	describe('ASTNodeNonterminal', () => {
 		describe('#expand', () => {
-			it('spilts into several names.', () => {
-				assert.deepStrictEqual(
-					Decorator.decorate(new ParserEBNF(`
-						NonTerm<Param> ::= TERM;
-					`).parse()).children[0].children[0].expand().map((cn) => cn.toString()),
-					['NonTerm', 'NonTerm_Param'],
-				);
+			function testExpand(ebnf: string): string[] {
+				return Decorator.decorate(new ParserEBNF(ebnf).parse())
+					.children[0]
+					.children[0]
+					.expand().map((cn) => cn.toString())
+				;
+			}
+			it('if no params, returns the nonterminal name.', () => {
+				assert.deepStrictEqual(testExpand(`
+					NonTerm ::= TERM;
+				`), [
+					'NonTerm',
+				]);
+			});
+			it('with param, spilts into several names.', () => {
+				assert.deepStrictEqual(testExpand(`
+					NonTerm<Param> ::= TERM;
+				`), [
+					'NonTerm',
+					'NonTerm_Param',
+				]);
+			});
+			it('expands combinatorially for multiple params in a set.', () => {
+				assert.deepStrictEqual([
+					testExpand(`
+						NonTerm<Param1, Param2> ::= TERM;
+					`),
+					testExpand(`
+						NonTerm<Param1, Param2, Param3> ::= TERM;
+					`),
+				], [
+					[
+						'NonTerm',
+						'NonTerm_Param2',
+						'NonTerm_Param1',
+						'NonTerm_Param1_Param2',
+					],
+					[
+						'NonTerm',
+						'NonTerm_Param3',
+						'NonTerm_Param2',
+						'NonTerm_Param2_Param3',
+						'NonTerm_Param1',
+						'NonTerm_Param1_Param3',
+						'NonTerm_Param1_Param2',
+						'NonTerm_Param1_Param2_Param3',
+					],
+				]);
+			});
+			it('expands combinatorially for multiple param sets.', () => {
+				assert.deepStrictEqual([
+					testExpand(`
+						NonTerm<Param1><Param2> ::= TERM;
+					`),
+					testExpand(`
+						NonTerm<Param1><Param2><Param3> ::= TERM;
+					`),
+				], [
+					[
+						'NonTerm',
+						'NonTerm_Param2',
+						'NonTerm_Param1',
+						'NonTerm_Param1_Param2',
+					],
+					[
+						'NonTerm',
+						'NonTerm_Param3',
+						'NonTerm_Param2',
+						'NonTerm_Param2_Param3',
+						'NonTerm_Param1',
+						'NonTerm_Param1_Param3',
+						'NonTerm_Param1_Param2',
+						'NonTerm_Param1_Param2_Param3',
+					],
+				]);
 			});
 		});
 	});
