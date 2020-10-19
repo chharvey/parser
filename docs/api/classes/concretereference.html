@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>TerminalIdentifier | @chharvey/parser</title>
+	<title>ConcreteReference | @chharvey/parser</title>
 	<meta name="description" content="Documentation for @chharvey/parser">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="terminalidentifier.html">TerminalIdentifier</a>
+					<a href="concretereference.html">ConcreteReference</a>
 				</li>
 			</ul>
-			<h1>Class TerminalIdentifier</h1>
+			<h1>Class ConcreteReference</h1>
 		</div>
 	</div>
 </header>
@@ -68,12 +68,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="terminal.html" class="tsd-signature-type">Terminal</a>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">TerminalIdentifier</span>
-							</li>
-						</ul>
+						<span class="target">ConcreteReference</span>
 					</li>
 				</ul>
 			</section>
@@ -81,117 +76,116 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-inherited tsd-is-private-protected">
+						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="terminalidentifier.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="concretereference.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="terminalidentifier.html#instance" class="tsd-kind-icon">instance</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-inherited">
-							<h3>Accessors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="terminalidentifier.html#displayname" class="tsd-kind-icon">display<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="concretereference.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="concretereference.html#nonterminal" class="tsd-kind-icon">nonterminal</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="concretereference.html#suffixes" class="tsd-kind-icon">suffixes</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="terminalidentifier.html#match" class="tsd-kind-icon">match</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="concretereference.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-private-protected">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
 					<a name="constructor" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Terminal<wbr>Identifier<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="terminalidentifier.html" class="tsd-signature-type">TerminalIdentifier</a></li>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Concrete<wbr>Reference<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, suffixes<span class="tsd-signature-symbol">: </span><a href="astnodearg.html" class="tsd-signature-type">ASTNodeArg</a><span class="tsd-signature-symbol">[]</span>, nonterminal<span class="tsd-signature-symbol">: </span><a href="concretenonterminal.html" class="tsd-signature-type">ConcreteNonterminal</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="concretereference.html" class="tsd-signature-type">ConcreteReference</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="terminal.html">Terminal</a>.<a href="terminal.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/f57c126/src/grammar/Terminal.ts#L10">src/grammar/Terminal.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/f57c126/src/ebnf/ASTNode.ts#L389">src/ebnf/ASTNode.ts:389</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="terminalidentifier.html" class="tsd-signature-type">TerminalIdentifier</a></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>suffixes: <a href="astnodearg.html" class="tsd-signature-type">ASTNodeArg</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>nonterminal: <a href="concretenonterminal.html" class="tsd-signature-type">ConcreteNonterminal</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="concretereference.html" class="tsd-signature-type">ConcreteReference</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
-					<a name="instance" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> instance</h3>
-					<div class="tsd-signature tsd-kind-icon">instance<span class="tsd-signature-symbol">:</span> <a href="terminalidentifier.html" class="tsd-signature-type">TerminalIdentifier</a><span class="tsd-signature-symbol"> = new TerminalIdentifier()</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="name" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/f57c126/src/ebnf/Terminal.ts#L12">src/ebnf/Terminal.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/f57c126/src/ebnf/ASTNode.ts#L391">src/ebnf/ASTNode.ts:391</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="nonterminal" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> nonterminal</h3>
+					<div class="tsd-signature tsd-kind-icon">nonterminal<span class="tsd-signature-symbol">:</span> <a href="concretenonterminal.html" class="tsd-signature-type">ConcreteNonterminal</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/f57c126/src/ebnf/ASTNode.ts#L393">src/ebnf/ASTNode.ts:393</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="suffixes" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> suffixes</h3>
+					<div class="tsd-signature tsd-kind-icon">suffixes<span class="tsd-signature-symbol">:</span> <a href="astnodearg.html" class="tsd-signature-type">ASTNodeArg</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/f57c126/src/ebnf/ASTNode.ts#L392">src/ebnf/ASTNode.ts:392</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
-				<h2>Accessors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-					<a name="displayname" class="tsd-anchor"></a>
-					<h3>display<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> displayName<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tostring" class="tsd-anchor"></a>
+					<h3>to<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="terminal.html">Terminal</a>.<a href="terminal.html#displayname">displayName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/f57c126/src/grammar/Terminal.ts#L14">src/grammar/Terminal.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/f57c126/src/ebnf/ASTNode.ts#L398">src/ebnf/ASTNode.ts:398</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<dl class="tsd-comment-tags">
-									<dt>final</dt>
+									<dt>override</dt>
 									<dd></dd>
 								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-					<a name="match" class="tsd-anchor"></a>
-					<h3>match</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">match<span class="tsd-signature-symbol">(</span>candidate<span class="tsd-signature-symbol">: </span><a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides <a href="terminal.html">Terminal</a>.<a href="terminal.html#match">match</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/f57c126/src/ebnf/Terminal.ts#L13">src/ebnf/Terminal.ts:13</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>candidate: <a href="token.html" class="tsd-signature-type">Token</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -210,19 +204,22 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="terminalidentifier.html" class="tsd-kind-icon">Terminal<wbr>Identifier</a>
+						<a href="concretereference.html" class="tsd-kind-icon">Concrete<wbr>Reference</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="terminalidentifier.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="concretereference.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
-								<a href="terminalidentifier.html#instance" class="tsd-kind-icon">instance</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="concretereference.html#name" class="tsd-kind-icon">name</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="terminalidentifier.html#displayname" class="tsd-kind-icon">display<wbr>Name</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="concretereference.html#nonterminal" class="tsd-kind-icon">nonterminal</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="terminalidentifier.html#match" class="tsd-kind-icon">match</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="concretereference.html#suffixes" class="tsd-kind-icon">suffixes</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="concretereference.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
 							</li>
 						</ul>
 					</li>

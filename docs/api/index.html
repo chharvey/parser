@@ -76,23 +76,30 @@
 					In formal language theory, a lexicon is defined by a Regular Grammar and governed by a “finite state automaton”
 				(Type-3 in the <a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky Hierarchy</a>).</p>
 				<p>In this walkthrough we’ll define a simple s-expression language using only positive integers and
-					the operators <code>^</code>, <code>*</code>, and <code>+</code>.
-					For example, to write “the sum of 500 and the product of 2 and 30”, you would write <code>(+ 500 (* 2 30))</code>.
-					(Conventionally, this would be written <code>500 + 2 * 30</code>.)
+					the binary operators <code>^</code>, <code>*</code>, and <code>+</code>.
+				For example, to write “the sum of 500 and the product of 2 and 30”, you would write</p>
+				<pre><code>(<span class="hljs-name"><span class="hljs-builtin-name">+</span></span> <span class="hljs-number">500</span> (<span class="hljs-name"><span class="hljs-builtin-name">*</span></span> <span class="hljs-number">2</span> <span class="hljs-number">30</span>))</code></pre>
+				<p>(Conventionally, this would be written as <code>500 + 2 * 30</code>.)
 					Being such a simple language, there are only three types of tokens: numbers, operators, and grouping symbols.
 				The lexicon of this language is described by the following EBNF:</p>
-				<pre><code><span class="hljs-title">NUMBER   ::</span>:= [<span class="hljs-number">0</span>-<span class="hljs-number">9</span>]+<span class="hljs-comment">;</span>
-<span class="hljs-title">OPERATOR ::</span>:= <span class="hljs-string">&quot;^&quot;</span> | <span class="hljs-string">&quot;*&quot;</span> | <span class="hljs-string">&quot;+&quot;</span><span class="hljs-comment">;</span>
-<span class="hljs-title">GROUPING ::</span>:= <span class="hljs-string">&quot;(&quot;</span> | <span class="hljs-string">&quot;)&quot;</span><span class="hljs-comment">;</span></code></pre>
+				<pre><code>NUMBER
+<span class="hljs-title">    ::</span>:= [<span class="hljs-number">0</span>-<span class="hljs-number">9</span>]+<span class="hljs-comment">;</span>
+
+OPERATOR
+<span class="hljs-title">    ::</span>:= <span class="hljs-string">&quot;^&quot;</span> | <span class="hljs-string">&quot;*&quot;</span> | <span class="hljs-string">&quot;+&quot;</span><span class="hljs-comment">;</span>
+
+GROUPING
+<span class="hljs-title">    ::</span>:= <span class="hljs-string">&quot;(&quot;</span> | <span class="hljs-string">&quot;)&quot;</span><span class="hljs-comment">;</span></code></pre>
 				<p>In practice, you’d implement a lexicon by writing a combination of loops and conditional statements.
 					This is called a lexer, and the process is called Lexical Analysis.
 				<em>(Pseudo-code below — do not take seriously!)</em></p>
 				<pre><code class="language-ts"><span class="hljs-keyword">const</span> input: <span class="hljs-built_in">string</span> = <span class="hljs-string">&#x27;(+ 500 (* 2 30))&#x27;</span>;
 <span class="hljs-keyword">let</span> i: <span class="hljs-built_in">number</span> = <span class="hljs-number">0</span>;
 <span class="hljs-keyword">let</span> current_character: <span class="hljs-built_in">string</span> = input[i];
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">advance</span>(<span class="hljs-params">t: <span class="hljs-built_in">string</span></span>): <span class="hljs-title">void</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">advance</span>(<span class="hljs-params">t: <span class="hljs-built_in">string</span></span>): <span class="hljs-title">string</span> </span>{
     t += current_character;
     current_character = input[++i];
+    <span class="hljs-keyword">return</span> t;
 }
 
 <span class="hljs-keyword">const</span> tokens: <span class="hljs-built_in">string</span>[] = [];
@@ -101,34 +108,50 @@
 
     <span class="hljs-comment">/* WHITESPACE */</span>
     <span class="hljs-keyword">while</span> (<span class="hljs-regexp">/\s/</span>.test(current_character)) {
-        advance(token);
-    }
+        token = advance(token);
+    };
+    <span class="hljs-keyword">if</span> (token !== <span class="hljs-string">&#x27;&#x27;</span>) {
+        tokens.push(token);
+        <span class="hljs-keyword">continue</span>;
+    };
 
     <span class="hljs-comment">/* NUMBER :::= [0-9]+; */</span>
     <span class="hljs-keyword">while</span> (<span class="hljs-regexp">/[0-9]/</span>.test(current_character)) {
-        advance(token);
+        token = advance(token);
+    };
+    <span class="hljs-keyword">if</span> (token !== <span class="hljs-string">&#x27;&#x27;</span>) {
+        tokens.push(token);
+        <span class="hljs-keyword">continue</span>;
     };
 
     <span class="hljs-comment">/* OPERATOR :::= &quot;^&quot; | &quot;*&quot; | &quot;+&quot;; */</span>
     <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\^|\*|\+/</span>.test(current_character)) {
-        advance(token);
+        token = advance(token);
+    };
+    <span class="hljs-keyword">if</span> (token !== <span class="hljs-string">&#x27;&#x27;</span>) {
+        tokens.push(token);
+        <span class="hljs-keyword">continue</span>;
     };
 
     <span class="hljs-comment">/* GROUPING :::= &quot;(&quot; | &quot;)&quot;; */</span>
     <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\(|\)/</span>.test(current_character)) {
-        advance(token);
+        token = advance(token);
+    };
+    <span class="hljs-keyword">if</span> (token !== <span class="hljs-string">&#x27;&#x27;</span>) {
+        tokens.push(token);
+        <span class="hljs-keyword">continue</span>;
     };
 
-    tokens.push(token);
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`Unrecognized character: \`<span class="hljs-subst">${ current_character }</span>\``</span>);
 };</code></pre>
 				<p>Once done, and after filtering out whitespace, the lexer would return the following sequence of tokens:</p>
 				<pre><code class="language-ts">[<span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;+&#x27;</span>, <span class="hljs-string">&#x27;500&#x27;</span>, <span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;*&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;30&#x27;</span>, <span class="hljs-string">&#x27;)&#x27;</span>, <span class="hljs-string">&#x27;)&#x27;</span>]</code></pre>
 				<p>(Note that a lexer only creates tokens, it does not care how they are arranged.
 					Thus the following code would lex sucessfully even if not syntactically well-formed:
 				<code>500) + *(2 30 ()</code>.)</p>
-				<p>Hopefully the pseudo-code above gave you a good idea of lexical analysis,
-					but unfortunatly it’s not that simple.
-				To define a usable lexer, extend this project’s <code>Lexer</code> class, and write your own token classes using <code>Token</code>.</p>
+				<p>The pseudo-code above outlines the basic concept of lexical analysis,
+					but to define a usable lexer with this project, you’ll need to extend
+				its <code>Token</code> and <code>Lexer</code> classes.</p>
 				<a href="#step-1a-define-token-types" id="step-1a-define-token-types" style="color: inherit; text-decoration: none;">
 					<h4>Step 1a: Define Token Types</h4>
 				</a>
@@ -142,7 +165,7 @@
 } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
 
 <span class="hljs-comment">/** NUMBER :::= [0-9]+; */</span>
-<span class="hljs-keyword">class</span> TokenNumber <span class="hljs-keyword">extends</span> Token {
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TokenNumber <span class="hljs-keyword">extends</span> Token {
     <span class="hljs-keyword">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
         <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;NUMBER&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
         <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">this</span>.lexer.isDone &amp;&amp; <span class="hljs-regexp">/[0-9]/</span>.test(<span class="hljs-built_in">this</span>.lexer.c0.source)) {
@@ -151,19 +174,21 @@
     }
 }
 <span class="hljs-comment">/** OPERATOR :::= &quot;^&quot; | &quot;*&quot; | &quot;+&quot;; */</span>
-<span class="hljs-keyword">class</span> TokenOperator <span class="hljs-keyword">extends</span> Token {
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TokenOperator <span class="hljs-keyword">extends</span> Token {
     <span class="hljs-keyword">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
         <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;OPERATOR&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
         <span class="hljs-comment">// since only 1 character, no need to advance</span>
     }
 }
 <span class="hljs-comment">/** GROUPING :::= &quot;(&quot; | &quot;)&quot;; */</span>
-<span class="hljs-keyword">class</span> TokenGrouping <span class="hljs-keyword">extends</span> Token {
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TokenGrouping <span class="hljs-keyword">extends</span> Token {
     <span class="hljs-keyword">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
         <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;GROUPING&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
         <span class="hljs-comment">// since only 1 character, no need to advance</span>
     }
 }</code></pre>
+				<p>Whitespace tokens are already taken care of, so we don’t need to write it ourselves.
+				(Thus this project <em>should not</em> be used for whitespace-sensitive languages.)</p>
 				<a href="#step-1b-define-the-lexer" id="step-1b-define-the-lexer" style="color: inherit; text-decoration: none;">
 					<h4>Step 1b: Define The Lexer</h4>
 				</a>
@@ -178,7 +203,7 @@
 } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> TOKEN <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Token&#x27;</span>;
 
-<span class="hljs-keyword">class</span> LexerSExpr <span class="hljs-keyword">extends</span> Lexer {
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> LexerSExpr <span class="hljs-keyword">extends</span> Lexer {
     <span class="hljs-keyword">protected</span> generate_do(): Token | <span class="hljs-literal">null</span> {
         <span class="hljs-keyword">return</span> (
             (<span class="hljs-regexp">/[0-9]/</span>.test(<span class="hljs-built_in">this</span>.c0.source))       ? TOKEN.TokenNumber  (<span class="hljs-built_in">this</span>) :
@@ -191,7 +216,8 @@
 				<p>If we want to check if our lexer is working property, we can call its <code>generate()</code> method,
 				which returns a generator of tokens.</p>
 				<pre><code class="language-ts"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testLexer</span>(<span class="hljs-params"></span>): <span class="hljs-title">void</span> </span>{
-    <span class="hljs-built_in">console</span>.log([...new LexerSExpr(<span class="hljs-string">&#x27;(+ 500 (* 2 30))&#x27;</span>).generate()].map(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> token.serialize()));
+    <span class="hljs-keyword">const</span> tokens: Token[] = [...new LexerSExpr(<span class="hljs-string">&#x27;(+ 500 (* 2 30))&#x27;</span>).generate()];
+    <span class="hljs-built_in">console</span>.log(tokens.map(<span class="hljs-function">(<span class="hljs-params">t</span>) =&gt;</span> t.serialize()));
 }</code></pre>
 				<p>We can expect this sequence of tokens:</p>
 				<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FILEBOUND</span>&gt;</span><span class="hljs-symbol">&amp;#x02;</span><span class="hljs-tag">&lt;/<span class="hljs-name">FILEBOUND</span>&gt;</span>
@@ -212,9 +238,12 @@
 					A syntax is defined by a Context-Free Gramar and governed by a “non-deterministic pushdown automaton”
 				(Type-2 in the <a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky Hierarchy</a>).</p>
 				<p>With step 1, we had to write everything by hand. (I haven’t gotten around to automating that step yet.)
-					Thankfully, step 2 is all automatic, which is good because defining a syntax by hand is <em>a lot</em> of work.
+					Thankfully, most of step 2 is all automatic, which is good because defining a syntax by hand is <em>a lot</em> of work.
 					That’s why this project exists! I could probably go on forever about how parsers and this parser generator work.
 				But suffice it to say, the parser generator reads and parses EBNF, using a parser that it itself generates.</p>
+				<a href="#step-2a-write-the-syntax-grammar" id="step-2a-write-the-syntax-grammar" style="color: inherit; text-decoration: none;">
+					<h4>Step 2a: Write The Syntax Grammar</h4>
+				</a>
 				<p>To get started, create an EBNF file defining the syntax of your language.
 				For example, our s-expression language is defined like this:</p>
 				<pre><code><span class="hljs-comment">//-- file: syntax.ebnf</span>
@@ -224,7 +253,7 @@
 
 Goal
     ::= #x02 <span class="hljs-built_in">Unit</span>? #x03;</code></pre>
-				<p>Formatting conventions:</p>
+				<p>EBNF Formatting conventions:</p>
 				<ul>
 					<li>Terminal literals (strings) are enclosed in <code>&quot;double-quotes&quot;</code>.</li>
 					<li>Terminal variables (defined separately in our lexical grammar) are in <code>MACRO_CASE</code>.</li>
@@ -233,6 +262,48 @@ Goal
 					<li>Comments are like <code>// line comments in js</code>.</li>
 					<li>For more details, see the <a href="./docs/spec/notation.md">specification</a>.</li>
 				</ul>
+				<p>Notice that the terminal variables in our syntax correspond roughly to the token types in our lexicon.
+					There doesn’t need to be a one-to-one relationship. For example, you might have a single
+					lexical token type, <code>NUMBER</code>, responsible for both integers and floats,
+				but maybe you want to split them up in your syntax into two terminal types <code>INTEGER</code> and <code>FLOAT</code>.</p>
+				<a href="#step-2b-define-terminal-types" id="step-2b-define-terminal-types" style="color: inherit; text-decoration: none;">
+					<h4>Step 2b: Define Terminal Types</h4>
+				</a>
+				<p>We’ll need to define our terminal types by hand by extending <code>Terminal</code>.
+				The good news is that there’s only one method to override.</p>
+				<pre><code class="language-ts"><span class="hljs-comment">//-- file: Terminal.ts</span>
+<span class="hljs-keyword">import</span> {
+    Terminal,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> TOKEN <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Token&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TerminalNumber <span class="hljs-keyword">extends</span> Terminal {
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> instance: TerminalNumber = <span class="hljs-keyword">new</span> TerminalNumber();
+    match(candidate: Token): <span class="hljs-built_in">boolean</span> {
+        <span class="hljs-keyword">return</span> candidate <span class="hljs-keyword">instanceof</span> TOKEN.TokenNumber;
+    }
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TerminalOperator <span class="hljs-keyword">extends</span> Terminal {
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> instance: TerminalOperator = <span class="hljs-keyword">new</span> TerminalOperator();
+    match(candidate: Token): <span class="hljs-built_in">boolean</span> {
+        <span class="hljs-keyword">return</span> candidate <span class="hljs-keyword">instanceof</span> TOKEN.TokenOperator;
+    }
+}</code></pre>
+				<p>Don’t worry about the static <code>instance</code> field; this is required for logistical reasons
+					but I’m working on a way to get rid of it.
+					The important thing is to define the <code>match()</code> method, which decides whether a given lexical token
+				satisfies the syntactic terminal type. This method is used by the parser.</p>
+				<p>Another thing: the name of your terminal subclasses must be <code>Terminal‹id›</code>,
+					where <code>‹id›</code> is the TitleCase name of the terminal variable in your EBNF.
+					For example, if your grammar has a terminal called <code>STRING</code>, then your subclass must be named <code>TerminalString</code>.
+					With underscores: A terminal <code>ABC_DEF</code> corresponds to the classname <code>TerminalAbcDef</code>.
+				The reason naming is important here is that the parser reads these classes programmatically.</p>
+				<p>As stated above, there need not be an exact one-to-one correspondance between token types and terminals —
+					notice that we don’t need to define a terminal type for grouping symbols,
+				since they’re just literals in the syntax grammar.</p>
+				<a href="#step-2c-generate-and-use-the-parser" id="step-2c-generate-and-use-the-parser" style="color: inherit; text-decoration: none;">
+					<h4>Step 2c: Generate and Use The Parser</h4>
+				</a>
 				<p>Before we can use our parser, it needs to be generated first.
 					This project’s generator takes an EBNF string and outputs another string in TypeScript format,
 				which we’ll write to file.</p>
@@ -250,6 +321,7 @@ Goal
         generate(<span class="hljs-keyword">await</span> grammar, <span class="hljs-string">&#x27;SExpr&#x27;</span>), <span class="hljs-comment">// custom identifier from our lexer name</span>
     );
 }</code></pre>
+				<p>For an example of this output, see <a href="./test/sample/Parser.auto.ts">this project’s sample parser</a>.</p>
 				<p>After our parser and all its components are written to file, even though it’s auto-generated,
 					it’s a good idea to check it in to version control.
 				This is because you’ll import from it when using it:</p>
@@ -257,7 +329,8 @@ Goal
 <span class="hljs-keyword">import</span> {ParserSExpr} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Parser.auto&#x27;</span>;
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>): <span class="hljs-title">void</span> </span>{
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">new</span> ParserSExpr(<span class="hljs-string">&#x27;(+ 5 (* 2 3))&#x27;</span>).parse().serialize());
+    <span class="hljs-keyword">const</span> tree = <span class="hljs-keyword">new</span> ParserSExpr(<span class="hljs-string">&#x27;(+ 5 (* 2 3))&#x27;</span>).parse();
+    <span class="hljs-built_in">console</span>.log(tree.serialize());
 }</code></pre>
 				<p>We can expect a parse tree like the following:</p>
 				<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Goal</span>&gt;</span>
@@ -354,6 +427,9 @@ Goal
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/concretenonterminal.html" class="tsd-kind-icon">Concrete<wbr>Nonterminal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/concretereference.html" class="tsd-kind-icon">Concrete<wbr>Reference</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/configuration.html" class="tsd-kind-icon">Configuration</a>
@@ -588,6 +664,12 @@ Goal
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#state" class="tsd-kind-icon">State</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#param_separator" class="tsd-kind-icon">PARAM_<wbr>SEPARATOR</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#sub_separator" class="tsd-kind-icon">SUB_<wbr>SEPARATOR</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#nonemptyarray_flatmap" class="tsd-kind-icon">Nonempty<wbr>Array_<wbr>flat<wbr>Map</a>

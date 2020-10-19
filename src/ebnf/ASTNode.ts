@@ -13,6 +13,11 @@ import * as TOKEN from './Token';
 
 
 
+const PARAM_SEPARATOR: string = '_';
+const SUB_SEPARATOR:   string = '__';
+
+
+
 export enum Unop {
 	PLUS,
 	STAR,
@@ -115,7 +120,6 @@ export class ASTNodeConst extends ASTNodeExpr {
 
 export class ASTNodeRef extends ASTNodeExpr {
 	declare readonly children: readonly ASTNodeArg[];
-	private readonly name: string;
 	constructor (parse_node: ParseNode, ref: TOKEN.TokenIdentifier);
 	constructor (parse_node: ParseNode, ref: ASTNodeRef, args: readonly ASTNodeArg[]);
 	constructor (
@@ -128,27 +132,44 @@ export class ASTNodeRef extends ASTNodeExpr {
 			{name: (ref instanceof ASTNodeRef) ? ref.name : ref.source},
 			(ref instanceof ASTNodeRef) ? [ref, ...args] : [],
 		);
-		this.name = (ref instanceof ASTNodeRef) ? ref.name : ref.source;
 	}
+	private readonly name: string = (this.ref instanceof ASTNodeRef) ? this.ref.name : this.ref.source;
 
 	/** @implements ASTNodeExpr */
 	transform(nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
 		return (this.name === this.name.toUpperCase())
 			/* ALLCAPS: terminal identifier */
-			? [[{term: this.name}]]
+			? [
+				[{term: this.name}],
+			]
 			/* TitleCase: production identifier */
-			: [[{
-				prod: `${ this.name }${ (this.ref instanceof ASTNodeRef)
-					/* with arguments */
-					? this.args.map((arg) =>
-						(arg.append === true || arg.append === 'inherit' && nt.hasSuffix(arg))
-							? `_${ arg.source }`
-							: ''
-					).join('')
-					/* no arguments */
-					: ''
-				}`
-			}]]
+			: utils.NonemptyArray_flatMap(this.expand(nt) as readonly ConcreteReference[] as NonemptyArray<ConcreteReference>, (cr) => [
+				[{prod: cr.toString()}]
+			])
+		;
+	}
+
+	/**
+	 * Expands this reference in its abstract form into a set of references with concrete arguments.
+	 * E.g., expands `R<+X, +Y>` into `[R_X, R_Y, R_X_Y]`.
+	 * @param   nt a specific nonterminal symbol that contains this expression
+	 * @returns    an array of objects representing references
+	 */
+	expand(nt: ConcreteNonterminal): ConcreteReference[] {
+		return (this.args.length)
+			? (this.ref as ASTNodeRef).expand(nt).flatMap((cr) =>
+				[...new Array(2 ** this.args.length)].map((_, count) =>
+					new ConcreteReference(cr.name, [
+						...cr.suffixes,
+						...[...count.toString(2).padStart(this.args.length, '0')]
+							.map((d, i) => [this.args[i], !!+d] as const)
+							.filter(([_arg, b]) => !!b)
+							.map(([arg, _b]) => arg)
+						,
+					], nt)
+				).slice(1) // slice off the \b00 case because `R<+X, +Y>` should never give `R`.
+			)
+			: [new ConcreteReference(this.name, [], nt)]
 		;
 	}
 }
@@ -196,7 +217,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 
 	/** @implements ASTNodeExpr */
 	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
-		const name: string = `${ nt }__${ nt.subCount }__List`;
+		const name: string = `${ nt }${ SUB_SEPARATOR }${ nt.subCount }${ SUB_SEPARATOR }List`;
 		const trans: EBNFChoice = this.operand.transform(nt, data);
 		return new Map<Unop, () => EBNFChoice>([
 			[Unop.PLUS, () => {
@@ -239,7 +260,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 			[Unop.OPT, () => {
 				return [
 					['\'\''],
-					...this.operand.transform(nt, data),
+					...trans,
 				];
 			}],
 		]).get(this.operator)!();
@@ -285,34 +306,42 @@ export class ASTNodeOpBin extends ASTNodeOp {
 
 export class ASTNodeNonterminal extends ASTNodeEBNF {
 	declare readonly children: readonly ASTNodeParam[];
-	private readonly name: string;
 	constructor (parse_node: ParseNode, nonterm: TOKEN.TokenIdentifier);
 	constructor (parse_node: ParseNode, nonterm: ASTNodeNonterminal, params: readonly ASTNodeParam[]);
 	constructor (
 		parse_node: ParseNode,
-		nonterm: TOKEN.TokenIdentifier | ASTNodeNonterminal,
-		private readonly params: readonly ASTNodeParam[] = [],
+		private readonly nonterm: TOKEN.TokenIdentifier | ASTNodeNonterminal,
+		private readonly params:  readonly ASTNodeParam[] = [],
 	) {
 		super(
 			parse_node,
 			{name: (nonterm instanceof ASTNodeNonterminal) ? nonterm.name : nonterm.source},
 			(nonterm instanceof ASTNodeNonterminal) ? [nonterm, ...params] : [],
 		);
-		this.name = (nonterm instanceof ASTNodeNonterminal) ? nonterm.name : nonterm.source;
 	}
+	private readonly name: string = (this.nonterm instanceof ASTNodeNonterminal) ? this.nonterm.name : this.nonterm.source;
 
 	/**
 	 * Expands this nonterminal in its abstract form into a set of nonterminals with concrete parameters.
-	 * E.g., expands `N<X, Y>` into `[N, N__X, N__Y, N__X__Y]`.
+	 * E.g., expands `N<X, Y>` into `[N, N_X, N_Y, N_X_Y]`.
 	 * @returns an array of objects representing nonterminals
 	 */
 	expand(): ConcreteNonterminal[] {
-		return [...new Array(2 ** this.params.length)].map((_, count) => new ConcreteNonterminal(
-			this.source,
-			[...count.toString(2).padStart(this.params.length, '0')].map((d, i) =>
-				[this.params[i], !!+d] as const
-			).filter(([_param, b]) => !!b).map(([param, _b]) => param),
-		));
+		return (this.params.length)
+			? (this.nonterm as ASTNodeNonterminal).expand().flatMap((cn) =>
+				[...new Array(2 ** this.params.length)].map((_, count) =>
+					new ConcreteNonterminal(cn.name, [
+						...cn.suffixes,
+						...[...count.toString(2).padStart(this.params.length, '0')]
+							.map((d, i) => [this.params[i], !!+d] as const)
+							.filter(([_param, b]) => !!b)
+							.map(([param, _b]) => param)
+						,
+					])
+				)
+			)
+			: [new ConcreteNonterminal(this.name, [])]
+		;
 	}
 }
 
@@ -357,13 +386,32 @@ export class ASTNodeGoal extends ASTNodeEBNF {
 
 
 
+class ConcreteReference {
+	constructor (
+		readonly name: string,
+		readonly suffixes: ASTNodeArg[],
+		readonly nonterminal: ConcreteNonterminal,
+	) {
+	}
+
+	/** @override */
+	toString(): string {
+		return `${ this.name }${ this.suffixes.map((s) => s.append === true || s.append === 'inherit' && this.nonterminal.hasSuffix(s)
+			? `${ PARAM_SEPARATOR }${ s.source }`
+			: ''
+		).join('') }`;
+	}
+}
+
+
+
 class ConcreteNonterminal {
 	/** A counter for internal sub-expressions. Used for naming automated productions. */
 	private sub_count: bigint = 0n;
 
 	constructor (
 		readonly name: string,
-		private readonly suffixes: ASTNodeParam[],
+		readonly suffixes: ASTNodeParam[],
 	) {
 	}
 
@@ -377,7 +425,7 @@ class ConcreteNonterminal {
 
 	/** @override */
 	toString(): string {
-		return `${ this.name }${ this.suffixes.map((s) => `_${ s.source }`).join('') }`;
+		return `${ this.name }${ this.suffixes.map((s) => `${ PARAM_SEPARATOR }${ s.source }`).join('') }`;
 	}
 
 	hasSuffix(p: ASTNodeParam | ASTNodeArg | ASTNodeCondition): boolean {
