@@ -26,18 +26,8 @@ ChoiceData Transform(SemanticRef expr, Text nt, Sequence<ProductionData> data) :
 		].
 	2. *Assert:* The identifier is in title case.
 	3. *Note:* The identifier represents a nonterminal symbol.
-	4. *Let* `args` be the empty string.
-	5. *Let* `i` be 1.
-	6. *While* `i` is less than `expr.children.count`:
-		1. *If* `expr.children[i].append` is TRUE:
-			1. *Set* `args` to the concatenation of `args` with "_" and `expr.children[i].name`.
-		2. *Else If* `expr.children[i].append` is INHERIT *and* `nt` contains the suffix `expr.children[i].name`:
-			1. *Set* `args` to the concatenation of `args` with "_" and `expr.children[i].name`.
-		3. Increment `i`.
-	7. *Let* `newname` be the concatenation of `expr.name` with `args`.
-	8. *Return:* [
-		[[prod= newname]],
-	].
+	4. *Let* `expands` be *UnwrapAffirm:* `Expand(expr)`.
+	5. *Return:* a flattened mapping of `expands` indexed by `i` to `[[prod= expands[i]]]`.
 ;
 
 

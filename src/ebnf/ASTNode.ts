@@ -115,7 +115,6 @@ export class ASTNodeConst extends ASTNodeExpr {
 
 export class ASTNodeRef extends ASTNodeExpr {
 	declare readonly children: readonly ASTNodeArg[];
-	private readonly name: string;
 	constructor (parse_node: ParseNode, ref: TOKEN.TokenIdentifier);
 	constructor (parse_node: ParseNode, ref: ASTNodeRef, args: readonly ASTNodeArg[]);
 	constructor (
@@ -128,27 +127,20 @@ export class ASTNodeRef extends ASTNodeExpr {
 			{name: (ref instanceof ASTNodeRef) ? ref.name : ref.source},
 			(ref instanceof ASTNodeRef) ? [ref, ...args] : [],
 		);
-		this.name = (ref instanceof ASTNodeRef) ? ref.name : ref.source;
 	}
+	private readonly name: string = (this.ref instanceof ASTNodeRef) ? this.ref.name : this.ref.source;
 
 	/** @implements ASTNodeExpr */
 	transform(nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
 		return (this.name === this.name.toUpperCase())
 			/* ALLCAPS: terminal identifier */
-			? [[{term: this.name}]]
+			? [
+				[{term: this.name}],
+			]
 			/* TitleCase: production identifier */
-			: [[{
-				prod: `${ this.name }${ (this.ref instanceof ASTNodeRef)
-					/* with arguments */
-					? this.args.map((arg) =>
-						(arg.append === true || arg.append === 'inherit' && nt.hasSuffix(arg))
-							? `_${ arg.source }`
-							: ''
-					).join('')
-					/* no arguments */
-					: ''
-				}`
-			}]]
+			: utils.NonemptyArray_flatMap(this.expand(nt) as readonly ConcreteReference[] as NonemptyArray<ConcreteReference>, (cr) => [
+				[{prod: cr.toString()}]
+			])
 		;
 	}
 
