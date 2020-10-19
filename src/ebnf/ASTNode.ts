@@ -151,6 +151,30 @@ export class ASTNodeRef extends ASTNodeExpr {
 			}]]
 		;
 	}
+
+	/**
+	 * Expands this reference in its abstract form into a set of references with concrete arguments.
+	 * E.g., expands `R<+X, +Y>` into `[R_X, R_Y, R_X_Y]`.
+	 * @param   nt a specific nonterminal symbol that contains this expression
+	 * @returns    an array of objects representing references
+	 */
+	expand(nt: ConcreteNonterminal): ConcreteReference[] {
+		return (this.args.length)
+			? (this.ref as ASTNodeRef).expand(nt).flatMap((cr) =>
+				[...new Array(2 ** this.args.length)].map((_, count) =>
+					new ConcreteReference(cr.name, [
+						...cr.suffixes,
+						...[...count.toString(2).padStart(this.args.length, '0')]
+							.map((d, i) => [this.args[i], !!+d] as const)
+							.filter(([_arg, b]) => !!b)
+							.map(([arg, _b]) => arg)
+						,
+					], nt)
+				).slice(1) // slice off the \b00 case because `R<+X, +Y>` should never give `R`.
+			)
+			: [new ConcreteReference(this.name, [], nt)]
+		;
+	}
 }
 
 
@@ -311,9 +335,11 @@ export class ASTNodeNonterminal extends ASTNodeEBNF {
 				[...new Array(2 ** this.params.length)].map((_, count) =>
 					new ConcreteNonterminal(cn.name, [
 						...cn.suffixes,
-						...[...count.toString(2).padStart(this.params.length, '0')].map((d, i) =>
-							[this.params[i], !!+d] as const
-						).filter(([_param, b]) => !!b).map(([param, _b]) => param),
+						...[...count.toString(2).padStart(this.params.length, '0')]
+							.map((d, i) => [this.params[i], !!+d] as const)
+							.filter(([_param, b]) => !!b)
+							.map(([param, _b]) => param)
+						,
 					])
 				)
 			)
@@ -358,6 +384,25 @@ export class ASTNodeGoal extends ASTNodeEBNF {
 			name: prod.name,
 			defn: prod.defn.map((seq) => seq.filter((item) => item !== '\'\'') as readonly EBNFItem[] as EBNFSequence) as readonly EBNFSequence[] as EBNFChoice,
 		}));
+	}
+}
+
+
+
+class ConcreteReference {
+	constructor (
+		readonly name: string,
+		readonly suffixes: ASTNodeArg[],
+		readonly nonterminal: ConcreteNonterminal,
+	) {
+	}
+
+	/** @override */
+	toString(): string {
+		return `${ this.name }${ this.suffixes.map((s) => s.append === true || s.append === 'inherit' && this.nonterminal.hasSuffix(s)
+			? `_${ s.source }`
+			: ''
+		).join('') }`;
 	}
 }
 

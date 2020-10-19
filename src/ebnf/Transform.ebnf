@@ -169,23 +169,52 @@ Sequence<ProductionData> Transform(SemanticGoal goal) :=
 
 
 
+Sequence<Text> Expand(SemanticRef ref, Text nt) :=
+	1. *Let* `args` be `ref.children` excluding the first item (index 0).
+	2. *If* `ref.children.count` is 0 *or* `args.count` is 0:
+		1. *Return:* [`ref.name`].
+	3. *Let* `expands` be *UnwrapAffirm:* `Expand(ref.children.0)`.
+	4. *Let* `power_suffix` be *UnwrapAffirm:* `PowerSequence<SemanticArg>(args)`.
+	5. *Let* `names` be an empty sequence.
+	6. *For* `i` in `expands`:
+		1. *For* `j` in `power_suffix`:
+			1. *Let* `suffixes` be an empty sequence.
+			2. *For* `k` in `power_suffix[j]`:
+				1. *If* `power_suffix[j][k].append` is TRUE:
+					1. Push `power_suffix[j][k].name` to `suffixes`.
+				2. *If* `power_suffix[j][k].append` is INHERIT *and* `nt` contains the suffix `power_suffix[j][k].name`:
+					1. Push `power_suffix[j][k].name` to `suffixes`.
+			3. *Let* `suffix` be the concatenation of each element of `suffixes`, separated by "_".
+			4. *Let* `name` be the concatenation of `expands[i]` with `suffix`.
+			5. *Push* `name` to `names`.
+	7. *Return:* `names`.
+;
+
+
+
 Sequence<Text> Expand(SemanticNonterminal nt) :=
 	1. *Let* `params` be `nt.children` excluding the first item (index 0).
 	2. *If* `nt.children.count` is 0 *or* `params.count` is 0:
 		1. *Return:* [`nt.name`].
 	3. *Let* `expands` be *UnwrapAffirm:* `Expand(nt.children.0)`.
-	4. *Let* `power_suffix` be the power sequence of `params`, preserving order.
-		1. *Note:* A “power set” is the set of all subsets of a set.
-			For example, the power set of `["a", "b", "c"]` is
-			`[[], ["a"], ["b"], ["c"], ["a", "b"], ["a", "c"], ["b", "c"], ["a", "b", "c"]]`.
-			A “power sequence” is the ordered analog of a power set, wherein order is preserved,
-			i.e., the sequence `["a", "b"]` is not the same as the sequence `["b", "a"]`.
+	4. *Let* `power_suffix` be *UnwrapAffirm:* `PowerSequence<SemanticParam>(params)`.
 	5. *Let* `names` be an empty sequence.
 	6. *For* `i` in `expands`:
 		1. *For* `j` in `power_suffix`:
-			1. *Let* `suffix` be a mapping from `power_suffix[j]` indexed by `k` to `power_suffix[j][k].name`.
-			2. *Set* `suffix` to the concatenation of each element of `suffix`, separated by "_".
+			1. *Let* `suffixes` be a mapping from `power_suffix[j]` indexed by `k` to `power_suffix[j][k].name`.
+			2. *Let* `suffix` be the concatenation of each element of `suffixes`, separated by "_".
 			3. *Let* `name` be the concatenation of `expands[i]` with `suffix`.
 			4. *Push* `name` to `names`.
 	7. *Return:* `names`.
+;
+
+
+
+Sequence<Sequence<T>> PowerSequence<T>(Sequence<T> seq) :=
+	1. *Note:* A “power set” is the set of all subsets of a set.
+		For example, the power set of `["a", "b", "c"]` is
+		`[[], ["a"], ["b"], ["c"], ["a", "b"], ["a", "c"], ["b", "c"], ["a", "b", "c"]]`.
+		A “power sequence” is the ordered analog of a power set, wherein order is preserved,
+		i.e., the sequence `["a", "b"]` is not the same as the sequence `["b", "a"]`.
+	2. *Return:* the power sequence of `seq`, preserving order.
 ;
