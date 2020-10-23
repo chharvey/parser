@@ -40,17 +40,16 @@ export class Parser {
 
 	/**
 	 * Construct a new Parser object.
-	 * @param source        the source text
+	 * @param lexer         a fresh Lexer instance
 	 * @param grammar       The syntactic grammar of the language used in parsing.
 	 * @param parsenode_map A mapping of productions to parse node types.
 	 */
 	constructor (
-		source: string,
-		lexer: typeof Lexer,
+		lexer: Lexer,
 		private readonly grammar: Grammar,
 		private readonly parsenode_map: Map<Production, typeof ParseNode>,
 	) {
-		this.token_generator = new lexer(source).generate();
+		this.token_generator = lexer.generate();
 		this.iterator_result_token = this.token_generator.next();
 		while (
 			this.iterator_result_token.value instanceof TokenWhitespace ||

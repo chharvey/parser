@@ -1,4 +1,4 @@
-# parser
+# [parser](https://chharvey.github.io/parser/docs/api/)
 A parser generator.
 
 
