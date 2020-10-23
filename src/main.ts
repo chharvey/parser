@@ -26,6 +26,10 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 		${ jsons.map((j) => Production.fromJSON(j)).join('') }
 		${ jsons.map((j) => ParseNode .fromJSON(j)).join('') }
 		export class Parser${ langname } extends Parser {
+			/**
+			 * Construct a new Parser${ langname } object.
+			 * @param source the source text to parse
+			 */
 			constructor (source: string) {
 				super(new Lexer${ langname }(source), new Grammar([
 					${ jsons.map((json) => `Production${ json.name }.instance`) },
