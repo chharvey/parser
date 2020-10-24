@@ -44,13 +44,13 @@
 		
 		
 			export class ParseNodeUnit extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token] | readonly [Token,Token,ParseNodeUnit,ParseNodeUnit,Token]
 				;
 			}
 		
 			export class ParseNodeGoal extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token,Token] | readonly [Token,ParseNodeUnit,Token]
 				;
 			}
