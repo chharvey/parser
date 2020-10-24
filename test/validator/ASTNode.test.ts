@@ -56,52 +56,35 @@ describe('ASTNode', () => {
 						return Decorator.decorate(new ParserEBNF(ebnf).parse()).children[0].transform()[0].defn;
 					}
 					it('returns a terminal for a MACRO_CASE identifier.', () => {
-						assert.deepStrictEqual(
-							makeProductionDefn(`
-								Alpha ::= ALPHA;
-							`),
-							[
-								[{term: 'ALPHA'}],
-							],
-						);
+						assert.deepStrictEqual(makeProductionDefn(`
+							Alpha ::= ALPHA;
+						`), [
+							[{term: 'ALPHA'}],
+						]);
 					});
 					it('returns a production for a TitleCase identifier, no arguments.', () => {
-						assert.deepStrictEqual(
-							makeProductionDefn(`
-								Beta ::= Bravo;
-							`),
-							[
-								[{prod: 'Bravo'}],
-							],
-						);
+						assert.deepStrictEqual(makeProductionDefn(`
+							Beta ::= Bravo;
+						`), [
+							[{prod: 'Bravo'}],
+						]);
 					});
 					it('appends arguments for a TitleCase identifier, with single argument.', () => {
-						assert.deepStrictEqual(
-							makeProductionDefn(`
-								Gamma ::=
-									  Charlie0<+Cee>
-									. Charlie1<-Dee>
-								;
-							`),
-							[
-								[{prod: 'Charlie0_Cee'}, {prod: 'Charlie1'}],
-							],
-						);
+						assert.deepStrictEqual(makeProductionDefn(`
+							Gamma ::=
+								  Charlie0<+Cee>
+								. Charlie1<-Dee>
+							;
+						`), [
+							[{prod: 'Charlie0_Cee'}, {prod: 'Charlie1'}],
+						]);
 					});
 					it('appends arguments for a TitleCase identifier, with multiple arguments.', () => {
 						assert.deepStrictEqual([
-							makeProductionDefn(`
-								Delta ::= Delta0<+Eee, +Eff>;
-							`),
-							makeProductionDefn(`
-								Delta ::= Delta1<+Eee, -Eff>;
-							`),
-							makeProductionDefn(`
-								Delta ::= Delta2<-Eee, +Eff>;
-							`),
-							makeProductionDefn(`
-								Delta ::= Delta3<-Eee, -Eff>;
-							`),
+							makeProductionDefn(`Delta ::= Delta0<+Eee, +Eff>;`),
+							makeProductionDefn(`Delta ::= Delta1<+Eee, -Eff>;`),
+							makeProductionDefn(`Delta ::= Delta2<-Eee, +Eff>;`),
+							makeProductionDefn(`Delta ::= Delta3<-Eee, -Eff>;`),
 						], [
 							[
 								[{prod: 'Delta0_Eff'}],
@@ -125,30 +108,14 @@ describe('ASTNode', () => {
 							],
 						]);
 						assert.deepStrictEqual([
-							makeProductionDefn(`
-								Epsilon ::= Echo0<+Eee, +Eff, +Gee>;
-							`),
-							makeProductionDefn(`
-								Epsilon ::= Echo1<+Eee, +Eff, -Gee>;
-							`),
-							makeProductionDefn(`
-								Epsilon ::= Echo2<+Eee, -Eff, +Gee>;
-							`),
-							makeProductionDefn(`
-								Epsilon ::= Echo3<+Eee, -Eff, -Gee>;
-							`),
-							makeProductionDefn(`
-								Epsilon ::= Echo4<-Eee, +Eff, +Gee>;
-							`),
-							makeProductionDefn(`
-								Epsilon ::= Echo5<-Eee, +Eff, -Gee>;
-							`),
-							makeProductionDefn(`
-								Epsilon ::= Echo6<-Eee, -Eff, +Gee>;
-							`),
-							makeProductionDefn(`
-								Epsilon ::= Echo7<-Eee, -Eff, -Gee>;
-							`),
+							makeProductionDefn(`Epsilon ::= Echo0<+Eee, +Eff, +Gee>;`),
+							makeProductionDefn(`Epsilon ::= Echo1<+Eee, +Eff, -Gee>;`),
+							makeProductionDefn(`Epsilon ::= Echo2<+Eee, -Eff, +Gee>;`),
+							makeProductionDefn(`Epsilon ::= Echo3<+Eee, -Eff, -Gee>;`),
+							makeProductionDefn(`Epsilon ::= Echo4<-Eee, +Eff, +Gee>;`),
+							makeProductionDefn(`Epsilon ::= Echo5<-Eee, +Eff, -Gee>;`),
+							makeProductionDefn(`Epsilon ::= Echo6<-Eee, -Eff, +Gee>;`),
+							makeProductionDefn(`Epsilon ::= Echo7<-Eee, -Eff, -Gee>;`),
 						], [
 							[
 								[{prod: 'Echo0_Gee'}],
@@ -226,18 +193,10 @@ describe('ASTNode', () => {
 					});
 					it('appends arguments for a TitleCase identifier, with multiple argument sets.', () => {
 						assert.deepStrictEqual([
-							makeProductionDefn(`
-								Zeta ::= Foxtrot0<+Ach><+Eye>;
-							`),
-							makeProductionDefn(`
-								Zeta ::= Foxtrot1<+Ach><-Eye>;
-							`),
-							makeProductionDefn(`
-								Zeta ::= Foxtrot2<-Ach><+Eye>;
-							`),
-							makeProductionDefn(`
-								Zeta ::= Foxtrot3<-Ach><-Eye>;
-							`),
+							makeProductionDefn(`Zeta ::= Foxtrot0<+Ach><+Eye>;`),
+							makeProductionDefn(`Zeta ::= Foxtrot1<+Ach><-Eye>;`),
+							makeProductionDefn(`Zeta ::= Foxtrot2<-Ach><+Eye>;`),
+							makeProductionDefn(`Zeta ::= Foxtrot3<-Ach><-Eye>;`),
 						], [
 							[
 								[{prod: 'Foxtrot0_Ach_Eye'}],
@@ -253,30 +212,14 @@ describe('ASTNode', () => {
 							],
 						]);
 						assert.deepStrictEqual([
-							makeProductionDefn(`
-								Eta ::= Golf0<+Jay><+Kay><+Ell>;
-							`),
-							makeProductionDefn(`
-								Eta ::= Golf1<+Jay><+Kay><-Ell>;
-							`),
-							makeProductionDefn(`
-								Eta ::= Golf2<+Jay><-Kay><+Ell>;
-							`),
-							makeProductionDefn(`
-								Eta ::= Golf3<+Jay><-Kay><-Ell>;
-							`),
-							makeProductionDefn(`
-								Eta ::= Golf4<-Jay><+Kay><+Ell>;
-							`),
-							makeProductionDefn(`
-								Eta ::= Golf5<-Jay><+Kay><-Ell>;
-							`),
-							makeProductionDefn(`
-								Eta ::= Golf6<-Jay><-Kay><+Ell>;
-							`),
-							makeProductionDefn(`
-								Eta ::= Golf7<-Jay><-Kay><-Ell>;
-							`),
+							makeProductionDefn(`Eta ::= Golf0<+Jay><+Kay><+Ell>;`),
+							makeProductionDefn(`Eta ::= Golf1<+Jay><+Kay><-Ell>;`),
+							makeProductionDefn(`Eta ::= Golf2<+Jay><-Kay><+Ell>;`),
+							makeProductionDefn(`Eta ::= Golf3<+Jay><-Kay><-Ell>;`),
+							makeProductionDefn(`Eta ::= Golf4<-Jay><+Kay><+Ell>;`),
+							makeProductionDefn(`Eta ::= Golf5<-Jay><+Kay><-Ell>;`),
+							makeProductionDefn(`Eta ::= Golf6<-Jay><-Kay><+Ell>;`),
+							makeProductionDefn(`Eta ::= Golf7<-Jay><-Kay><-Ell>;`),
 						], [
 							[
 								[{prod: 'Golf0_Jay_Kay_Ell'}],
@@ -308,119 +251,104 @@ describe('ASTNode', () => {
 
 				describe('ASTNODE.ASTNodeItem', () => {
 					it('includes the item if one of the conditions is met.', () => {
-						assert.deepStrictEqual(
-							Decorator.decorate(new ParserEBNF(`
-								Nonterm<Param> ::= <Param+>TERM;
-							`).parse()).transform(),
-							[
-								{
-									name: 'Nonterm',
-									defn: [
-										[],
-									],
-								},
-								{
-									name: 'Nonterm_Param',
-									defn: [
-										[{term: 'TERM'}],
-									],
-								},
-							],
-						);
-						assert.deepStrictEqual(
-							Decorator.decorate(new ParserEBNF(`
-								Nonterm<Param> ::= <Param+, Par+>TERM;
-							`).parse()).transform(),
-							[
-								{
-									name: 'Nonterm',
-									defn: [
-										[],
-									],
-								},
-								{
-									name: 'Nonterm_Param',
-									defn: [
-										[{term: 'TERM'}],
-									],
-								},
-							],
-						);
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Nonterm<Param> ::= <Param+>TERM;
+						`).parse()).transform(), [
+							{
+								name: 'Nonterm',
+								defn: [
+									[],
+								],
+							},
+							{
+								name: 'Nonterm_Param',
+								defn: [
+									[{term: 'TERM'}],
+								],
+							},
+						]);
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Nonterm<Param> ::= <Param+, Par+>TERM;
+						`).parse()).transform(), [
+							{
+								name: 'Nonterm',
+								defn: [
+									[],
+								],
+							},
+							{
+								name: 'Nonterm_Param',
+								defn: [
+									[{term: 'TERM'}],
+								],
+							},
+						]);
 					});
 					it('includes the item if nested and all conditions are met.', () => {
-						assert.deepStrictEqual(
-							Decorator.decorate(new ParserEBNF(`
-								Nonterm<Param, Par> ::= <Param+><Par+>TERM;
-							`).parse()).transform(),
-							[
-								{
-									name: 'Nonterm',
-									defn: [
-										[],
-									],
-								},
-								{
-									name: 'Nonterm_Par',
-									defn: [
-										[],
-									],
-								},
-								{
-									name: 'Nonterm_Param',
-									defn: [
-										[],
-									],
-								},
-								{
-									name: 'Nonterm_Param_Par',
-									defn: [
-										[{term: 'TERM'}],
-									],
-								},
-							],
-						);
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Nonterm<Param, Par> ::= <Param+><Par+>TERM;
+						`).parse()).transform(), [
+							{
+								name: 'Nonterm',
+								defn: [
+									[],
+								],
+							},
+							{
+								name: 'Nonterm_Par',
+								defn: [
+									[],
+								],
+							},
+							{
+								name: 'Nonterm_Param',
+								defn: [
+									[],
+								],
+							},
+							{
+								name: 'Nonterm_Param_Par',
+								defn: [
+									[{term: 'TERM'}],
+								],
+							},
+						]);
 					});
 					it('does not include the item if all conditions are not met.', () => {
-						assert.deepStrictEqual(
-							Decorator.decorate(new ParserEBNF(`
-								Nonterm<P> ::= <Param+>TERM;
-							`).parse()).transform(),
-							[
-								{
-									name: 'Nonterm',
-									defn: [
-										[],
-									],
-								},
-								{
-									name: 'Nonterm_P',
-									defn: [
-										[],
-									],
-								},
-							],
-						);
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Nonterm<P> ::= <Param+>TERM;
+						`).parse()).transform(), [
+							{
+								name: 'Nonterm',
+								defn: [
+									[],
+								],
+							},
+							{
+								name: 'Nonterm_P',
+								defn: [
+									[],
+								],
+							},
+						]);
 					});
 					it('anti-includes the item if negated condition.', () => {
-						assert.deepStrictEqual(
-							Decorator.decorate(new ParserEBNF(`
-								Nonterm<Param> ::= <Param->TERM;
-							`).parse()).transform(),
-							[
-								{
-									name: 'Nonterm',
-									defn: [
-										[{term: 'TERM'}],
-									],
-								},
-								{
-									name: 'Nonterm_Param',
-									defn: [
-										[],
-									],
-								},
-							],
-						);
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Nonterm<Param> ::= <Param->TERM;
+						`).parse()).transform(),[
+							{
+								name: 'Nonterm',
+								defn: [
+									[{term: 'TERM'}],
+								],
+							},
+							{
+								name: 'Nonterm_Param',
+								defn: [
+									[],
+								],
+							},
+						]);
 					});
 				});
 			});
