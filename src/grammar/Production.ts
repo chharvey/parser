@@ -33,7 +33,7 @@ export abstract class Production {
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
 						${ json.defn.map((seq) => `[${ seq.map((it) =>
-							(typeof it === 'string') ? it :
+							(typeof it === 'string') ? `'${ it }'` :
 							('term' in it) ? `TERMINAL.Terminal${ utils.macroToTitle(it.term) }.instance` :
 							`Production${ it.prod }.instance`
 						) }]`) },

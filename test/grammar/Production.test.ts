@@ -19,14 +19,14 @@ describe('Production', () => {
 					name: 'Unit',
 					defn: [
 						[{term: 'NUMBER'}],
-						['\'(\'', {term: 'OPERATOR'}, {prod: 'Unit'}, {prod: 'Unit'}, '\')\''],
+						['(', {term: 'OPERATOR'}, {prod: 'Unit'}, {prod: 'Unit'}, ')'],
 					],
 				},
 				{
 					name: 'Goal',
 					defn: [
-						['\'\\u0002\'',                 '\'\\u0003\''],
-						['\'\\u0002\'', {prod: 'Unit'}, '\'\\u0003\''],
+						['\\u0002',                 '\\u0003'],
+						['\\u0002', {prod: 'Unit'}, '\\u0003'],
 					],
 				},
 			] as EBNFObject[]).map((prod) => Production.fromJSON(prod)), [

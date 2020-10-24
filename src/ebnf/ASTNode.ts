@@ -108,9 +108,9 @@ export class ASTNodeConst extends ASTNodeExpr {
 	transform(_nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
 		return [
 			[
-				(this.p_node instanceof TOKEN.TokenCharCode) ? `'\\u${ this.source.slice(2).padStart(4, '0') }'` :
+				(this.p_node instanceof TOKEN.TokenCharCode) ? `\\u${ this.source.slice(2).padStart(4, '0') }` : // remove '#x'
 				(this.p_node instanceof TOKEN.TokenCharClass) ? `'${ this.source }'` :
-				`'${ this.source.slice(1, -1) }'` // replace double-quotes with single-quotes
+				this.source.slice(1, -1) // remove double-quotes
 			],
 		];
 	}
@@ -191,7 +191,7 @@ export class ASTNodeItem extends ASTNodeExpr {
 		return (this.conditions.some((cond) => cond.include === nt.hasSuffix(cond)))
 			? this.item.transform(nt, data)
 			: [
-				['\'\''],
+				[''],
 			]
 		;
 	}
@@ -241,7 +241,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 					]),
 				});
 				return [
-					['\'\''],
+					[''],
 					[{prod: name}],
 				];
 			}],
@@ -250,7 +250,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 					name,
 					defn: utils.NonemptyArray_flatMap(trans, (seq) => [
 						seq,
-						[{prod: name}, '\',\'', ...seq],
+						[{prod: name}, ',', ...seq],
 					]),
 				});
 				return [
@@ -259,7 +259,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 			}],
 			[Unop.OPT, () => {
 				return [
-					['\'\''],
+					[''],
 					...trans,
 				];
 			}],
@@ -379,7 +379,7 @@ export class ASTNodeGoal extends ASTNodeEBNF {
 	transform(): EBNFObject[] {
 		return this.productions.flatMap((prod) => prod.transform()).map((prod) => ({
 			name: prod.name,
-			defn: prod.defn.map((seq) => seq.filter((item) => item !== '\'\'') as readonly EBNFItem[] as EBNFSequence).filter((seq) => seq.length) as readonly EBNFSequence[] as EBNFChoice,
+			defn: prod.defn.map((seq) => seq.filter((item) => item !== '') as readonly EBNFItem[] as EBNFSequence).filter((seq) => seq.length) as readonly EBNFSequence[] as EBNFChoice,
 		}));
 	}
 }

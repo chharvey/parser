@@ -257,13 +257,13 @@ describe('ASTNode', () => {
 							{
 								name: 'Nonterm',
 								defn: [
-									['\'literal\''],
+									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
 								defn: [
-									[{term: 'TERM'}, '\'literal\''],
+									[{term: 'TERM'}, 'literal'],
 								],
 							},
 						]);
@@ -273,13 +273,13 @@ describe('ASTNode', () => {
 							{
 								name: 'Nonterm',
 								defn: [
-									['\'literal\''],
+									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
 								defn: [
-									[{term: 'TERM'}, '\'literal\''],
+									[{term: 'TERM'}, 'literal'],
 								],
 							},
 						]);
@@ -291,25 +291,25 @@ describe('ASTNode', () => {
 							{
 								name: 'Nonterm',
 								defn: [
-									['\'literal\''],
+									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Par',
 								defn: [
-									['\'literal\''],
+									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
 								defn: [
-									['\'literal\''],
+									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Param_Par',
 								defn: [
-									[{term: 'TERM'}, '\'literal\''],
+									[{term: 'TERM'}, 'literal'],
 								],
 							},
 						]);
@@ -321,13 +321,13 @@ describe('ASTNode', () => {
 							{
 								name: 'Nonterm',
 								defn: [
-									['\'literal\''],
+									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Par',
 								defn: [
-									['\'literal\''],
+									['literal'],
 								],
 							},
 						]);
@@ -339,13 +339,13 @@ describe('ASTNode', () => {
 							{
 								name: 'Nonterm',
 								defn: [
-									[{term: 'TERM'}, '\'literal\''],
+									[{term: 'TERM'}, 'literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
 								defn: [
-									['\'literal\''],
+									['literal'],
 								],
 							},
 						]);
@@ -506,14 +506,14 @@ describe('ASTNode', () => {
 							name: 'Unit',
 							defn: [
 								[{term: 'NUMBER'}],
-								['\'(\'', {term: 'OPERATOR'}, {prod: 'Unit'}, {prod: 'Unit'}, '\')\''],
+								['(', {term: 'OPERATOR'}, {prod: 'Unit'}, {prod: 'Unit'}, ')'],
 							],
 						},
 						{
 							name: 'Goal',
 							defn: [
-								['\'\\u0002\'',                 '\'\\u0003\''],
-								['\'\\u0002\'', {prod: 'Unit'}, '\'\\u0003\''],
+								['\\u0002',                 '\\u0003'],
+								['\\u0002', {prod: 'Unit'}, '\\u0003'],
 							],
 						},
 					]);
