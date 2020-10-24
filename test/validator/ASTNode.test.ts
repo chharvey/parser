@@ -513,22 +513,20 @@ describe('ASTNode', () => {
 					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF(`
 						NonTerm<Param> ::= TERM;
 					`).parse()).children[0]
-					assert.deepStrictEqual(prod.transform(), JSON.parse(`
-						[
-							{
-								"name": "${ prod.children[0].expand()[0].toString() }",
-								"defn": [
-									[{"term": "TERM"}]
-								]
-							},
-							{
-								"name": "${ prod.children[0].expand()[1].toString() }",
-								"defn": [
-									[{"term": "TERM"}]
-								]
-							}
-						]
-					`));
+					assert.deepStrictEqual(prod.transform(), [
+						{
+							name: prod.children[0].expand()[0].toString(),
+							defn: [
+								[{term: 'TERM'}],
+							],
+						},
+						{
+							name: prod.children[0].expand()[1].toString(),
+							defn: [
+								[{term: 'TERM'}],
+							],
+						},
+					]);
 				});
 			});
 		});
@@ -539,24 +537,22 @@ describe('ASTNode', () => {
 					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
 						Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 						Goal ::= #x02 Unit? #x03;
-					`).parse()).transform(), JSON.parse(`
-						[
-							{
-								"name": "Unit",
-								"defn": [
-									[{"term": "NUMBER"}],
-									["'('", {"term": "OPERATOR"}, {"prod": "Unit"}, {"prod": "Unit"}, "')'"]
-								]
-							},
-							{
-								"name": "Goal",
-								"defn": [
-									["'\\\\u0002'",                   "'\\\\u0003'"],
-									["'\\\\u0002'", {"prod": "Unit"}, "'\\\\u0003'"]
-								]
-							}
-						]
-					`));
+					`).parse()).transform(), [
+						{
+							name: 'Unit',
+							defn: [
+								[{term: 'NUMBER'}],
+								['\'(\'', {term: 'OPERATOR'}, {prod: 'Unit'}, {prod: 'Unit'}, '\')\''],
+							],
+						},
+						{
+							name: 'Goal',
+							defn: [
+								['\'\\u0002\'',                 '\'\\u0003\''],
+								['\'\\u0002\'', {prod: 'Unit'}, '\'\\u0003\''],
+							],
+						},
+					]);
 				});
 			});
 		});
