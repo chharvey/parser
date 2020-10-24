@@ -252,100 +252,100 @@ describe('ASTNode', () => {
 				describe('ASTNODE.ASTNodeItem', () => {
 					it('includes the item if one of the conditions is met.', () => {
 						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
-							Nonterm<Param> ::= <Param+>TERM;
+							Nonterm<Param> ::= <Param+>TERM "literal";
 						`).parse()).transform(), [
 							{
 								name: 'Nonterm',
 								defn: [
-									[],
+									['\'literal\''],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
 								defn: [
-									[{term: 'TERM'}],
+									[{term: 'TERM'}, '\'literal\''],
 								],
 							},
 						]);
 						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
-							Nonterm<Param> ::= <Param+, Par+>TERM;
+							Nonterm<Param> ::= <Param+, Par+>TERM "literal";
 						`).parse()).transform(), [
 							{
 								name: 'Nonterm',
 								defn: [
-									[],
+									['\'literal\''],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
 								defn: [
-									[{term: 'TERM'}],
+									[{term: 'TERM'}, '\'literal\''],
 								],
 							},
 						]);
 					});
 					it('includes the item if nested and all conditions are met.', () => {
 						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
-							Nonterm<Param, Par> ::= <Param+><Par+>TERM;
+							Nonterm<Param, Par> ::= <Param+><Par+>TERM "literal";
 						`).parse()).transform(), [
 							{
 								name: 'Nonterm',
 								defn: [
-									[],
+									['\'literal\''],
 								],
 							},
 							{
 								name: 'Nonterm_Par',
 								defn: [
-									[],
+									['\'literal\''],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
 								defn: [
-									[],
+									['\'literal\''],
 								],
 							},
 							{
 								name: 'Nonterm_Param_Par',
 								defn: [
-									[{term: 'TERM'}],
+									[{term: 'TERM'}, '\'literal\''],
 								],
 							},
 						]);
 					});
 					it('does not include the item if all conditions are not met.', () => {
 						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
-							Nonterm<P> ::= <Param+>TERM;
+							Nonterm<Par> ::= <Param+>TERM "literal";
 						`).parse()).transform(), [
 							{
 								name: 'Nonterm',
 								defn: [
-									[],
+									['\'literal\''],
 								],
 							},
 							{
-								name: 'Nonterm_P',
+								name: 'Nonterm_Par',
 								defn: [
-									[],
+									['\'literal\''],
 								],
 							},
 						]);
 					});
 					it('anti-includes the item if negated condition.', () => {
 						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
-							Nonterm<Param> ::= <Param->TERM;
-						`).parse()).transform(),[
+							Nonterm<Param> ::= <Param->TERM "literal";
+						`).parse()).transform(), [
 							{
 								name: 'Nonterm',
 								defn: [
-									[{term: 'TERM'}],
+									[{term: 'TERM'}, '\'literal\''],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
 								defn: [
-									[],
+									['\'literal\''],
 								],
 							},
 						]);

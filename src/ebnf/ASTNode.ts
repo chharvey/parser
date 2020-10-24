@@ -379,7 +379,7 @@ export class ASTNodeGoal extends ASTNodeEBNF {
 	transform(): EBNFObject[] {
 		return this.productions.flatMap((prod) => prod.transform()).map((prod) => ({
 			name: prod.name,
-			defn: prod.defn.map((seq) => seq.filter((item) => item !== '\'\'') as readonly EBNFItem[] as EBNFSequence) as readonly EBNFSequence[] as EBNFChoice,
+			defn: prod.defn.map((seq) => seq.filter((item) => item !== '\'\'') as readonly EBNFItem[] as EBNFSequence).filter((seq) => seq.length) as readonly EBNFSequence[] as EBNFChoice,
 		}));
 	}
 }
