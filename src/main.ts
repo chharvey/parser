@@ -32,9 +32,9 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 			 */
 			constructor (source: string) {
 				super(new Lexer${ langname }(source), new Grammar([
-					${ jsons.map((json) => `Production${ json.name }.instance`) },
+					${ jsons.map((json) => `${ Production.classnameOf(json) }.instance`) },
 				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
-					${ jsons.map((json) => `[Production${ json.name }.instance, ParseNode${ json.name }]`) },
+					${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`) },
 				]));
 			}
 			// @ts-expect-error
