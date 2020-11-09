@@ -461,36 +461,34 @@ describe('ASTNode', () => {
 					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF(`
 						NonTerm<Param> ::= TERM+;
 					`).parse()).children[0];
-					assert.deepStrictEqual(prod.transform(), JSON.parse(`
-						[
-							{
-								"name": "${ prod.children[0].expand()[0] }__0__List",
-								"defn": [
-									[{"term": "TERM"}],
-									[{"prod": "${ prod.children[0].expand()[0] }__0__List"}, {"term": "TERM"}]
-								]
-							},
-							{
-								"name": "${ prod.children[0].expand()[1] }__0__List",
-								"defn": [
-									[{"term": "TERM"}],
-									[{"prod": "${ prod.children[0].expand()[1] }__0__List"}, {"term": "TERM"}]
-								]
-							},
-							{
-								"name": "${ prod.children[0].expand()[0] }",
-								"defn": [
-									[{"prod": "${ prod.children[0].expand()[0] }__0__List"}]
-								]
-							},
-							{
-								"name": "${ prod.children[0].expand()[1] }",
-								"defn": [
-									[{"prod": "${ prod.children[0].expand()[1] }__0__List"}]
-								]
-							}
-						]
-					`));
+					assert.deepStrictEqual(prod.transform(), [
+						{
+							name: `${ prod.children[0].expand()[0] }__0__List`,
+							defn: [
+								[{term: 'TERM'}],
+								[{prod: `${ prod.children[0].expand()[0] }__0__List`}, {term: 'TERM'}],
+							],
+						},
+						{
+							name: `${ prod.children[0].expand()[1] }__0__List`,
+							defn: [
+								[{term: 'TERM'}],
+								[{prod: `${ prod.children[0].expand()[1] }__0__List`}, {term: 'TERM'}],
+							],
+						},
+						{
+							name: prod.children[0].expand()[0].toString(),
+							defn: [
+								[{prod: `${ prod.children[0].expand()[0] }__0__List`}],
+							],
+						},
+						{
+							name: prod.children[0].expand()[1].toString(),
+							defn: [
+								[{prod: `${ prod.children[0].expand()[1] }__0__List`}],
+							],
+						},
+					]);
 				});
 			});
 		});
