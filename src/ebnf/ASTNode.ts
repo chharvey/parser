@@ -144,7 +144,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 			]
 			/* TitleCase: production identifier */
 			: utils.NonemptyArray_flatMap(this.expand(nt) as readonly ConcreteReference[] as NonemptyArray<ConcreteReference>, (cr) => [
-				[{prod: cr.toString()}]
+				[{prod: cr.toString()}],
 			])
 		;
 	}
@@ -169,7 +169,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 					], nt)
 				).slice(1) // slice off the \b00 case because `R<+X, +Y>` should never give `R`.
 			)
-			: [new ConcreteReference(this.name, [], nt)]
+			: [new ConcreteReference(this.name)]
 		;
 	}
 }
@@ -340,7 +340,7 @@ export class ASTNodeNonterminal extends ASTNodeEBNF {
 					])
 				)
 			)
-			: [new ConcreteNonterminal(this.name, [])]
+			: [new ConcreteNonterminal(this.name)]
 		;
 	}
 }
@@ -358,9 +358,9 @@ export class ASTNodeProduction extends ASTNodeEBNF {
 
 	transform(): EBNFObject[] {
 		const productions_data: EBNFObject[] = [];
-		productions_data.push(...this.nonterminal.expand().map((n) => ({
-			name: n.toString(),
-			defn: this.definition.transform(n, productions_data),
+		productions_data.push(...this.nonterminal.expand().map((cn) => ({
+			name: cn.toString(),
+			defn: this.definition.transform(cn, productions_data),
 		})));
 		return productions_data;
 	}
@@ -389,14 +389,14 @@ export class ASTNodeGoal extends ASTNodeEBNF {
 class ConcreteReference {
 	constructor (
 		readonly name: string,
-		readonly suffixes: ASTNodeArg[],
-		readonly nonterminal: ConcreteNonterminal,
+		readonly suffixes: ASTNodeArg[] = [],
+		readonly nonterminal?: ConcreteNonterminal,
 	) {
 	}
 
 	/** @override */
 	toString(): string {
-		return `${ this.name }${ this.suffixes.map((s) => s.append === true || s.append === 'inherit' && this.nonterminal.hasSuffix(s)
+		return `${ this.name }${ this.suffixes.map((s) => s.append === true || s.append === 'inherit' && this.nonterminal?.hasSuffix(s)
 			? `${ PARAM_SEPARATOR }${ s.source }`
 			: ''
 		).join('') }`;
@@ -411,7 +411,7 @@ class ConcreteNonterminal {
 
 	constructor (
 		readonly name: string,
-		readonly suffixes: ASTNodeParam[],
+		readonly suffixes: ASTNodeParam[] = [],
 	) {
 	}
 
