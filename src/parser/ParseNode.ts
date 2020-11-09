@@ -53,7 +53,10 @@ export class ParseNode implements Serializable {
 	 */
 	static fromJSON(json: EBNFObject): string {
 		return `
-			export class ${ this.classnameOf(json) } extends ParseNode {
+			export ${ (json.family === true) ? 'abstract ' : '' }class ${ this.classnameOf(json) } extends ${ (typeof json.family === 'string')
+				? this.classnameOf({prod: json.family})
+				: 'ParseNode'
+			} {
 				declare readonly children:
 					${ json.defn.map((seq) => `readonly [${ seq.map((it) =>
 						(typeof it === 'string' || 'term' in it)

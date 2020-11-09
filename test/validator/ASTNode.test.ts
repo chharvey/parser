@@ -255,13 +255,23 @@ describe('ASTNode', () => {
 							Nonterm<Param> ::= <Param+>TERM "literal";
 						`).parse()).transform(), [
 							{
+								name: 'Nonterm$',
+								family: true,
+								defn: [
+									['literal'],
+									[{term: 'TERM'}, 'literal'],
+								],
+							},
+							{
 								name: 'Nonterm',
+								family: 'Nonterm$',
 								defn: [
 									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
+								family: 'Nonterm$',
 								defn: [
 									[{term: 'TERM'}, 'literal'],
 								],
@@ -271,13 +281,23 @@ describe('ASTNode', () => {
 							Nonterm<Param> ::= <Param+, Par+>TERM "literal";
 						`).parse()).transform(), [
 							{
+								name: 'Nonterm$',
+								family: true,
+								defn: [
+									['literal'],
+									[{term: 'TERM'}, 'literal'],
+								],
+							},
+							{
 								name: 'Nonterm',
+								family: 'Nonterm$',
 								defn: [
 									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
+								family: 'Nonterm$',
 								defn: [
 									[{term: 'TERM'}, 'literal'],
 								],
@@ -289,25 +309,39 @@ describe('ASTNode', () => {
 							Nonterm<Param, Par> ::= <Param+><Par+>TERM "literal";
 						`).parse()).transform(), [
 							{
+								name: 'Nonterm$',
+								family: true,
+								defn: [
+									['literal'],
+									['literal'],
+									['literal'],
+									[{term: 'TERM'}, 'literal'],
+								],
+							},
+							{
 								name: 'Nonterm',
+								family: 'Nonterm$',
 								defn: [
 									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Par',
+								family: 'Nonterm$',
 								defn: [
 									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
+								family: 'Nonterm$',
 								defn: [
 									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Param_Par',
+								family: 'Nonterm$',
 								defn: [
 									[{term: 'TERM'}, 'literal'],
 								],
@@ -319,13 +353,23 @@ describe('ASTNode', () => {
 							Nonterm<Par> ::= <Param+>TERM "literal";
 						`).parse()).transform(), [
 							{
+								name: 'Nonterm$',
+								family: true,
+								defn: [
+									['literal'],
+									['literal'],
+								],
+							},
+							{
 								name: 'Nonterm',
+								family: 'Nonterm$',
 								defn: [
 									['literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Par',
+								family: 'Nonterm$',
 								defn: [
 									['literal'],
 								],
@@ -337,13 +381,23 @@ describe('ASTNode', () => {
 							Nonterm<Param> ::= <Param->TERM "literal";
 						`).parse()).transform(), [
 							{
+								name: 'Nonterm$',
+								family: true,
+								defn: [
+									[{term: 'TERM'}, 'literal'],
+									['literal'],
+								],
+							},
+							{
 								name: 'Nonterm',
+								family: 'Nonterm$',
 								defn: [
 									[{term: 'TERM'}, 'literal'],
 								],
 							},
 							{
 								name: 'Nonterm_Param',
+								family: 'Nonterm$',
 								defn: [
 									['literal'],
 								],
@@ -443,13 +497,23 @@ describe('ASTNode', () => {
 					`).parse()).children[0]
 					assert.deepStrictEqual(prod.transform(), [
 						{
+							name: `${ prod.children[0].expand()[0] }$`,
+							family: true,
+							defn: [
+								[{term: 'TERM'}],
+								[{term: 'TERM'}],
+							],
+						},
+						{
 							name: prod.children[0].expand()[0].toString(),
+							family: `${ prod.children[0].expand()[0] }$`,
 							defn: [
 								[{term: 'TERM'}],
 							],
 						},
 						{
 							name: prod.children[0].expand()[1].toString(),
+							family: `${ prod.children[0].expand()[0] }$`,
 							defn: [
 								[{term: 'TERM'}],
 							],
@@ -477,13 +541,23 @@ describe('ASTNode', () => {
 							],
 						},
 						{
+							name: `${ prod.children[0].expand()[0] }$`,
+							family: true,
+							defn: [
+								[{prod: `${ prod.children[0].expand()[0] }__0__List`}],
+								[{prod: `${ prod.children[0].expand()[1] }__0__List`}],
+							],
+						},
+						{
 							name: prod.children[0].expand()[0].toString(),
+							family: `${ prod.children[0].expand()[0] }$`,
 							defn: [
 								[{prod: `${ prod.children[0].expand()[0] }__0__List`}],
 							],
 						},
 						{
 							name: prod.children[0].expand()[1].toString(),
+							family: `${ prod.children[0].expand()[0] }$`,
 							defn: [
 								[{prod: `${ prod.children[0].expand()[1] }__0__List`}],
 							],

@@ -11,6 +11,7 @@ import {
 
 export function generate(ebnf: string, langname: string = 'Lang'): string {
 	const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse()).transform()
+	const nonabstract: EBNFObject[] = jsons.filter((j) => j.family !== true);
 	return `
 		import {
 			NonemptyArray,
@@ -23,7 +24,7 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 		} from '@chharvey/parser';
 		import {Lexer${ langname }} from './Lexer';
 		import * as TERMINAL from './Terminal';
-		${ jsons.map((j) => Production.fromJSON(j)).join('') }
+		${ nonabstract.map((j) => Production.fromJSON(j)).join('') }
 		${ jsons.map((j) => ParseNode .fromJSON(j)).join('') }
 		export class Parser${ langname } extends Parser {
 			/**
@@ -32,9 +33,9 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 			 */
 			constructor (source: string) {
 				super(new Lexer${ langname }(source), new Grammar([
-					${ jsons.map((json) => `${ Production.classnameOf(json) }.instance`) },
+					${ nonabstract.map((json) => `${ Production.classnameOf(json) }.instance`) },
 				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
-					${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`) },
+					${ nonabstract.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`) },
 				]));
 			}
 			// @ts-expect-error
