@@ -37,6 +37,15 @@ import type {Token} from '../lexer/Token';
  */
 export class ParseNode implements Serializable {
 	/**
+	 * Make a classname for a ParseNode.
+	 * @param   json a JSON object representing a production
+	 * @returns      the classname
+	 */
+	static classnameOf(json: EBNFObject | {readonly prod: string}): string {
+		return `ParseNode${ ('prod' in json) ? json.prod : json.name }`;
+	}
+
+	/**
 	 * Takes a JSON object representing a syntactic production
 	 * and returns a string in TypeScript language representing subclasses of {@link ParseNode}.
 	 * @param   json a JSON object representing a production
@@ -44,12 +53,15 @@ export class ParseNode implements Serializable {
 	 */
 	static fromJSON(json: EBNFObject): string {
 		return `
-			export class ParseNode${ json.name } extends ParseNode {
-				declare children:
+			export ${ (json.family === true) ? 'abstract ' : '' }class ${ this.classnameOf(json) } extends ${ (typeof json.family === 'string')
+				? this.classnameOf({prod: json.family})
+				: 'ParseNode'
+			} {
+				declare readonly children:
 					${ json.defn.map((seq) => `readonly [${ seq.map((it) =>
 						(typeof it === 'string' || 'term' in it)
 							? `Token`
-							: `ParseNode${ it.prod }`
+							: `${ this.classnameOf(it) }`
 					) }]`).join(' | ') }
 				;
 			}

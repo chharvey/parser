@@ -13,33 +13,31 @@ import {
 describe('ParseNode', () => {
 	describe('.fromJSON', () => {
 		it('returns a string representing new subclasses of ParseNode.', () => {
-			assert.deepStrictEqual(JSON.parse(`
-				[
-					{
-						"name": "Unit",
-						"defn": [
-							[{"term": "NUMBER"}],
-							["'('", {"term": "OPERATOR"}, {"prod": "Unit"}, {"prod": "Unit"}, "')'"]
-						]
-					},
-					{
-						"name": "Goal",
-						"defn": [
-							["'\\\\u0002'",                   "'\\\\u0003'"],
-							["'\\\\u0002'", {"prod": "Unit"}, "'\\\\u0003'"]
-						]
-					}
-				]
-			`).map((prod: EBNFObject) => ParseNode.fromJSON(prod)), [
+			assert.deepStrictEqual(([
+				{
+					name: 'Unit',
+					defn: [
+						[{term: 'NUMBER'}],
+						['(', {term: 'OPERATOR'}, {prod: 'Unit'}, {prod: 'Unit'}, ')'],
+					],
+				},
+				{
+					name: 'Goal',
+					defn: [
+						['\\u0002',                 '\\u0003'],
+						['\\u0002', {prod: 'Unit'}, '\\u0003'],
+					],
+				},
+			] as EBNFObject[]).map((prod) => ParseNode.fromJSON(prod)), [
 		`
 			export class ParseNodeUnit extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token] | readonly [Token,Token,ParseNodeUnit,ParseNodeUnit,Token]
 				;
 			}
 		`, `
 			export class ParseNodeGoal extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token,Token] | readonly [Token,ParseNodeUnit,Token]
 				;
 			}

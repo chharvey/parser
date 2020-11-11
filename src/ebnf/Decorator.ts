@@ -39,24 +39,32 @@ export class Decorator {
 	 * Similar to a node of the Semantic Tree or “decorated/abstract syntax tree”.
 	 * @returns a JSON object containing the parse node’s semantics
 	 */
-	static decorate(node: PARSER.ParseNodeParameterSet__0__List): NonemptyArray<ASTNODE.ASTNodeParam>;
-	static decorate(node: PARSER.ParseNodeParameterSet):          NonemptyArray<ASTNODE.ASTNodeParam>;
-	static decorate(node: PARSER.ParseNodeArgumentSet__0__List):  NonemptyArray<ASTNODE.ASTNodeArg>;
-	static decorate(node: PARSER.ParseNodeArgumentSet):           NonemptyArray<ASTNODE.ASTNodeArg>;
-	static decorate(node: PARSER.ParseNodeConditionSet__0__List): NonemptyArray<ASTNODE.ASTNodeCondition>;
-	static decorate(node: PARSER.ParseNodeConditionSet):          NonemptyArray<ASTNODE.ASTNodeCondition>;
-	static decorate(node: PARSER.ParseNodeReference):             ASTNODE.ASTNodeRef;
-	static decorate(node: PARSER.ParseNodeUnit):                  ASTNODE.ASTNodeExpr;
-	static decorate(node: PARSER.ParseNodeUnary):                 ASTNODE.ASTNodeExpr;
-	static decorate(node: PARSER.ParseNodeItem):                  ASTNODE.ASTNodeExpr;
-	static decorate(node: PARSER.ParseNodeOrder):                 ASTNODE.ASTNodeExpr;
-	static decorate(node: PARSER.ParseNodeConcat):                ASTNODE.ASTNodeExpr;
-	static decorate(node: PARSER.ParseNodeAltern):                ASTNODE.ASTNodeExpr;
-	static decorate(node: PARSER.ParseNodeDefinition):            ASTNODE.ASTNodeExpr;
-	static decorate(node: PARSER.ParseNodeNonterminalName):       ASTNODE.ASTNodeNonterminal;
-	static decorate(node: PARSER.ParseNodeProduction):            ASTNODE.ASTNodeProduction;
-	static decorate(node: PARSER.ParseNodeGoal__0__List):         NonemptyArray<ASTNODE.ASTNodeProduction>;
-	static decorate(node: PARSER.ParseNodeGoal):                  ASTNODE.ASTNodeGoal;
+	static decorate(node:
+		| PARSER.ParseNodeParameterSet__0__List
+		| PARSER.ParseNodeParameterSet
+	): NonemptyArray<ASTNODE.ASTNodeParam>;
+	static decorate(node:
+		| PARSER.ParseNodeArgumentSet__0__List
+		| PARSER.ParseNodeArgumentSet
+	): NonemptyArray<ASTNODE.ASTNodeArg>;
+	static decorate(node:
+		| PARSER.ParseNodeConditionSet__0__List
+		| PARSER.ParseNodeConditionSet
+	): NonemptyArray<ASTNODE.ASTNodeCondition>;
+	static decorate(node: PARSER.ParseNodeReference): ASTNODE.ASTNodeRef;
+	static decorate(node:
+		| PARSER.ParseNodeUnit
+		| PARSER.ParseNodeUnary
+		| PARSER.ParseNodeItem
+		| PARSER.ParseNodeOrder
+		| PARSER.ParseNodeConcat
+		| PARSER.ParseNodeAltern
+		| PARSER.ParseNodeDefinition
+	): ASTNODE.ASTNodeExpr;
+	static decorate(node: PARSER.ParseNodeNonterminalName): ASTNODE.ASTNodeNonterminal;
+	static decorate(node: PARSER.ParseNodeProduction):      ASTNODE.ASTNodeProduction;
+	static decorate(node: PARSER.ParseNodeGoal__0__List):   NonemptyArray<ASTNODE.ASTNodeProduction>;
+	static decorate(node: PARSER.ParseNodeGoal):            ASTNODE.ASTNodeGoal;
 	static decorate(node: ParseNode): ASTNODE.ASTNodeEBNF | readonly ASTNODE.ASTNodeEBNF[];
 	static decorate(node: ParseNode): ASTNODE.ASTNodeEBNF | readonly ASTNODE.ASTNodeEBNF[] {
 		if (node instanceof PARSER.ParseNodeParameterSet__0__List) {
@@ -199,7 +207,10 @@ export class Decorator {
 			;
 
 		} else if (node instanceof PARSER.ParseNodeDefinition) {
-			return this.decorate(node.children[0]);
+			return this.decorate((node.children[0] instanceof PARSER.ParseNodeAltern)
+				? node.children[0]
+				: node.children[1] as PARSER.ParseNodeAltern
+			);
 
 		} else if (node instanceof PARSER.ParseNodeNonterminalName) {
 			return (node.children.length === 1)
@@ -218,7 +229,7 @@ export class Decorator {
 			return new ASTNODE.ASTNodeProduction(
 				node,
 				this.decorate(node.children[0]),
-				this.decorate((node.children.length === 4) ? node.children[2] : node.children[3]),
+				this.decorate(node.children[2]),
 			);
 
 		} else if (node instanceof PARSER.ParseNodeGoal__0__List) {
