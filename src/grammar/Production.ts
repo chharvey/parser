@@ -35,7 +35,7 @@ export abstract class Production {
 	 * @returns      a string to print to a TypeScript file
 	 */
 	static fromJSON(json: EBNFObject): string {
-		return `
+		return (json.family === true) ? '' : `
 			export class ${ this.classnameOf(json) } extends Production {
 				static readonly instance: ${ this.classnameOf(json) } = new ${ this.classnameOf(json) }();
 				/** @implements Production */
