@@ -157,7 +157,7 @@
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						[ProductionAltern.instance],
+						[ProductionAltern.instance],[ProductionAltern.instance,'|'],[ProductionAltern.instance,'&'],[ProductionAltern.instance,'.'],['|',ProductionAltern.instance],['|',ProductionAltern.instance,'|'],['|',ProductionAltern.instance,'&'],['|',ProductionAltern.instance,'.'],['&',ProductionAltern.instance],['&',ProductionAltern.instance,'|'],['&',ProductionAltern.instance,'&'],['&',ProductionAltern.instance,'.'],['.',ProductionAltern.instance],['.',ProductionAltern.instance,'|'],['.',ProductionAltern.instance,'&'],['.',ProductionAltern.instance,'.'],
 					];
 				}
 			}
@@ -177,7 +177,7 @@
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						[ProductionNonterminalName.instance,':::=',ProductionDefinition.instance,';'],[ProductionNonterminalName.instance,':::=','|',ProductionDefinition.instance,';'],[ProductionNonterminalName.instance,'::=',ProductionDefinition.instance,';'],[ProductionNonterminalName.instance,'::=','|',ProductionDefinition.instance,';'],
+						[ProductionNonterminalName.instance,':::=',ProductionDefinition.instance,';'],[ProductionNonterminalName.instance,'::=',ProductionDefinition.instance,';'],
 					];
 				}
 			}
@@ -283,7 +283,7 @@
 		
 			export class ParseNodeDefinition extends ParseNode {
 				declare readonly children:
-					readonly [ParseNodeAltern]
+					readonly [ParseNodeAltern] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token]
 				;
 			}
 		
@@ -295,7 +295,7 @@
 		
 			export class ParseNodeProduction extends ParseNode {
 				declare readonly children:
-					readonly [ParseNodeNonterminalName,Token,ParseNodeDefinition,Token] | readonly [ParseNodeNonterminalName,Token,Token,ParseNodeDefinition,Token] | readonly [ParseNodeNonterminalName,Token,ParseNodeDefinition,Token] | readonly [ParseNodeNonterminalName,Token,Token,ParseNodeDefinition,Token]
+					readonly [ParseNodeNonterminalName,Token,ParseNodeDefinition,Token] | readonly [ParseNodeNonterminalName,Token,ParseNodeDefinition,Token]
 				;
 			}
 		

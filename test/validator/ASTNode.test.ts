@@ -72,7 +72,7 @@ describe('ASTNode', () => {
 					it('appends arguments for a TitleCase identifier, with single argument.', () => {
 						assert.deepStrictEqual(makeProductionDefn(`
 							Gamma ::=
-								  Charlie0<+Cee>
+								. Charlie0<+Cee>
 								. Charlie1<-Dee>
 							;
 						`), [

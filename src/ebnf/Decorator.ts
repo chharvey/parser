@@ -207,7 +207,10 @@ export class Decorator {
 			;
 
 		} else if (node instanceof PARSER.ParseNodeDefinition) {
-			return this.decorate(node.children[0]);
+			return this.decorate((node.children[0] instanceof PARSER.ParseNodeAltern)
+				? node.children[0]
+				: node.children[1] as PARSER.ParseNodeAltern
+			);
 
 		} else if (node instanceof PARSER.ParseNodeNonterminalName) {
 			return (node.children.length === 1)
@@ -226,7 +229,7 @@ export class Decorator {
 			return new ASTNODE.ASTNodeProduction(
 				node,
 				this.decorate(node.children[0]),
-				this.decorate((node.children.length === 4) ? node.children[2] : node.children[3]),
+				this.decorate(node.children[2]),
 			);
 
 		} else if (node instanceof PARSER.ParseNodeGoal__0__List) {
