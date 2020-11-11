@@ -45,7 +45,7 @@ Altern ::= ( Altern "|"  )? Concat;
 
 
 Definition
-	::= Altern;
+	::= ("|" | "&" | ".")? Altern ("|" | "&" | ".")?;
 
 
 
@@ -56,7 +56,7 @@ NonterminalName ::=
 
 
 Production
-	::= NonterminalName (":::=" | "::=") "|"? Definition ";";
+	::= NonterminalName (":::=" | "::=") Definition ";";
 
 
 

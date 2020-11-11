@@ -180,6 +180,7 @@
 								<li class="tsd-kind-type-alias"><a href="globals.html#errorcodeconstructorproperties" class="tsd-kind-icon">Error<wbr>Code<wbr>Constructor<wbr>Properties</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#grammarsymbol" class="tsd-kind-icon">Grammar<wbr>Symbol</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#grammarterminal" class="tsd-kind-icon">Grammar<wbr>Terminal</a></li>
+								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#mutable" class="tsd-kind-icon">Mutable</a></li>
 								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#nonemptyarray" class="tsd-kind-icon">Nonempty<wbr>Array</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#state" class="tsd-kind-icon">State</a></li>
 							</ul>
@@ -187,6 +188,7 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable"><a href="globals.html#family_symbol" class="tsd-kind-icon">FAMILY_<wbr>SYMBOL</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#param_separator" class="tsd-kind-icon">PARAM_<wbr>SEPARATOR</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#sub_separator" class="tsd-kind-icon">SUB_<wbr>SEPARATOR</a></li>
 							</ul>
@@ -220,7 +222,7 @@
 					<div class="tsd-signature tsd-kind-icon">EBNFChoice<span class="tsd-signature-symbol">:</span> <a href="globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#ebnfsequence" class="tsd-signature-type">EBNFSequence</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/types.d.ts#L10">src/types.d.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/types.d.ts#L24">src/types.d.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -230,17 +232,17 @@
 					<div class="tsd-signature tsd-kind-icon">EBNFItem<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>term<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>prod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/types.d.ts#L14">src/types.d.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/types.d.ts#L28">src/types.d.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="ebnfobject" class="tsd-anchor"></a>
 					<h3>EBNFObject</h3>
-					<div class="tsd-signature tsd-kind-icon">EBNFObject<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>defn<span class="tsd-signature-symbol">: </span><a href="globals.html#ebnfchoice" class="tsd-signature-type">EBNFChoice</a><span class="tsd-signature-symbol">; </span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
+					<div class="tsd-signature tsd-kind-icon">EBNFObject<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>defn<span class="tsd-signature-symbol">: </span><a href="globals.html#ebnfchoice" class="tsd-signature-type">EBNFChoice</a><span class="tsd-signature-symbol">; </span>family<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/types.d.ts#L5">src/types.d.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/types.d.ts#L11">src/types.d.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -248,9 +250,29 @@
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter">
 								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> defn<span class="tsd-signature-symbol">: </span><a href="globals.html#ebnfchoice" class="tsd-signature-type">EBNFChoice</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>The production definition.</p>
+									</div>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> family<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>If <code>true</code>, this production is a family group, an abstract superclass.
+											If a string, the name of the family that this production extends.
+										Else, this is not a fmaily group nor does it belong to one.</p>
+									</div>
+								</div>
 							</li>
 							<li class="tsd-parameter">
 								<h5><span class="tsd-flag ts-flagReadonly">Readonly</span> name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>The name of the production.</p>
+									</div>
+								</div>
 							</li>
 						</ul>
 					</div>
@@ -261,7 +283,7 @@
 					<div class="tsd-signature tsd-kind-icon">EBNFSequence<span class="tsd-signature-symbol">:</span> <a href="globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#ebnfitem" class="tsd-signature-type">EBNFItem</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/types.d.ts#L12">src/types.d.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/types.d.ts#L26">src/types.d.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -271,7 +293,7 @@
 					<div class="tsd-signature tsd-kind-icon">Error<wbr>Code<wbr>Constructor<wbr>Properties<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>code<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>col_index<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>line_index<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>name<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/error/ErrorCode.ts#L1">src/error/ErrorCode.ts:1</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/error/ErrorCode.ts#L1">src/error/ErrorCode.ts:1</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -346,7 +368,7 @@
 					<div class="tsd-signature tsd-kind-icon">Grammar<wbr>Symbol<span class="tsd-signature-symbol">:</span> <a href="globals.html#grammarterminal" class="tsd-signature-type">GrammarTerminal</a><span class="tsd-signature-symbol"> | </span><a href="classes/production.html" class="tsd-signature-type">Production</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/grammar/Grammar.ts#L11">src/grammar/Grammar.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/grammar/Grammar.ts#L11">src/grammar/Grammar.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -356,9 +378,30 @@
 					<div class="tsd-signature tsd-kind-icon">Grammar<wbr>Terminal<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="classes/terminal.html" class="tsd-signature-type">Terminal</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/grammar/Grammar.ts#L16">src/grammar/Grammar.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/grammar/Grammar.ts#L16">src/grammar/Grammar.ts:16</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+					<a name="mutable" class="tsd-anchor"></a>
+					<h3>Mutable</h3>
+					<div class="tsd-signature tsd-kind-icon">Mutable&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/types.d.ts#L1">src/types.d.ts:1</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T</h4>
+						</li>
+					</ul>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
 					<a name="nonemptyarray" class="tsd-anchor"></a>
@@ -366,7 +409,7 @@
 					<div class="tsd-signature tsd-kind-icon">Nonempty<wbr>Array&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/types.d.ts#L1">src/types.d.ts:1</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/types.d.ts#L7">src/types.d.ts:7</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -382,7 +425,7 @@
 					<div class="tsd-signature tsd-kind-icon">State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadonlySet</span><span class="tsd-signature-symbol">&lt;</span><a href="classes/configuration.html" class="tsd-signature-type">Configuration</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/parser/Parser.ts#L23">src/parser/Parser.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/parser/Parser.ts#L23">src/parser/Parser.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -390,12 +433,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="family_symbol" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> FAMILY_<wbr>SYMBOL</h3>
+					<div class="tsd-signature tsd-kind-icon">FAMILY_<wbr>SYMBOL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;$&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/ASTNode.ts#L19">src/ebnf/ASTNode.ts:19</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="param_separator" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> PARAM_<wbr>SEPARATOR</h3>
 					<div class="tsd-signature tsd-kind-icon">PARAM_<wbr>SEPARATOR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;_&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/ASTNode.ts#L16">src/ebnf/ASTNode.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/ASTNode.ts#L17">src/ebnf/ASTNode.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -405,7 +458,7 @@
 					<div class="tsd-signature tsd-kind-icon">SUB_<wbr>SEPARATOR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;__&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/ASTNode.ts#L17">src/ebnf/ASTNode.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/ASTNode.ts#L18">src/ebnf/ASTNode.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -422,7 +475,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/utils.ts#L46">src/utils.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/utils.ts#L46">src/utils.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -560,7 +613,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/main.ts#L12">src/main.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/main.ts#L12">src/main.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -586,7 +639,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/utils.ts#L32">src/utils.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/utils.ts#L32">src/utils.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -713,7 +766,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/utils.ts#L84">src/utils.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/utils.ts#L84">src/utils.ts:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -745,7 +798,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/utils.ts#L103">src/utils.ts:103</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/utils.ts#L103">src/utils.ts:103</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -777,7 +830,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/utils.ts#L60">src/utils.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/utils.ts#L60">src/utils.ts:60</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -811,7 +864,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/utils.ts#L21">src/utils.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/utils.ts#L21">src/utils.ts:21</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1174,10 +1227,16 @@
 						<a href="globals.html#grammarterminal" class="tsd-kind-icon">Grammar<wbr>Terminal</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#mutable" class="tsd-kind-icon">Mutable</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#nonemptyarray" class="tsd-kind-icon">Nonempty<wbr>Array</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#state" class="tsd-kind-icon">State</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#family_symbol" class="tsd-kind-icon">FAMILY_<wbr>SYMBOL</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#param_separator" class="tsd-kind-icon">PARAM_<wbr>SEPARATOR</a>

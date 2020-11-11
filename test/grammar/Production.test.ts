@@ -14,24 +14,22 @@ import {
 describe('Production', () => {
 	describe('.fromJSON', () => {
 		it('returns a string representing new subclasses of Production.', () => {
-			assert.deepStrictEqual(JSON.parse(`
-				[
-					{
-						"name": "Unit",
-						"defn": [
-							[{"term": "NUMBER"}],
-							["'('", {"term": "OPERATOR"}, {"prod": "Unit"}, {"prod": "Unit"}, "')'"]
-						]
-					},
-					{
-						"name": "Goal",
-						"defn": [
-							["'\\\\u0002'",                   "'\\\\u0003'"],
-							["'\\\\u0002'", {"prod": "Unit"}, "'\\\\u0003'"]
-						]
-					}
-				]
-			`).map((prod: EBNFObject) => Production.fromJSON(prod)), [
+			assert.deepStrictEqual(([
+				{
+					name: 'Unit',
+					defn: [
+						[{term: 'NUMBER'}],
+						['(', {term: 'OPERATOR'}, {prod: 'Unit'}, {prod: 'Unit'}, ')'],
+					],
+				},
+				{
+					name: 'Goal',
+					defn: [
+						['\\u0002',                 '\\u0003'],
+						['\\u0002', {prod: 'Unit'}, '\\u0003'],
+					],
+				},
+			] as EBNFObject[]).map((prod) => Production.fromJSON(prod)), [
 		`
 			export class ProductionUnit extends Production {
 				static readonly instance: ProductionUnit = new ProductionUnit();

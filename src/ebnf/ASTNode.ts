@@ -1,4 +1,5 @@
 import type {
+	Mutable,
 	NonemptyArray,
 	EBNFObject,
 	EBNFChoice,
@@ -15,6 +16,7 @@ import * as TOKEN from './Token';
 
 const PARAM_SEPARATOR: string = '_';
 const SUB_SEPARATOR:   string = '__';
+const FAMILY_SYMBOL:   string = '$';
 
 
 
@@ -108,9 +110,9 @@ export class ASTNodeConst extends ASTNodeExpr {
 	transform(_nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
 		return [
 			[
-				(this.p_node instanceof TOKEN.TokenCharCode) ? `'\\u${ this.source.slice(2).padStart(4, '0') }'` :
+				(this.p_node instanceof TOKEN.TokenCharCode) ? `\\u${ this.source.slice(2).padStart(4, '0') }` : // remove '#x'
 				(this.p_node instanceof TOKEN.TokenCharClass) ? `'${ this.source }'` :
-				`'${ this.source.slice(1, -1) }'` // replace double-quotes with single-quotes
+				this.source.slice(1, -1) // remove double-quotes
 			],
 		];
 	}
@@ -144,7 +146,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 			]
 			/* TitleCase: production identifier */
 			: utils.NonemptyArray_flatMap(this.expand(nt) as readonly ConcreteReference[] as NonemptyArray<ConcreteReference>, (cr) => [
-				[{prod: cr.toString()}]
+				[{prod: cr.toString()}],
 			])
 		;
 	}
@@ -169,7 +171,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 					], nt)
 				).slice(1) // slice off the \b00 case because `R<+X, +Y>` should never give `R`.
 			)
-			: [new ConcreteReference(this.name, [], nt)]
+			: [new ConcreteReference(this.name)]
 		;
 	}
 }
@@ -191,7 +193,7 @@ export class ASTNodeItem extends ASTNodeExpr {
 		return (this.conditions.some((cond) => cond.include === nt.hasSuffix(cond)))
 			? this.item.transform(nt, data)
 			: [
-				['\'\''],
+				[''],
 			]
 		;
 	}
@@ -241,7 +243,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 					]),
 				});
 				return [
-					['\'\''],
+					[''],
 					[{prod: name}],
 				];
 			}],
@@ -250,7 +252,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 					name,
 					defn: utils.NonemptyArray_flatMap(trans, (seq) => [
 						seq,
-						[{prod: name}, '\',\'', ...seq],
+						[{prod: name}, ',', ...seq],
 					]),
 				});
 				return [
@@ -259,7 +261,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 			}],
 			[Unop.OPT, () => {
 				return [
-					['\'\''],
+					[''],
 					...trans,
 				];
 			}],
@@ -340,7 +342,7 @@ export class ASTNodeNonterminal extends ASTNodeEBNF {
 					])
 				)
 			)
-			: [new ConcreteNonterminal(this.name, [])]
+			: [new ConcreteNonterminal(this.name)]
 		;
 	}
 }
@@ -358,10 +360,29 @@ export class ASTNodeProduction extends ASTNodeEBNF {
 
 	transform(): EBNFObject[] {
 		const productions_data: EBNFObject[] = [];
-		productions_data.push(...this.nonterminal.expand().map((n) => ({
-			name: n.toString(),
-			defn: this.definition.transform(n, productions_data),
-		})));
+		const nonterms: ConcreteNonterminal[] = this.nonterminal.expand();
+		let data: Mutable<EBNFObject>[] = nonterms.map((cn) => ({
+			name: cn.toString(),
+			defn: this.definition.transform(cn, productions_data),
+		}));
+		if (nonterms.length >= 2) {
+			const family_name: string = `${ nonterms[0].name }${ FAMILY_SYMBOL }`;
+			productions_data.push({
+				name: family_name,
+				family: true,
+				defn: data.flatMap((json) => json.defn) as readonly EBNFSequence[] as EBNFChoice,
+			});
+			data.forEach((json) => {
+				json.family = family_name;
+			});
+		};
+		productions_data.push(...data);
+		productions_data.forEach((json) => {
+			(json as Mutable<EBNFObject>).defn = json.defn
+				.map((seq) => seq.filter((item) => item !== '') as readonly EBNFItem[] as EBNFSequence)
+				.filter((seq) => seq.length) as readonly EBNFSequence[] as EBNFChoice
+			;
+		});
 		return productions_data;
 	}
 }
@@ -377,10 +398,7 @@ export class ASTNodeGoal extends ASTNodeEBNF {
 	}
 
 	transform(): EBNFObject[] {
-		return this.productions.flatMap((prod) => prod.transform()).map((prod) => ({
-			name: prod.name,
-			defn: prod.defn.map((seq) => seq.filter((item) => item !== '\'\'') as readonly EBNFItem[] as EBNFSequence) as readonly EBNFSequence[] as EBNFChoice,
-		}));
+		return this.productions.flatMap((prod) => prod.transform());
 	}
 }
 
@@ -389,14 +407,14 @@ export class ASTNodeGoal extends ASTNodeEBNF {
 class ConcreteReference {
 	constructor (
 		readonly name: string,
-		readonly suffixes: ASTNodeArg[],
-		readonly nonterminal: ConcreteNonterminal,
+		readonly suffixes: ASTNodeArg[] = [],
+		readonly nonterminal?: ConcreteNonterminal,
 	) {
 	}
 
 	/** @override */
 	toString(): string {
-		return `${ this.name }${ this.suffixes.map((s) => s.append === true || s.append === 'inherit' && this.nonterminal.hasSuffix(s)
+		return `${ this.name }${ this.suffixes.map((s) => s.append === true || s.append === 'inherit' && this.nonterminal?.hasSuffix(s)
 			? `${ PARAM_SEPARATOR }${ s.source }`
 			: ''
 		).join('') }`;
@@ -411,7 +429,7 @@ class ConcreteNonterminal {
 
 	constructor (
 		readonly name: string,
-		readonly suffixes: ASTNodeParam[],
+		readonly suffixes: ASTNodeParam[] = [],
 	) {
 	}
 

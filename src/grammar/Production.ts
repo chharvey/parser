@@ -20,22 +20,31 @@ import type {
  */
 export abstract class Production {
 	/**
+	 * Make a classname for a Production.
+	 * @param   json a JSON object representing a production
+	 * @returns      the classname
+	 */
+	static classnameOf(json: EBNFObject | {readonly prod: string}): string {
+		return `Production${ ('prod' in json) ? json.prod : json.name }`;
+	}
+
+	/**
 	 * Takes a JSON object representing a syntactic production
 	 * and returns a string in TypeScript language representing subclasses of {@link Production}.
 	 * @param   json a JSON object representing a production
 	 * @returns      a string to print to a TypeScript file
 	 */
 	static fromJSON(json: EBNFObject): string {
-		return `
-			export class Production${ json.name } extends Production {
-				static readonly instance: Production${ json.name } = new Production${ json.name }();
+		return (json.family === true) ? '' : `
+			export class ${ this.classnameOf(json) } extends Production {
+				static readonly instance: ${ this.classnameOf(json) } = new ${ this.classnameOf(json) }();
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
 						${ json.defn.map((seq) => `[${ seq.map((it) =>
-							(typeof it === 'string') ? it :
+							(typeof it === 'string') ? `'${ it }'` :
 							('term' in it) ? `TERMINAL.Terminal${ utils.macroToTitle(it.term) }.instance` :
-							`Production${ it.prod }.instance`
+							`${ this.classnameOf(it) }.instance`
 						) }]`) },
 					];
 				}

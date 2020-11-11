@@ -101,7 +101,7 @@
 					<div class="tsd-signature tsd-kind-icon">OPS_<wbr>BIN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../enums/binop.html" class="tsd-signature-type">Binop</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, Binop&gt;([[&#x60;.&#x60;, Binop.ORDER],[&#x60;&amp;&#x60;, Binop.CONCAT],[&#x60;|&#x60;, Binop.ALTERN],])</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L24">src/ebnf/Decorator.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L24">src/ebnf/Decorator.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -111,7 +111,7 @@
 					<div class="tsd-signature tsd-kind-icon">OPS_<wbr>UN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../enums/unop.html" class="tsd-signature-type">Unop</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, Unop&gt;([[&#x60;+&#x60;, Unop.PLUS],[&#x60;*&#x60;, Unop.STAR],[&#x60;#&#x60;, Unop.HASH],[&#x60;?&#x60;, Unop.OPT],])</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L17">src/ebnf/Decorator.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L17">src/ebnf/Decorator.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -121,7 +121,7 @@
 					<div class="tsd-signature tsd-kind-icon">PARAMOPS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"inherit"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, boolean | &#x27;inherit&#x27;&gt;([[&#x60;+&#x60;, true],[&#x60;-&#x60;, false],[&#x60;?&#x60;, &#x27;inherit&#x27;],])</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L30">src/ebnf/Decorator.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L30">src/ebnf/Decorator.ts:30</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -132,20 +132,11 @@
 					<a name="decorate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> decorate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeparameterset__0__list.html" class="tsd-signature-type">ParseNodeParameterSet__0__List</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodeparam.html" class="tsd-signature-type">ASTNodeParam</a><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeparameterset.html" class="tsd-signature-type">ParseNodeParameterSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodeparam.html" class="tsd-signature-type">ASTNodeParam</a><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeargumentset__0__list.html" class="tsd-signature-type">ParseNodeArgumentSet__0__List</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodearg.html" class="tsd-signature-type">ASTNodeArg</a><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeargumentset.html" class="tsd-signature-type">ParseNodeArgumentSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodearg.html" class="tsd-signature-type">ASTNodeArg</a><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeconditionset__0__list.html" class="tsd-signature-type">ParseNodeConditionSet__0__List</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodecondition.html" class="tsd-signature-type">ASTNodeCondition</a><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeconditionset.html" class="tsd-signature-type">ParseNodeConditionSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodecondition.html" class="tsd-signature-type">ASTNodeCondition</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeparameterset__0__list.html" class="tsd-signature-type">ParseNodeParameterSet__0__List</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeparameterset.html" class="tsd-signature-type">ParseNodeParameterSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodeparam.html" class="tsd-signature-type">ASTNodeParam</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeargumentset__0__list.html" class="tsd-signature-type">ParseNodeArgumentSet__0__List</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeargumentset.html" class="tsd-signature-type">ParseNodeArgumentSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodearg.html" class="tsd-signature-type">ASTNodeArg</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeconditionset__0__list.html" class="tsd-signature-type">ParseNodeConditionSet__0__List</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeconditionset.html" class="tsd-signature-type">ParseNodeConditionSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodecondition.html" class="tsd-signature-type">ASTNodeCondition</a><span class="tsd-signature-symbol">&gt;</span></li>
 						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodereference.html" class="tsd-signature-type">ParseNodeReference</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnoderef.html" class="tsd-signature-type">ASTNodeRef</a></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeunit.html" class="tsd-signature-type">ParseNodeUnit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeunary.html" class="tsd-signature-type">ParseNodeUnary</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeitem.html" class="tsd-signature-type">ParseNodeItem</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeorder.html" class="tsd-signature-type">ParseNodeOrder</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeconcat.html" class="tsd-signature-type">ParseNodeConcat</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodealtern.html" class="tsd-signature-type">ParseNodeAltern</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></li>
-						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodedefinition.html" class="tsd-signature-type">ParseNodeDefinition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></li>
+						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeunit.html" class="tsd-signature-type">ParseNodeUnit</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeunary.html" class="tsd-signature-type">ParseNodeUnary</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeitem.html" class="tsd-signature-type">ParseNodeItem</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeorder.html" class="tsd-signature-type">ParseNodeOrder</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeconcat.html" class="tsd-signature-type">ParseNodeConcat</a><span class="tsd-signature-symbol"> | </span><a href="parsenodealtern.html" class="tsd-signature-type">ParseNodeAltern</a><span class="tsd-signature-symbol"> | </span><a href="parsenodedefinition.html" class="tsd-signature-type">ParseNodeDefinition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></li>
 						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodenonterminalname.html" class="tsd-signature-type">ParseNodeNonterminalName</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnodenonterminal.html" class="tsd-signature-type">ASTNodeNonterminal</a></li>
 						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodeproduction.html" class="tsd-signature-type">ParseNodeProduction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnodeproduction.html" class="tsd-signature-type">ASTNodeProduction</a></li>
 						<li class="tsd-signature tsd-kind-icon">decorate<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="parsenodegoal__0__list.html" class="tsd-signature-type">ParseNodeGoal__0__List</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodeproduction.html" class="tsd-signature-type">ASTNodeProduction</a><span class="tsd-signature-symbol">&gt;</span></li>
@@ -156,7 +147,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L42">src/ebnf/Decorator.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L42">src/ebnf/Decorator.ts:42</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -168,7 +159,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>node: <a href="parsenodeparameterset__0__list.html" class="tsd-signature-type">ParseNodeParameterSet__0__List</a></h5>
+									<h5>node: <a href="parsenodeparameterset__0__list.html" class="tsd-signature-type">ParseNodeParameterSet__0__List</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeparameterset.html" class="tsd-signature-type">ParseNodeParameterSet</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodeparam.html" class="tsd-signature-type">ASTNodeParam</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -177,27 +168,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L43">src/ebnf/Decorator.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L46">src/ebnf/Decorator.ts:46</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>node: <a href="parsenodeparameterset.html" class="tsd-signature-type">ParseNodeParameterSet</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodeparam.html" class="tsd-signature-type">ASTNodeParam</a><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L44">src/ebnf/Decorator.ts:44</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="parsenodeargumentset__0__list.html" class="tsd-signature-type">ParseNodeArgumentSet__0__List</a></h5>
+									<h5>node: <a href="parsenodeargumentset__0__list.html" class="tsd-signature-type">ParseNodeArgumentSet__0__List</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeargumentset.html" class="tsd-signature-type">ParseNodeArgumentSet</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodearg.html" class="tsd-signature-type">ASTNodeArg</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -205,27 +182,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L45">src/ebnf/Decorator.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L50">src/ebnf/Decorator.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>node: <a href="parsenodeargumentset.html" class="tsd-signature-type">ParseNodeArgumentSet</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodearg.html" class="tsd-signature-type">ASTNodeArg</a><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L46">src/ebnf/Decorator.ts:46</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="parsenodeconditionset__0__list.html" class="tsd-signature-type">ParseNodeConditionSet__0__List</a></h5>
+									<h5>node: <a href="parsenodeconditionset__0__list.html" class="tsd-signature-type">ParseNodeConditionSet__0__List</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeconditionset.html" class="tsd-signature-type">ParseNodeConditionSet</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodecondition.html" class="tsd-signature-type">ASTNodeCondition</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -233,21 +196,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L47">src/ebnf/Decorator.ts:47</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="parsenodeconditionset.html" class="tsd-signature-type">ParseNodeConditionSet</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../globals.html#nonemptyarray" class="tsd-signature-type">NonemptyArray</a><span class="tsd-signature-symbol">&lt;</span><a href="astnodecondition.html" class="tsd-signature-type">ASTNodeCondition</a><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L48">src/ebnf/Decorator.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L54">src/ebnf/Decorator.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -261,13 +210,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L49">src/ebnf/Decorator.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L55">src/ebnf/Decorator.ts:55</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>node: <a href="parsenodeunit.html" class="tsd-signature-type">ParseNodeUnit</a></h5>
+									<h5>node: <a href="parsenodeunit.html" class="tsd-signature-type">ParseNodeUnit</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeunary.html" class="tsd-signature-type">ParseNodeUnary</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeitem.html" class="tsd-signature-type">ParseNodeItem</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeorder.html" class="tsd-signature-type">ParseNodeOrder</a><span class="tsd-signature-symbol"> | </span><a href="parsenodeconcat.html" class="tsd-signature-type">ParseNodeConcat</a><span class="tsd-signature-symbol"> | </span><a href="parsenodealtern.html" class="tsd-signature-type">ParseNodeAltern</a><span class="tsd-signature-symbol"> | </span><a href="parsenodedefinition.html" class="tsd-signature-type">ParseNodeDefinition</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></h4>
@@ -275,91 +224,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L50">src/ebnf/Decorator.ts:50</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="parsenodeunary.html" class="tsd-signature-type">ParseNodeUnary</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L51">src/ebnf/Decorator.ts:51</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="parsenodeitem.html" class="tsd-signature-type">ParseNodeItem</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L52">src/ebnf/Decorator.ts:52</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="parsenodeorder.html" class="tsd-signature-type">ParseNodeOrder</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L53">src/ebnf/Decorator.ts:53</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="parsenodeconcat.html" class="tsd-signature-type">ParseNodeConcat</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L54">src/ebnf/Decorator.ts:54</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="parsenodealtern.html" class="tsd-signature-type">ParseNodeAltern</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L55">src/ebnf/Decorator.ts:55</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="parsenodedefinition.html" class="tsd-signature-type">ParseNodeDefinition</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="astnodeexpr.html" class="tsd-signature-type">ASTNodeExpr</a></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L56">src/ebnf/Decorator.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L64">src/ebnf/Decorator.ts:64</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -373,7 +238,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L57">src/ebnf/Decorator.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L65">src/ebnf/Decorator.ts:65</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -387,7 +252,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L58">src/ebnf/Decorator.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L66">src/ebnf/Decorator.ts:66</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -401,7 +266,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L59">src/ebnf/Decorator.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L67">src/ebnf/Decorator.ts:67</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -415,7 +280,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/4b54a02/src/ebnf/Decorator.ts#L60">src/ebnf/Decorator.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/5e9e06e/src/ebnf/Decorator.ts#L68">src/ebnf/Decorator.ts:68</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>

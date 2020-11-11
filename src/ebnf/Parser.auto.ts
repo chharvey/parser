@@ -157,7 +157,7 @@
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						[ProductionAltern.instance],
+						[ProductionAltern.instance],[ProductionAltern.instance,'|'],[ProductionAltern.instance,'&'],[ProductionAltern.instance,'.'],['|',ProductionAltern.instance],['|',ProductionAltern.instance,'|'],['|',ProductionAltern.instance,'&'],['|',ProductionAltern.instance,'.'],['&',ProductionAltern.instance],['&',ProductionAltern.instance,'|'],['&',ProductionAltern.instance,'&'],['&',ProductionAltern.instance,'.'],['.',ProductionAltern.instance],['.',ProductionAltern.instance,'|'],['.',ProductionAltern.instance,'&'],['.',ProductionAltern.instance,'.'],
 					];
 				}
 			}
@@ -177,7 +177,7 @@
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						[ProductionNonterminalName.instance,':::=',ProductionDefinition.instance,';'],[ProductionNonterminalName.instance,':::=','|',ProductionDefinition.instance,';'],[ProductionNonterminalName.instance,'::=',ProductionDefinition.instance,';'],[ProductionNonterminalName.instance,'::=','|',ProductionDefinition.instance,';'],
+						[ProductionNonterminalName.instance,':::=',ProductionDefinition.instance,';'],[ProductionNonterminalName.instance,'::=',ProductionDefinition.instance,';'],
 					];
 				}
 			}
@@ -204,109 +204,109 @@
 		
 		
 			export class ParseNodeParameterSet__0__List extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token] | readonly [ParseNodeParameterSet__0__List,Token,Token]
 				;
 			}
 		
 			export class ParseNodeParameterSet extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token,ParseNodeParameterSet__0__List,Token]
 				;
 			}
 		
 			export class ParseNodeArgumentSet__0__List extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token,Token] | readonly [ParseNodeArgumentSet__0__List,Token,Token,Token] | readonly [Token,Token] | readonly [ParseNodeArgumentSet__0__List,Token,Token,Token] | readonly [Token,Token] | readonly [ParseNodeArgumentSet__0__List,Token,Token,Token]
 				;
 			}
 		
 			export class ParseNodeArgumentSet extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token,ParseNodeArgumentSet__0__List,Token]
 				;
 			}
 		
 			export class ParseNodeConditionSet__0__List extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token,Token] | readonly [ParseNodeConditionSet__0__List,Token,Token,Token] | readonly [Token,Token] | readonly [ParseNodeConditionSet__0__List,Token,Token,Token]
 				;
 			}
 		
 			export class ParseNodeConditionSet extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token,ParseNodeConditionSet__0__List,Token]
 				;
 			}
 		
 			export class ParseNodeReference extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token] | readonly [ParseNodeReference,ParseNodeArgumentSet]
 				;
 			}
 		
 			export class ParseNodeUnit extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token] | readonly [Token] | readonly [Token] | readonly [ParseNodeReference] | readonly [Token,ParseNodeDefinition,Token]
 				;
 			}
 		
 			export class ParseNodeUnary extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [ParseNodeUnit] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token,Token] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token,Token] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token,Token]
 				;
 			}
 		
 			export class ParseNodeItem extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [ParseNodeUnary] | readonly [ParseNodeConditionSet,ParseNodeItem]
 				;
 			}
 		
 			export class ParseNodeOrder extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [ParseNodeItem] | readonly [ParseNodeOrder,ParseNodeItem] | readonly [ParseNodeOrder,Token,ParseNodeItem]
 				;
 			}
 		
 			export class ParseNodeConcat extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [ParseNodeOrder] | readonly [ParseNodeConcat,Token,ParseNodeOrder]
 				;
 			}
 		
 			export class ParseNodeAltern extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [ParseNodeConcat] | readonly [ParseNodeAltern,Token,ParseNodeConcat]
 				;
 			}
 		
 			export class ParseNodeDefinition extends ParseNode {
-				declare children:
-					readonly [ParseNodeAltern]
+				declare readonly children:
+					readonly [ParseNodeAltern] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token]
 				;
 			}
 		
 			export class ParseNodeNonterminalName extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token] | readonly [ParseNodeNonterminalName,ParseNodeParameterSet]
 				;
 			}
 		
 			export class ParseNodeProduction extends ParseNode {
-				declare children:
-					readonly [ParseNodeNonterminalName,Token,ParseNodeDefinition,Token] | readonly [ParseNodeNonterminalName,Token,Token,ParseNodeDefinition,Token] | readonly [ParseNodeNonterminalName,Token,ParseNodeDefinition,Token] | readonly [ParseNodeNonterminalName,Token,Token,ParseNodeDefinition,Token]
+				declare readonly children:
+					readonly [ParseNodeNonterminalName,Token,ParseNodeDefinition,Token] | readonly [ParseNodeNonterminalName,Token,ParseNodeDefinition,Token]
 				;
 			}
 		
 			export class ParseNodeGoal__0__List extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [ParseNodeProduction] | readonly [ParseNodeGoal__0__List,ParseNodeProduction]
 				;
 			}
 		
 			export class ParseNodeGoal extends ParseNode {
-				declare children:
+				declare readonly children:
 					readonly [Token,Token] | readonly [Token,ParseNodeGoal__0__List,Token]
 				;
 			}
