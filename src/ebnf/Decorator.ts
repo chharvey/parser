@@ -58,6 +58,7 @@ export class Decorator {
 		| PARSER.ParseNodeItem
 		| PARSER.ParseNodeOrder
 		| PARSER.ParseNodeConcat
+		| PARSER.ParseNodeMult
 		| PARSER.ParseNodeAltern
 		| PARSER.ParseNodeDefinition
 	): ASTNODE.ASTNodeExpr;
@@ -194,6 +195,7 @@ export class Decorator {
 
 		} else if (
 			node instanceof PARSER.ParseNodeConcat ||
+			node instanceof PARSER.ParseNodeMult ||
 			node instanceof PARSER.ParseNodeAltern
 		) {
 			return (node.children.length === 1)

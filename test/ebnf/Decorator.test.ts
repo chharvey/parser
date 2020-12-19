@@ -46,12 +46,12 @@ describe('Decorator', () => {
 				assert.strictEqual(prod.children[1].source, 'NUMBER | "(" OPERATOR Unit Unit ")"');
 			});
 
-			specify('Altern ::= Altern "|" Concat;', () => {
+			specify('Altern ::= Altern "|" Mult;', () => {
 				/*
 					<Op operator=ALTERN>
 						<Ref name='NUMBER'/>
 						<Op operator=ORDER source='"(" OPERATOR Unit Unit ")"'>...</Op>
-					</Production>
+					</Op>
 				*/
 				const altern: ASTNODE.ASTNodeExpr = goal.children[0].children[1];
 				assert.ok(altern instanceof ASTNODE.ASTNodeOpBin);

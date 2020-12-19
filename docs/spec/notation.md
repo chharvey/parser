@@ -150,6 +150,13 @@ The following table is an informative summary of the operators described below.
 		</tr>
 		<tr>
 			<th>6</th>
+			<td>Multiple Alternation</td>
+			<td>binary infix</td>
+			<td>left-to-right</td>
+			<td><code>… || …</code></td>
+		</tr>
+		<tr>
+			<th>7</th>
 			<td>Alternation</td>
 			<td>binary infix</td>
 			<td>left-to-right</td>
@@ -230,6 +237,53 @@ Unordered Concatenation is weaker than concatenation:
 `A & B C` is equivalent to `A & (B C)`.
 
 
+### Multiple Alternation
+Multiple Alternation of symbols indicates a choice of one or more of those symbols, concatenated in order.
+
+Multiple Alternation syntax uses the symbol `||` and is shorthand for combinatorial alternative choice:
+```
+N
+	::= A || B;
+```
+transforms to
+```
+N ::=
+	| A
+	| B
+	| A B
+;
+```
+Multiple Alternation is evaluated left-to-right, so the EBNF expression `A || B || C`
+is equivalent to `(A || B) || C`.
+```
+N
+	::= A || B || C;
+```
+transforms to
+```
+N ::=
+	| (A || B)
+	| C
+	| (A || B) C
+;
+```
+which in turn transforms to
+```
+N ::=
+	| A
+	| B
+	| A B
+	| C
+	| A C
+	| B C
+	| A B C
+;
+```
+
+Multiple Alternation is weaker than unordered concatenation:
+`A || B & C` is equivalent to `A || (B & C)`.
+
+
 ### Alternation
 Alternation of symbols indicates an alternative choice of those symbols in the formal grammar.
 
@@ -268,8 +322,8 @@ N ::=
 ;
 ```
 
-Alternation is weaker than Unordered Concatenation:
-`A | B & C` is equivalent to `A | (B & C)`.
+Alternation is weaker than Multiple Alternation:
+`A | B || C` is equivalent to `A | (B || C)`.
 
 Alternation on its own is not that interesting, but it can be useful when combined with other operations:
 ```

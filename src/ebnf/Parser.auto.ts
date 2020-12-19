@@ -142,12 +142,22 @@
 				}
 			}
 		
+			export class ProductionMult extends Production {
+				static readonly instance: ProductionMult = new ProductionMult();
+				/** @implements Production */
+				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+					return [
+						[ProductionConcat.instance],[ProductionMult.instance,'||',ProductionConcat.instance],
+					];
+				}
+			}
+		
 			export class ProductionAltern extends Production {
 				static readonly instance: ProductionAltern = new ProductionAltern();
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						[ProductionConcat.instance],[ProductionAltern.instance,'|',ProductionConcat.instance],
+						[ProductionMult.instance],[ProductionAltern.instance,'|',ProductionMult.instance],
 					];
 				}
 			}
@@ -157,7 +167,7 @@
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						[ProductionAltern.instance],[ProductionAltern.instance,'.'],[ProductionAltern.instance,'&'],[ProductionAltern.instance,'|'],['.',ProductionAltern.instance],['.',ProductionAltern.instance,'.'],['.',ProductionAltern.instance,'&'],['.',ProductionAltern.instance,'|'],['&',ProductionAltern.instance],['&',ProductionAltern.instance,'.'],['&',ProductionAltern.instance,'&'],['&',ProductionAltern.instance,'|'],['|',ProductionAltern.instance],['|',ProductionAltern.instance,'.'],['|',ProductionAltern.instance,'&'],['|',ProductionAltern.instance,'|'],
+						[ProductionAltern.instance],[ProductionAltern.instance,'.'],[ProductionAltern.instance,'&'],[ProductionAltern.instance,'||'],[ProductionAltern.instance,'|'],['.',ProductionAltern.instance],['.',ProductionAltern.instance,'.'],['.',ProductionAltern.instance,'&'],['.',ProductionAltern.instance,'||'],['.',ProductionAltern.instance,'|'],['&',ProductionAltern.instance],['&',ProductionAltern.instance,'.'],['&',ProductionAltern.instance,'&'],['&',ProductionAltern.instance,'||'],['&',ProductionAltern.instance,'|'],['||',ProductionAltern.instance],['||',ProductionAltern.instance,'.'],['||',ProductionAltern.instance,'&'],['||',ProductionAltern.instance,'||'],['||',ProductionAltern.instance,'|'],['|',ProductionAltern.instance],['|',ProductionAltern.instance,'.'],['|',ProductionAltern.instance,'&'],['|',ProductionAltern.instance,'||'],['|',ProductionAltern.instance,'|'],
 					];
 				}
 			}
@@ -275,15 +285,21 @@
 				;
 			}
 		
+			export class ParseNodeMult extends ParseNode {
+				declare readonly children:
+					readonly [ParseNodeConcat] | readonly [ParseNodeMult,Token,ParseNodeConcat]
+				;
+			}
+		
 			export class ParseNodeAltern extends ParseNode {
 				declare readonly children:
-					readonly [ParseNodeConcat] | readonly [ParseNodeAltern,Token,ParseNodeConcat]
+					readonly [ParseNodeMult] | readonly [ParseNodeAltern,Token,ParseNodeMult]
 				;
 			}
 		
 			export class ParseNodeDefinition extends ParseNode {
 				declare readonly children:
-					readonly [ParseNodeAltern] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token]
+					readonly [ParseNodeAltern] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token]
 				;
 			}
 		
@@ -318,9 +334,9 @@
 			 */
 			constructor (source: string) {
 				super(new LexerEBNF(source), new Grammar([
-					ProductionParameterSet__0__List.instance,ProductionParameterSet.instance,ProductionArgumentSet__0__List.instance,ProductionArgumentSet.instance,ProductionConditionSet__0__List.instance,ProductionConditionSet.instance,ProductionReference.instance,ProductionUnit.instance,ProductionUnary.instance,ProductionItem.instance,ProductionOrder.instance,ProductionConcat.instance,ProductionAltern.instance,ProductionDefinition.instance,ProductionNonterminalName.instance,ProductionProduction.instance,ProductionGoal__0__List.instance,ProductionGoal.instance,
+					ProductionParameterSet__0__List.instance,ProductionParameterSet.instance,ProductionArgumentSet__0__List.instance,ProductionArgumentSet.instance,ProductionConditionSet__0__List.instance,ProductionConditionSet.instance,ProductionReference.instance,ProductionUnit.instance,ProductionUnary.instance,ProductionItem.instance,ProductionOrder.instance,ProductionConcat.instance,ProductionMult.instance,ProductionAltern.instance,ProductionDefinition.instance,ProductionNonterminalName.instance,ProductionProduction.instance,ProductionGoal__0__List.instance,ProductionGoal.instance,
 				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
-					[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],[ProductionParameterSet.instance, ParseNodeParameterSet],[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],[ProductionArgumentSet.instance, ParseNodeArgumentSet],[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],[ProductionConditionSet.instance, ParseNodeConditionSet],[ProductionReference.instance, ParseNodeReference],[ProductionUnit.instance, ParseNodeUnit],[ProductionUnary.instance, ParseNodeUnary],[ProductionItem.instance, ParseNodeItem],[ProductionOrder.instance, ParseNodeOrder],[ProductionConcat.instance, ParseNodeConcat],[ProductionAltern.instance, ParseNodeAltern],[ProductionDefinition.instance, ParseNodeDefinition],[ProductionNonterminalName.instance, ParseNodeNonterminalName],[ProductionProduction.instance, ParseNodeProduction],[ProductionGoal__0__List.instance, ParseNodeGoal__0__List],[ProductionGoal.instance, ParseNodeGoal],
+					[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],[ProductionParameterSet.instance, ParseNodeParameterSet],[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],[ProductionArgumentSet.instance, ParseNodeArgumentSet],[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],[ProductionConditionSet.instance, ParseNodeConditionSet],[ProductionReference.instance, ParseNodeReference],[ProductionUnit.instance, ParseNodeUnit],[ProductionUnary.instance, ParseNodeUnary],[ProductionItem.instance, ParseNodeItem],[ProductionOrder.instance, ParseNodeOrder],[ProductionConcat.instance, ParseNodeConcat],[ProductionMult.instance, ParseNodeMult],[ProductionAltern.instance, ParseNodeAltern],[ProductionDefinition.instance, ParseNodeDefinition],[ProductionNonterminalName.instance, ParseNodeNonterminalName],[ProductionProduction.instance, ParseNodeProduction],[ProductionGoal__0__List.instance, ParseNodeGoal__0__List],[ProductionGoal.instance, ParseNodeGoal],
 				]));
 			}
 			// @ts-expect-error
