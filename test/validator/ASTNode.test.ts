@@ -51,10 +51,21 @@ describe('ASTNode', () => {
 	context('ASTNODE imports from ebnf', () => {
 		describe('ASTNODE.ASTNodeExpr', () => {
 			describe('#transform', () => {
+				function makeProductionDefn(ebnf: string): EBNFChoice {
+					return Decorator.decorate(new ParserEBNF(ebnf).parse()).children[0].transform()[0].defn;
+				}
+
+				describe('ASTNODE.ASTNodeConst', () => {
+					it('returns a string for a string.', () => {
+						assert.deepStrictEqual(makeProductionDefn(`
+							Alpha ::= "omega";
+						`), [
+							['omega'],
+						]);
+					});
+				});
+
 				describe('ASTNODE.ASTNodeRef', () => {
-					function makeProductionDefn(ebnf: string): EBNFChoice {
-						return Decorator.decorate(new ParserEBNF(ebnf).parse()).children[0].transform()[0].defn;
-					}
 					it('returns a terminal for a MACRO_CASE identifier.', () => {
 						assert.deepStrictEqual(makeProductionDefn(`
 							Alpha ::= ALPHA;
@@ -404,6 +415,30 @@ describe('ASTNode', () => {
 							},
 						]);
 					});
+				});
+
+				specify('ASTNODE.ASTNodeOpBin[operator=ORDER]', () => {
+					assert.deepStrictEqual(makeProductionDefn(`
+						Nonterm ::= "TERM1" TERM2;
+					`), [
+						['TERM1', {term: 'TERM2'}],
+					]);
+				});
+				specify('ASTNODE.ASTNodeOpBin[operator=CONCAT]', () => {
+					assert.deepStrictEqual(makeProductionDefn(`
+						Nonterm ::= "TERM1" & TERM2;
+					`), [
+						['TERM1', {term: 'TERM2'}],
+						[{term: 'TERM2'}, 'TERM1'],
+					]);
+				});
+				specify('ASTNODE.ASTNodeOpBin[operator=ALTERN]', () => {
+					assert.deepStrictEqual(makeProductionDefn(`
+						Nonterm ::= "TERM1" | TERM2;
+					`), [
+						['TERM1'],
+						[{term: 'TERM2'}],
+					]);
 				});
 			});
 		});
