@@ -432,6 +432,15 @@ describe('ASTNode', () => {
 						[{term: 'TERM2'}, 'TERM1'],
 					]);
 				});
+				specify('ASTNODE.ASTNodeOpBin[operator=MULT]', () => {
+					assert.deepStrictEqual(makeProductionDefn(`
+						Nonterm ::= "TERM1" || TERM2;
+					`), [
+						['TERM1'],
+						[{term: 'TERM2'}],
+						['TERM1', {term: 'TERM2'}],
+					]);
+				});
 				specify('ASTNODE.ASTNodeOpBin[operator=ALTERN]', () => {
 					assert.deepStrictEqual(makeProductionDefn(`
 						Nonterm ::= "TERM1" | TERM2;

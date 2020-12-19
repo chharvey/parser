@@ -56,8 +56,29 @@ describe('Decorator', () => {
 				const altern: ASTNODE.ASTNodeExpr = goal.children[0].children[1];
 				assert.ok(altern instanceof ASTNODE.ASTNodeOpBin);
 				assert.strictEqual(altern['operator'], Binop.ALTERN);
-				const left:  ASTNODE.ASTNodeExpr = altern.children[0];
-				const right: ASTNODE.ASTNodeExpr = altern.children[1];
+				const [left, right]: readonly ASTNODE.ASTNodeExpr[] = altern.children;
+				assert.ok(left  instanceof ASTNODE.ASTNodeRef);
+				assert.ok(right instanceof ASTNODE.ASTNodeOpBin);
+				assert.strictEqual(left['name'], 'NUMBER');
+				assert.strictEqual(right['operator'], Binop.ORDER);
+				assert.strictEqual(right.source, '"(" OPERATOR Unit Unit ")"');
+			});
+
+			specify('Mult ::= Mult "||" Concat;', () => {
+				const goal: ASTNODE.ASTNodeGoal = Decorator.decorate(new ParserEBNF(`
+					Unit ::= NUMBER || "(" OPERATOR Unit Unit ")";
+					Goal ::= #x02 Unit? #x03;
+				`).parse());
+				/*
+					<Op operator=MULT>
+						<Ref name='NUMBER'/>
+						<Op operator=ORDER source='"(" OPERATOR Unit Unit ")"'>...</Op>
+					</Production>
+				*/
+				const mult: ASTNODE.ASTNodeExpr = goal.children[0].children[1];
+				assert.ok(mult instanceof ASTNODE.ASTNodeOpBin);
+				assert.strictEqual(mult['operator'], Binop.MULT);
+				const [left, right]: readonly ASTNODE.ASTNodeExpr[] = mult.children;
 				assert.ok(left  instanceof ASTNODE.ASTNodeRef);
 				assert.ok(right instanceof ASTNODE.ASTNodeOpBin);
 				assert.strictEqual(left['name'], 'NUMBER');

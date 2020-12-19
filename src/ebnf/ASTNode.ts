@@ -32,6 +32,7 @@ export enum Unop {
 export enum Binop {
 	ORDER,
 	CONCAT,
+	MULT,
 	ALTERN,
 }
 
@@ -297,6 +298,15 @@ export class ASTNodeOpBin extends ASTNodeOp {
 					[...seq1, ...seq0],
 				])
 			)],
+			[Binop.MULT, () => [
+				...trans0,
+				...trans1,
+				...utils.NonemptyArray_flatMap<EBNFSequence, EBNFSequence>(trans0, (seq0) =>
+					utils.NonemptyArray_flatMap(trans1, (seq1) => [
+						[...seq0, ...seq1],
+					])
+				),
+			]],
 			[Binop.ALTERN, () => [
 				...trans0,
 				...trans1,

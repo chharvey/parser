@@ -22,9 +22,10 @@ export class Decorator {
 	]);
 
 	private static readonly OPS_BIN: ReadonlyMap<string, Binop> = new Map<string, Binop>([
-		[`.`, Binop.ORDER],
-		[`&`, Binop.CONCAT],
-		[`|`, Binop.ALTERN],
+		[`.`,  Binop.ORDER],
+		[`&`,  Binop.CONCAT],
+		[`||`, Binop.MULT],
+		[`|`,  Binop.ALTERN],
 	]);
 
 	private static readonly PARAMOPS: ReadonlyMap<string, boolean | 'inherit'> = new Map<string, boolean | 'inherit'>([
