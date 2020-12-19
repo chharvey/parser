@@ -42,6 +42,16 @@
 				}
 			}
 		
+			export class ProductionTestMult extends Production {
+				static readonly instance: ProductionTestMult = new ProductionTestMult();
+				/** @implements Production */
+				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+					return [
+						['Test'],[ProductionUnit.instance],['Test',ProductionUnit.instance],
+					];
+				}
+			}
+		
 		
 			export class ParseNodeUnit extends ParseNode {
 				declare readonly children:
@@ -55,6 +65,12 @@
 				;
 			}
 		
+			export class ParseNodeTestMult extends ParseNode {
+				declare readonly children:
+					readonly [Token] | readonly [ParseNodeUnit] | readonly [Token,ParseNodeUnit]
+				;
+			}
+		
 		export class ParserSample extends Parser {
 			/**
 			 * Construct a new ParserSample object.
@@ -62,9 +78,9 @@
 			 */
 			constructor (source: string) {
 				super(new LexerSample(source), new Grammar([
-					ProductionUnit.instance,ProductionGoal.instance,
+					ProductionUnit.instance,ProductionGoal.instance,ProductionTestMult.instance,
 				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
-					[ProductionUnit.instance, ParseNodeUnit],[ProductionGoal.instance, ParseNodeGoal],
+					[ProductionUnit.instance, ParseNodeUnit],[ProductionGoal.instance, ParseNodeGoal],[ProductionTestMult.instance, ParseNodeTestMult],
 				]));
 			}
 			// @ts-expect-error

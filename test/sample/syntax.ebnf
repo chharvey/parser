@@ -6,3 +6,6 @@ Unit
 
 Goal
 	::= #x02 Unit? #x03;
+
+TestMult
+	::= "Test" || Unit;
