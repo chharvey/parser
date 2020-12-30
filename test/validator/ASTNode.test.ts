@@ -417,6 +417,81 @@ describe('ASTNode', () => {
 					});
 				});
 
+				specify('ASTNODE.ASTNodeOpUn[operator=PLUS]', () => {
+					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						NonTerm ::= ALPHA BETA+ GAMMA;
+					`).parse()).children[0].transform(), [
+						{
+							name: 'NonTerm__0__List',
+							defn: [
+								[{term: 'BETA'}],
+								[{prod: 'NonTerm__0__List'}, {term: 'BETA'}],
+							],
+						},
+						{
+							name: 'NonTerm',
+							defn: [
+								[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
+							],
+						},
+					]);
+				});
+
+				specify('ASTNODE.ASTNodeOpUn[operator=STAR]', () => {
+					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						NonTerm ::= ALPHA BETA* GAMMA;
+					`).parse()).children[0].transform(), [
+						{
+							name: 'NonTerm__0__List',
+							defn: [
+								[{term: 'BETA'}],
+								[{prod: 'NonTerm__0__List'}, {term: 'BETA'}],
+							],
+						},
+						{
+							name: 'NonTerm',
+							defn: [
+								[{term: 'ALPHA'},                             {term: 'GAMMA'}],
+								[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
+							],
+						},
+					]);
+				});
+
+				specify('ASTNODE.ASTNodeOpUn[operator=HASH]', () => {
+					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						NonTerm ::= ALPHA BETA# GAMMA;
+					`).parse()).children[0].transform(), [
+						{
+							name: 'NonTerm__0__List',
+							defn: [
+								[{term: 'BETA'}],
+								[{prod: 'NonTerm__0__List'}, ',', {term: 'BETA'}],
+							],
+						},
+						{
+							name: 'NonTerm',
+							defn: [
+								[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
+							],
+						},
+					]);
+				});
+
+				specify('ASTNODE.ASTNodeOpUn[operator=OPT]', () => {
+					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						NonTerm ::= ALPHA BETA? GAMMA;
+					`).parse()).children[0].transform(), [
+						{
+							name: 'NonTerm',
+							defn: [
+								[{term: 'ALPHA'},                 {term: 'GAMMA'}],
+								[{term: 'ALPHA'}, {term: 'BETA'}, {term: 'GAMMA'}],
+							],
+						},
+					]);
+				});
+
 				specify('ASTNODE.ASTNodeOpBin[operator=ORDER]', () => {
 					assert.deepStrictEqual(makeProductionDefn(`
 						Nonterm ::= "TERM1" TERM2;
@@ -424,6 +499,7 @@ describe('ASTNode', () => {
 						['TERM1', {term: 'TERM2'}],
 					]);
 				});
+
 				specify('ASTNODE.ASTNodeOpBin[operator=CONCAT]', () => {
 					assert.deepStrictEqual(makeProductionDefn(`
 						Nonterm ::= "TERM1" & TERM2;
@@ -432,6 +508,7 @@ describe('ASTNode', () => {
 						[{term: 'TERM2'}, 'TERM1'],
 					]);
 				});
+
 				specify('ASTNODE.ASTNodeOpBin[operator=ALTERN]', () => {
 					assert.deepStrictEqual(makeProductionDefn(`
 						Nonterm ::= "TERM1" | TERM2;
