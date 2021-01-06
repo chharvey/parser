@@ -110,19 +110,18 @@ ChoiceData Transform(SemanticOp[operator: OPT] expr, Text nt, Sequence<Productio
 
 ChoiceData Transform(SemanticOp[operator: ORDER] expr, Text nt, Sequence<ProductionData> data) :=
 	1. *Assert:* `expr.children.count` is 2.
-	2. *Let* `operand0` be *UnwrapAffirm:* Transform(expr.children.0, nt, data).
-	3. *Let* `operand1` be *UnwrapAffirm:* Transform(expr.children.1, nt, data).
+	2. *Let* `operand0` be *UnwrapAffirm:* `Transform(expr.children.0, nt, data)`.
+	3. *Let* `operand1` be *UnwrapAffirm:* `Transform(expr.children.1, nt, data)`.
 	4. *Return:* a flattened mapping from `operand0` indexed by `i` to
 		a flattened mapping from `operand1` indexed by `j` to [
-			[...operand0[i]],
-			[...operand1[j]],
+			[...operand0[i], ...operand1[j]],
 		].
 ;
 
 ChoiceData Transform(SemanticOp[operator: CONCAT] expr, Text nt, Sequence<ProductionData> data) :=
 	1. *Assert:* `expr.children.count` is 2.
-	2. *Let* `operand0` be *UnwrapAffirm:* Transform(expr.children.0, nt, data).
-	3. *Let* `operand1` be *UnwrapAffirm:* Transform(expr.children.1, nt, data).
+	2. *Let* `operand0` be *UnwrapAffirm:* `Transform(expr.children.0, nt, data)`.
+	3. *Let* `operand1` be *UnwrapAffirm:* `Transform(expr.children.1, nt, data)`.
 	4. *Return:* a flattened mapping from `operand0` indexed by `i` to
 		a flattened mapping from `operand1` indexed by `j` to [
 			[...operand0[i], ...operand1[j]],
@@ -132,11 +131,12 @@ ChoiceData Transform(SemanticOp[operator: CONCAT] expr, Text nt, Sequence<Produc
 
 ChoiceData Transform(SemanticOp[operator: ALTERN] expr, Text nt, Sequence<ProductionData> data) :=
 	1. *Assert:* `expr.children.count` is 2.
-	2. *Let* `operand0` be *UnwrapAffirm:* Transform(expr.children.0, nt, data).
-	3. *Let* `operand1` be *UnwrapAffirm:* Transform(expr.children.1, nt, data).
+	2. *Let* `operand0` be *UnwrapAffirm:* `Transform(expr.children.0, nt, data)`.
+	3. *Let* `operand1` be *UnwrapAffirm:* `Transform(expr.children.1, nt, data)`.
 	4. *Return:* a flattened mapping from `operand0` indexed by `i` to
 		a flattened mapping from `operand1` indexed by `j` to [
-			[...operand0[i], ...operand1[j]],
+			[...operand0[i]],
+			[...operand1[j]],
 		].
 ;
 
