@@ -11,6 +11,19 @@ import {
 
 
 
+export class TokenCommentEBNF extends TokenComment {
+	static readonly DELIM_START: '//' = '//';
+	static readonly DELIM_END:   '\n' = '\n';
+	constructor (lexer: Lexer) {
+		super(lexer, TokenCommentEBNF.DELIM_START, TokenCommentEBNF.DELIM_END);
+	}
+	protected stopAdvancing() {
+		return Char.eq(TokenCommentEBNF.DELIM_END, this.lexer.c0);
+	}
+}
+
+
+
 export class TokenPunctuator extends Token {
 	static readonly PUNCTUATORS_4: readonly string[] = `:::=`.split(' ');
 	static readonly PUNCTUATORS_3: readonly string[] = `::=`.split(' ');
@@ -86,18 +99,5 @@ export class TokenCharClass extends Token {
 		}
 		// add ending delim to token
 		this.advance();
-	}
-}
-
-
-
-export class TokenCommentEBNF extends TokenComment {
-	static readonly DELIM_START: '//' = '//';
-	static readonly DELIM_END:   '\n' = '\n';
-	constructor (lexer: Lexer) {
-		super(lexer, TokenCommentEBNF.DELIM_START, TokenCommentEBNF.DELIM_END);
-	}
-	protected stopAdvancing() {
-		return Char.eq(TokenCommentEBNF.DELIM_END, this.lexer.c0);
 	}
 }

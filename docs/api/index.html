@@ -165,8 +165,8 @@ GROUPING
 } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
 
 <span class="hljs-comment">/** NUMBER :::= [0-9]+; */</span>
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TokenNumber <span class="hljs-keyword">extends</span> Token {
-    <span class="hljs-keyword">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TokenNumber</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Token</span> </span>{
+    <span class="hljs-title">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
         <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;NUMBER&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
         <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">this</span>.lexer.isDone &amp;&amp; <span class="hljs-regexp">/[0-9]/</span>.test(<span class="hljs-built_in">this</span>.lexer.c0.source)) {
             <span class="hljs-built_in">this</span>.advance();
@@ -174,15 +174,15 @@ GROUPING
     }
 }
 <span class="hljs-comment">/** OPERATOR :::= &quot;^&quot; | &quot;*&quot; | &quot;+&quot;; */</span>
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TokenOperator <span class="hljs-keyword">extends</span> Token {
-    <span class="hljs-keyword">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TokenOperator</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Token</span> </span>{
+    <span class="hljs-title">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
         <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;OPERATOR&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
         <span class="hljs-comment">// since only 1 character, no need to advance</span>
     }
 }
 <span class="hljs-comment">/** GROUPING :::= &quot;(&quot; | &quot;)&quot;; */</span>
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TokenGrouping <span class="hljs-keyword">extends</span> Token {
-    <span class="hljs-keyword">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TokenGrouping</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Token</span> </span>{
+    <span class="hljs-title">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
         <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;GROUPING&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
         <span class="hljs-comment">// since only 1 character, no need to advance</span>
     }
@@ -203,7 +203,7 @@ GROUPING
 } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> TOKEN <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Token&#x27;</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> LexerSExpr <span class="hljs-keyword">extends</span> Lexer {
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LexerSExpr</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Lexer</span> </span>{
     <span class="hljs-keyword">protected</span> generate_do(): Token | <span class="hljs-literal">null</span> {
         <span class="hljs-keyword">return</span> (
             (<span class="hljs-regexp">/[0-9]/</span>.test(<span class="hljs-built_in">this</span>.c0.source))       ? TOKEN.TokenNumber  (<span class="hljs-built_in">this</span>) :
@@ -277,13 +277,13 @@ Goal
 } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> TOKEN <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Token&#x27;</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TerminalNumber <span class="hljs-keyword">extends</span> Terminal {
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TerminalNumber</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Terminal</span> </span>{
     <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> instance: TerminalNumber = <span class="hljs-keyword">new</span> TerminalNumber();
     match(candidate: Token): <span class="hljs-built_in">boolean</span> {
         <span class="hljs-keyword">return</span> candidate <span class="hljs-keyword">instanceof</span> TOKEN.TokenNumber;
     }
 }
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TerminalOperator <span class="hljs-keyword">extends</span> Terminal {
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TerminalOperator</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Terminal</span> </span>{
     <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> instance: TerminalOperator = <span class="hljs-keyword">new</span> TerminalOperator();
     match(candidate: Token): <span class="hljs-built_in">boolean</span> {
         <span class="hljs-keyword">return</span> candidate <span class="hljs-keyword">instanceof</span> TOKEN.TokenOperator;
@@ -457,6 +457,9 @@ Goal
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/lexerebnf.html" class="tsd-kind-icon">LexerEBNF</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/mapeq.html" class="tsd-kind-icon">Map<wbr>Eq</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>

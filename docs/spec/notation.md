@@ -87,6 +87,78 @@ from their shorthand form to a number of productions in their formal form.
 These shorthand notations are described in the following subsections.
 
 
+### Summary
+The following table is an informative summary of the operators described below.
+
+<table>
+	<thead>
+		<tr>
+			<th>Precedence<br/><small>(1 is highest)</small></th>
+			<th>Operator Name</th>
+			<th>Arity &amp; Position</th>
+			<th>Grouping</th>
+			<th>Symbols</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th>1</th>
+			<td>Grouping</td>
+			<td>unary wrap</td>
+			<td>(n/a)</td>
+			<td><code>( … )</code></td>
+		</tr>
+		<tr>
+			<th rowspan="3">2</th>
+			<td>Repetition</td>
+			<td rowspan="3">unary postfix</td>
+			<td rowspan="3">left-to-right</td>
+			<td><code>… +</code></td>
+		</tr>
+		<tr>
+			<td>Optional Repetition</td>
+			<td><code>… *</code></td>
+		</tr>
+		<tr>
+			<td>Comma-Separated Repition</td>
+			<td><code>… #</code></td>
+		</tr>
+		<tr>
+			<th>3</th>
+			<td>Optionality</td>
+			<td>unary postfix</td>
+			<td>left-to-right</td>
+			<td><code>… ?</code></td>
+		</tr>
+		<tr>
+			<th rowspan="2">4</th>
+			<td>Ordered Concatenation</td>
+			<td rowspan="2">binary infix</td>
+			<td rowspan="2">left-to-right</td>
+			<td><code>… …</code></td>
+		</tr>
+		<tr>
+			<td>Ordered Concatenation (Explicit)</td>
+			<td><code>… . …</code></td>
+		</tr>
+		<tr>
+			<th>5</th>
+			<td>Unordered Concatenation</td>
+			<td>binary infix</td>
+			<td>left-to-right</td>
+			<td><code>… & …</code></td>
+		</tr>
+		<tr>
+			<th>6</th>
+			<td>Alternation</td>
+			<td>binary infix</td>
+			<td>left-to-right</td>
+			<td><code>… | …</code></td>
+		</tr>
+	</tbody>
+</table>
+
+
 ### Grouping
 Grouping of symbols promotes the precedence of operations listed in the subsequent sections.
 

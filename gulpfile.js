@@ -22,8 +22,8 @@ function dist() {
 
 async function pretest() {
 	const {generate} = require('./dist/main.js');
-	const grammar_sample = fs.promises.readFile(path.join(__dirname, './test/sample/syntax.ebnf'), 'utf8');
 	const grammar_ebnf   = fs.promises.readFile(path.join(__dirname, './src/ebnf/syntax.ebnf'),    'utf8');
+	const grammar_sample = fs.promises.readFile(path.join(__dirname, './test/sample/syntax.ebnf'), 'utf8');
 	function preamble(srcpath) {
 		return `
 			/*----------------------------------------------------------------/

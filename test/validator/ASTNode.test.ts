@@ -51,10 +51,21 @@ describe('ASTNode', () => {
 	context('ASTNODE imports from ebnf', () => {
 		describe('ASTNODE.ASTNodeExpr', () => {
 			describe('#transform', () => {
+				function makeProductionDefn(ebnf: string): EBNFChoice {
+					return Decorator.decorate(new ParserEBNF(ebnf).parse()).children[0].transform()[0].defn;
+				}
+
+				describe('ASTNODE.ASTNodeConst', () => {
+					it('returns a string for a string.', () => {
+						assert.deepStrictEqual(makeProductionDefn(`
+							Alpha ::= "omega";
+						`), [
+							['omega'],
+						]);
+					});
+				});
+
 				describe('ASTNODE.ASTNodeRef', () => {
-					function makeProductionDefn(ebnf: string): EBNFChoice {
-						return Decorator.decorate(new ParserEBNF(ebnf).parse()).children[0].transform()[0].defn;
-					}
 					it('returns a terminal for a MACRO_CASE identifier.', () => {
 						assert.deepStrictEqual(makeProductionDefn(`
 							Alpha ::= ALPHA;
@@ -405,6 +416,193 @@ describe('ASTNode', () => {
 						]);
 					});
 				});
+
+				describe('ASTNODE.ASTNodeOpUn[operator=PLUS]', () => {
+					it('creates a new production with __0__List appended to the name.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							NonTerm ::= ALPHA BETA+ GAMMA;
+						`).parse()).children[0].transform(), [
+							{
+								name: 'NonTerm__0__List',
+								defn: [
+									[{term: 'BETA'}],
+									[{prod: 'NonTerm__0__List'}, {term: 'BETA'}],
+								],
+							},
+							{
+								name: 'NonTerm',
+								defn: [
+									[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
+								],
+							},
+						]);
+					});
+					it('memoizes reusable plus-lists.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Alpha ::= BETA GAMMA+;
+							Delta ::= GAMMA+ EPSILON;
+						`).parse()).transform(), [
+							{
+								name: 'Alpha__0__List',
+								defn: [
+									[                          {term: 'GAMMA'}],
+									[{prod: 'Alpha__0__List'}, {term: 'GAMMA'}],
+								],
+							},
+							{
+								name: 'Alpha',
+								defn: [
+									[{term: 'BETA'}, {prod: 'Alpha__0__List'}],
+								],
+							},
+							{
+								name: 'Delta',
+								defn: [
+									[{prod: 'Alpha__0__List'}, {term: 'EPSILON'}],
+								],
+							},
+						]);
+					});
+				});
+
+				describe('ASTNODE.ASTNodeOpUn[operator=STAR]', () => {
+					it('creates a new production with __0__List appended to the name.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							NonTerm ::= ALPHA BETA* GAMMA;
+						`).parse()).children[0].transform(), [
+							{
+								name: 'NonTerm__0__List',
+								defn: [
+									[{term: 'BETA'}],
+									[{prod: 'NonTerm__0__List'}, {term: 'BETA'}],
+								],
+							},
+							{
+								name: 'NonTerm',
+								defn: [
+									[{term: 'ALPHA'},                             {term: 'GAMMA'}],
+									[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
+								],
+							},
+						]);
+					});
+					it('memoizes reusable star-lists.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Alpha ::= BETA GAMMA*;
+							Delta ::= GAMMA* EPSILON;
+						`).parse()).transform(), [
+							{
+								name: 'Alpha__0__List',
+								defn: [
+									[                          {term: 'GAMMA'}],
+									[{prod: 'Alpha__0__List'}, {term: 'GAMMA'}],
+								],
+							},
+							{
+								name: 'Alpha',
+								defn: [
+									[{term: 'BETA'}],
+									[{term: 'BETA'}, {prod: 'Alpha__0__List'}],
+								],
+							},
+							{
+								name: 'Delta',
+								defn: [
+									[                          {term: 'EPSILON'}],
+									[{prod: 'Alpha__0__List'}, {term: 'EPSILON'}],
+								],
+							},
+						]);
+					});
+				});
+
+				describe('ASTNODE.ASTNodeOpUn[operator=HASH]', () => {
+					it('creates a new production with __0__List appended to the name.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							NonTerm ::= ALPHA BETA# GAMMA;
+						`).parse()).children[0].transform(), [
+							{
+								name: 'NonTerm__0__List',
+								defn: [
+									[{term: 'BETA'}],
+									[{prod: 'NonTerm__0__List'}, ',', {term: 'BETA'}],
+								],
+							},
+							{
+								name: 'NonTerm',
+								defn: [
+									[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
+								],
+							},
+						]);
+					});
+					it('memoizes reusable hash-lists.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Alpha ::= BETA GAMMA#;
+							Delta ::= GAMMA# EPSILON;
+						`).parse()).transform(), [
+							{
+								name: 'Alpha__0__List',
+								defn: [
+									[                               {term: 'GAMMA'}],
+									[{prod: 'Alpha__0__List'}, ',', {term: 'GAMMA'}],
+								],
+							},
+							{
+								name: 'Alpha',
+								defn: [
+									[{term: 'BETA'}, {prod: 'Alpha__0__List'}],
+								],
+							},
+							{
+								name: 'Delta',
+								defn: [
+									[{prod: 'Alpha__0__List'}, {term: 'EPSILON'}],
+								],
+							},
+						]);
+					});
+				});
+
+				specify('ASTNODE.ASTNodeOpUn[operator=OPT]', () => {
+					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						NonTerm ::= ALPHA BETA? GAMMA;
+					`).parse()).children[0].transform(), [
+						{
+							name: 'NonTerm',
+							defn: [
+								[{term: 'ALPHA'},                 {term: 'GAMMA'}],
+								[{term: 'ALPHA'}, {term: 'BETA'}, {term: 'GAMMA'}],
+							],
+						},
+					]);
+				});
+
+				specify('ASTNODE.ASTNodeOpBin[operator=ORDER]', () => {
+					assert.deepStrictEqual(makeProductionDefn(`
+						Nonterm ::= "TERM1" TERM2;
+					`), [
+						['TERM1', {term: 'TERM2'}],
+					]);
+				});
+
+				specify('ASTNODE.ASTNodeOpBin[operator=CONCAT]', () => {
+					assert.deepStrictEqual(makeProductionDefn(`
+						Nonterm ::= "TERM1" & TERM2;
+					`), [
+						['TERM1', {term: 'TERM2'}],
+						[{term: 'TERM2'}, 'TERM1'],
+					]);
+				});
+
+				specify('ASTNODE.ASTNodeOpBin[operator=ALTERN]', () => {
+					assert.deepStrictEqual(makeProductionDefn(`
+						Nonterm ::= "TERM1" | TERM2;
+					`), [
+						['TERM1'],
+						[{term: 'TERM2'}],
+					]);
+				});
 			});
 		});
 
@@ -497,7 +695,7 @@ describe('ASTNode', () => {
 					`).parse()).children[0]
 					assert.deepStrictEqual(prod.transform(), [
 						{
-							name: `${ prod.children[0].expand()[0] }$`,
+							name: 'NonTerm$',
 							family: true,
 							defn: [
 								[{term: 'TERM'}],
@@ -505,15 +703,15 @@ describe('ASTNode', () => {
 							],
 						},
 						{
-							name: prod.children[0].expand()[0].toString(),
-							family: `${ prod.children[0].expand()[0] }$`,
+							name: 'NonTerm',
+							family: 'NonTerm$',
 							defn: [
 								[{term: 'TERM'}],
 							],
 						},
 						{
-							name: prod.children[0].expand()[1].toString(),
-							family: `${ prod.children[0].expand()[0] }$`,
+							name: 'NonTerm_Param',
+							family: 'NonTerm$',
 							defn: [
 								[{term: 'TERM'}],
 							],
@@ -521,45 +719,82 @@ describe('ASTNode', () => {
 					]);
 				});
 
-				it('generates different list productions for different params.', () => {
+				it('memoizes same list productions for different params.', () => {
 					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF(`
 						NonTerm<Param> ::= TERM+;
 					`).parse()).children[0];
 					assert.deepStrictEqual(prod.transform(), [
 						{
-							name: `${ prod.children[0].expand()[0] }__0__List`,
+							name: 'NonTerm__0__List',
 							defn: [
-								[{term: 'TERM'}],
-								[{prod: `${ prod.children[0].expand()[0] }__0__List`}, {term: 'TERM'}],
+								[                            {term: 'TERM'}],
+								[{prod: 'NonTerm__0__List'}, {term: 'TERM'}],
 							],
 						},
 						{
-							name: `${ prod.children[0].expand()[1] }__0__List`,
-							defn: [
-								[{term: 'TERM'}],
-								[{prod: `${ prod.children[0].expand()[1] }__0__List`}, {term: 'TERM'}],
-							],
-						},
-						{
-							name: `${ prod.children[0].expand()[0] }$`,
+							name: 'NonTerm$',
 							family: true,
 							defn: [
-								[{prod: `${ prod.children[0].expand()[0] }__0__List`}],
-								[{prod: `${ prod.children[0].expand()[1] }__0__List`}],
+								[{prod: 'NonTerm__0__List'}],
+								[{prod: 'NonTerm__0__List'}],
 							],
 						},
 						{
-							name: prod.children[0].expand()[0].toString(),
-							family: `${ prod.children[0].expand()[0] }$`,
+							name: 'NonTerm',
+							family: 'NonTerm$',
 							defn: [
-								[{prod: `${ prod.children[0].expand()[0] }__0__List`}],
+								[{prod: 'NonTerm__0__List'}],
 							],
 						},
 						{
-							name: prod.children[0].expand()[1].toString(),
-							family: `${ prod.children[0].expand()[0] }$`,
+							name: 'NonTerm_Param',
+							family: 'NonTerm$',
 							defn: [
-								[{prod: `${ prod.children[0].expand()[1] }__0__List`}],
+								[{prod: 'NonTerm__0__List'}],
+							],
+						},
+					]);
+				});
+
+				it('generates different parameterized list productions for different params.', () => {
+					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF(`
+						NonTerm<Param> ::= Ref<?Param>+;
+					`).parse()).children[0];
+					assert.deepStrictEqual(prod.transform(), [
+						{
+							name: 'NonTerm__0__List',
+							defn: [
+								[                            {prod: 'Ref'}],
+								[{prod: 'NonTerm__0__List'}, {prod: 'Ref'}],
+							],
+						},
+						{
+							name: 'NonTerm_Param__0__List',
+							defn: [
+								[                                  {prod: 'Ref_Param'}],
+								[{prod: 'NonTerm_Param__0__List'}, {prod: 'Ref_Param'}],
+							],
+						},
+						{
+							name: 'NonTerm$',
+							family: true,
+							defn: [
+								[{prod: 'NonTerm__0__List'}],
+								[{prod: 'NonTerm_Param__0__List'}],
+							],
+						},
+						{
+							name: 'NonTerm',
+							family: 'NonTerm$',
+							defn: [
+								[{prod: 'NonTerm__0__List'}],
+							],
+						},
+						{
+							name: 'NonTerm_Param',
+							family: 'NonTerm$',
+							defn: [
+								[{prod: 'NonTerm_Param__0__List'}],
 							],
 						},
 					]);

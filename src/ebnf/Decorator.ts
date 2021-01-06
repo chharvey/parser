@@ -201,8 +201,8 @@ export class Decorator {
 				: new ASTNODE.ASTNodeOpBin(
 					node,
 					this.OPS_BIN.get(node.children[1].source)!,
-					this.decorate(node.children[0]) as ASTNODE.ASTNodeExpr,
-					this.decorate(node.children[2]) as ASTNODE.ASTNodeExpr,
+					this.decorate(node.children[0]),
+					this.decorate(node.children[2]),
 				)
 			;
 

@@ -157,7 +157,7 @@
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						[ProductionAltern.instance],[ProductionAltern.instance,'|'],[ProductionAltern.instance,'&'],[ProductionAltern.instance,'.'],['|',ProductionAltern.instance],['|',ProductionAltern.instance,'|'],['|',ProductionAltern.instance,'&'],['|',ProductionAltern.instance,'.'],['&',ProductionAltern.instance],['&',ProductionAltern.instance,'|'],['&',ProductionAltern.instance,'&'],['&',ProductionAltern.instance,'.'],['.',ProductionAltern.instance],['.',ProductionAltern.instance,'|'],['.',ProductionAltern.instance,'&'],['.',ProductionAltern.instance,'.'],
+						[ProductionAltern.instance],[ProductionAltern.instance,'.'],[ProductionAltern.instance,'&'],[ProductionAltern.instance,'|'],['.',ProductionAltern.instance],['.',ProductionAltern.instance,'.'],['.',ProductionAltern.instance,'&'],['.',ProductionAltern.instance,'|'],['&',ProductionAltern.instance],['&',ProductionAltern.instance,'.'],['&',ProductionAltern.instance,'&'],['&',ProductionAltern.instance,'|'],['|',ProductionAltern.instance],['|',ProductionAltern.instance,'.'],['|',ProductionAltern.instance,'&'],['|',ProductionAltern.instance,'|'],
 					];
 				}
 			}
