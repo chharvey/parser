@@ -4,6 +4,9 @@ Filebound
 Whitespace
 	:::= (#x20 | #x09 | #x0a)+;
 
+Comment
+	:::= "//" [^#x0a#x03]* #x0a;
+
 Punctuator :::=
 	// grouping
 		| "(" | ")"
@@ -31,6 +34,3 @@ Char
 
 CharClass
 	:::= "[" "^"? (Char | CharCode | Char "-" Char | CharCode "-" CharCode)+ "]";
-
-Comment
-	:::= "//" [^#x0a#x03]* #x0a;
