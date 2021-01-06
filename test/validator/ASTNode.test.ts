@@ -417,65 +417,151 @@ describe('ASTNode', () => {
 					});
 				});
 
-				specify('ASTNODE.ASTNodeOpUn[operator=PLUS]', () => {
-					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
-						NonTerm ::= ALPHA BETA+ GAMMA;
-					`).parse()).children[0].transform(), [
-						{
-							name: 'NonTerm__0__List',
-							defn: [
-								[{term: 'BETA'}],
-								[{prod: 'NonTerm__0__List'}, {term: 'BETA'}],
-							],
-						},
-						{
-							name: 'NonTerm',
-							defn: [
-								[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
-							],
-						},
-					]);
+				describe('ASTNODE.ASTNodeOpUn[operator=PLUS]', () => {
+					it('creates a new production with __0__List appended to the name.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							NonTerm ::= ALPHA BETA+ GAMMA;
+						`).parse()).children[0].transform(), [
+							{
+								name: 'NonTerm__0__List',
+								defn: [
+									[{term: 'BETA'}],
+									[{prod: 'NonTerm__0__List'}, {term: 'BETA'}],
+								],
+							},
+							{
+								name: 'NonTerm',
+								defn: [
+									[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
+								],
+							},
+						]);
+					});
+					it('memoizes reusable plus-lists.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Alpha ::= BETA GAMMA+;
+							Delta ::= GAMMA+ EPSILON;
+						`).parse()).transform(), [
+							{
+								name: 'Alpha__0__List',
+								defn: [
+									[                          {term: 'GAMMA'}],
+									[{prod: 'Alpha__0__List'}, {term: 'GAMMA'}],
+								],
+							},
+							{
+								name: 'Alpha',
+								defn: [
+									[{term: 'BETA'}, {prod: 'Alpha__0__List'}],
+								],
+							},
+							{
+								name: 'Delta',
+								defn: [
+									[{prod: 'Alpha__0__List'}, {term: 'EPSILON'}],
+								],
+							},
+						]);
+					});
 				});
 
-				specify('ASTNODE.ASTNodeOpUn[operator=STAR]', () => {
-					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
-						NonTerm ::= ALPHA BETA* GAMMA;
-					`).parse()).children[0].transform(), [
-						{
-							name: 'NonTerm__0__List',
-							defn: [
-								[{term: 'BETA'}],
-								[{prod: 'NonTerm__0__List'}, {term: 'BETA'}],
-							],
-						},
-						{
-							name: 'NonTerm',
-							defn: [
-								[{term: 'ALPHA'},                             {term: 'GAMMA'}],
-								[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
-							],
-						},
-					]);
+				describe('ASTNODE.ASTNodeOpUn[operator=STAR]', () => {
+					it('creates a new production with __0__List appended to the name.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							NonTerm ::= ALPHA BETA* GAMMA;
+						`).parse()).children[0].transform(), [
+							{
+								name: 'NonTerm__0__List',
+								defn: [
+									[{term: 'BETA'}],
+									[{prod: 'NonTerm__0__List'}, {term: 'BETA'}],
+								],
+							},
+							{
+								name: 'NonTerm',
+								defn: [
+									[{term: 'ALPHA'},                             {term: 'GAMMA'}],
+									[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
+								],
+							},
+						]);
+					});
+					it('memoizes reusable star-lists.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Alpha ::= BETA GAMMA*;
+							Delta ::= GAMMA* EPSILON;
+						`).parse()).transform(), [
+							{
+								name: 'Alpha__0__List',
+								defn: [
+									[                          {term: 'GAMMA'}],
+									[{prod: 'Alpha__0__List'}, {term: 'GAMMA'}],
+								],
+							},
+							{
+								name: 'Alpha',
+								defn: [
+									[{term: 'BETA'}],
+									[{term: 'BETA'}, {prod: 'Alpha__0__List'}],
+								],
+							},
+							{
+								name: 'Delta',
+								defn: [
+									[                          {term: 'EPSILON'}],
+									[{prod: 'Alpha__0__List'}, {term: 'EPSILON'}],
+								],
+							},
+						]);
+					});
 				});
 
-				specify('ASTNODE.ASTNodeOpUn[operator=HASH]', () => {
-					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
-						NonTerm ::= ALPHA BETA# GAMMA;
-					`).parse()).children[0].transform(), [
-						{
-							name: 'NonTerm__0__List',
-							defn: [
-								[{term: 'BETA'}],
-								[{prod: 'NonTerm__0__List'}, ',', {term: 'BETA'}],
-							],
-						},
-						{
-							name: 'NonTerm',
-							defn: [
-								[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
-							],
-						},
-					]);
+				describe('ASTNODE.ASTNodeOpUn[operator=HASH]', () => {
+					it('creates a new production with __0__List appended to the name.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							NonTerm ::= ALPHA BETA# GAMMA;
+						`).parse()).children[0].transform(), [
+							{
+								name: 'NonTerm__0__List',
+								defn: [
+									[{term: 'BETA'}],
+									[{prod: 'NonTerm__0__List'}, ',', {term: 'BETA'}],
+								],
+							},
+							{
+								name: 'NonTerm',
+								defn: [
+									[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
+								],
+							},
+						]);
+					});
+					it('memoizes reusable hash-lists.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Alpha ::= BETA GAMMA#;
+							Delta ::= GAMMA# EPSILON;
+						`).parse()).transform(), [
+							{
+								name: 'Alpha__0__List',
+								defn: [
+									[                               {term: 'GAMMA'}],
+									[{prod: 'Alpha__0__List'}, ',', {term: 'GAMMA'}],
+								],
+							},
+							{
+								name: 'Alpha',
+								defn: [
+									[{term: 'BETA'}, {prod: 'Alpha__0__List'}],
+								],
+							},
+							{
+								name: 'Delta',
+								defn: [
+									[{prod: 'Alpha__0__List'}, {term: 'EPSILON'}],
+								],
+							},
+						]);
+					});
 				});
 
 				specify('ASTNODE.ASTNodeOpUn[operator=OPT]', () => {
@@ -633,7 +719,7 @@ describe('ASTNode', () => {
 					]);
 				});
 
-				it('generates different list productions for different params.', () => {
+				it('memoizes same list productions for different params.', () => {
 					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF(`
 						NonTerm<Param> ::= TERM+;
 					`).parse()).children[0];
@@ -646,10 +732,47 @@ describe('ASTNode', () => {
 							],
 						},
 						{
+							name: 'NonTerm$',
+							family: true,
+							defn: [
+								[{prod: 'NonTerm__0__List'}],
+								[{prod: 'NonTerm__0__List'}],
+							],
+						},
+						{
+							name: 'NonTerm',
+							family: 'NonTerm$',
+							defn: [
+								[{prod: 'NonTerm__0__List'}],
+							],
+						},
+						{
+							name: 'NonTerm_Param',
+							family: 'NonTerm$',
+							defn: [
+								[{prod: 'NonTerm__0__List'}],
+							],
+						},
+					]);
+				});
+
+				it('generates different parameterized list productions for different params.', () => {
+					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF(`
+						NonTerm<Param> ::= Ref<?Param>+;
+					`).parse()).children[0];
+					assert.deepStrictEqual(prod.transform(), [
+						{
+							name: 'NonTerm__0__List',
+							defn: [
+								[                            {prod: 'Ref'}],
+								[{prod: 'NonTerm__0__List'}, {prod: 'Ref'}],
+							],
+						},
+						{
 							name: 'NonTerm_Param__0__List',
 							defn: [
-								[                                  {term: 'TERM'}],
-								[{prod: 'NonTerm_Param__0__List'}, {term: 'TERM'}],
+								[                                  {prod: 'Ref_Param'}],
+								[{prod: 'NonTerm_Param__0__List'}, {prod: 'Ref_Param'}],
 							],
 						},
 						{
