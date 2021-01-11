@@ -40,7 +40,7 @@ export class Configuration {
 		...lookaheads: readonly GrammarTerminal[]
 	) {
 		if (this.marker > this.rule.symbols.length) { throw new Error('Cannot advance past end of rule.'); };
-		this.lookaheads = new Set(lookaheads);
+		this.lookaheads = new Set<GrammarTerminal>(lookaheads);
 	}
 
 	/** @override */
