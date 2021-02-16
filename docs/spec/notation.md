@@ -316,17 +316,10 @@ Optional repetition uses the symbol `*` and is shorthand for a repetition that m
 N
 	::= A B*;
 ```
-transforms to
+is shorthand for
 ```
-N ::=
-	| A
-	| A N__0__List
-;
-
-N__0__List ::=
-	| B
-	| N__0__List B
-;
+N
+	::= A B+?;
 ```
 
 Optional repetition is stronger than concatenation:

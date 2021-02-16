@@ -68,28 +68,6 @@ ChoiceData Transform(SemanticOp[operator: PLUS] expr, Text nt, Sequence<Producti
 	].
 ;
 
-ChoiceData Transform(SemanticOp[operator: STAR] expr, Text nt, Sequence<ProductionData> data) :=
-	1. *Assert:* `expr.children.count` is 1.
-	2. *Let* `operand` be *UnwrapAffirm:* Transform(expr.children.0, nt, data).
-	3. *If* a memoization record does not have an entry with key `operand`:
-		1. *Let* `newname` be the concatenation of `nt` with "__‹n›__List", where ‹n› is a unique number.
-		2. Add a new entry to the memoization record, with key `operand` and value `newname`.
-		3. *Let* `flatmap` be a flattened mapping from `operand` for each `seq` to [
-				[                 ...seq],
-				[[prod= newname], ...seq],
-			].
-		4. Push [
-				name= newname,
-				defn= flatmap,
-			] to `prods`.
-	4. *If* `newname` is not set:
-		1. *Let* `newname` be the value for the entry with key `operand` in the memoization record.
-	5. *Return:* [
-		[""],
-		[[prod= newname]],
-	].
-;
-
 ChoiceData Transform(SemanticOp[operator: HASH] expr, Text nt, Sequence<ProductionData> data) :=
 	1. *Assert:* `expr.children.count` is 1.
 	2. *Let* `operand` be *UnwrapAffirm:* Transform(expr.children.0, nt, data).
