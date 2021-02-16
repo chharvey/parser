@@ -86,18 +86,18 @@ describe('Parser', () => {
 				/*
 					<Goal>
 						<FILEBOUND>␂</FILEBOUND>
-						<Goal__0__List>
-							<Goal__0__List>
+						<Goal__1__List>
+							<Goal__1__List>
 								<Production source='Unit ::= NUMBER | "(" OPERATOR Unit Unit ")" ;'>...</Production>
-							</Goal__0__List>
+							</Goal__1__List>
 							<Production source='Goal ::= #x02 Unit ? #x03 ;'>...</Production>
-						</Goal__0__List>
+						</Goal__1__List>
 						<FILEBOUND>␃</FILEBOUND>
 					</Goal>
 				*/
 				assert.ok(goal instanceof EBNF.ParseNodeGoal);
 				assert_arrayLength(goal.children, 3, 'goal should have 3 children');
-				const [sot, prod_list, eot]: readonly [Token, EBNF.ParseNodeGoal__0__List, Token] = goal.children;
+				const [sot, prod_list, eot]: readonly [Token, EBNF.ParseNodeGoal__1__List, Token] = goal.children;
 				assert.ok(sot instanceof TokenFilebound);
 				assert.ok(eot instanceof TokenFilebound);
 				assert.deepStrictEqual(
@@ -105,7 +105,7 @@ describe('Parser', () => {
 					[Filebound.SOT, Filebound.EOT],
 				);
 				assert_arrayLength(prod_list.children, 2, 'outer production list should have 2 children');
-				const [first, second]: readonly [EBNF.ParseNodeGoal__0__List, EBNF.ParseNodeProduction] = prod_list.children;
+				const [first, second]: readonly [EBNF.ParseNodeGoal__1__List, EBNF.ParseNodeProduction] = prod_list.children;
 				assert_arrayLength(first.children, 1, 'inner production list should have 1 child');
 				const prod: EBNF.ParseNodeProduction = first.children[0];
 				assert.deepStrictEqual(
@@ -121,7 +121,7 @@ describe('Parser', () => {
 						| "(" OPERATOR Unit Unit ")"
 					;
 				`).parse()
-					.children[1] as EBNF.ParseNodeGoal__0__List)
+					.children[1] as EBNF.ParseNodeGoal__1__List)
 					.children[0] as EBNF.ParseNodeProduction
 				;
 				/*
@@ -146,7 +146,7 @@ describe('Parser', () => {
 						. NUMBER | "(" OPERATOR Unit Unit ")"
 					;
 				`).parse()
-					.children[1] as EBNF.ParseNodeGoal__0__List)
+					.children[1] as EBNF.ParseNodeGoal__1__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition
 				;
@@ -172,7 +172,7 @@ describe('Parser', () => {
 						& NUMBER | "(" OPERATOR Unit Unit ")"
 					;
 				`).parse()
-					.children[1] as EBNF.ParseNodeGoal__0__List)
+					.children[1] as EBNF.ParseNodeGoal__1__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition
 				;
@@ -199,7 +199,7 @@ describe('Parser', () => {
 						| "(" OPERATOR Unit Unit ")"
 					;
 				`).parse()
-					.children[1] as EBNF.ParseNodeGoal__0__List)
+					.children[1] as EBNF.ParseNodeGoal__1__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition
 				;
@@ -226,7 +226,7 @@ describe('Parser', () => {
 						| "(" OPERATOR Unit Unit ")"
 					;
 				`).parse()
-					.children[1] as EBNF.ParseNodeGoal__0__List)
+					.children[1] as EBNF.ParseNodeGoal__1__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition)
 					.children[1] as EBNF.ParseNodeAltern
@@ -253,7 +253,7 @@ describe('Parser', () => {
 						| NULL & "(" OPERATOR Unit Unit ")"
 					;
 				`).parse()
-					.children[1] as EBNF.ParseNodeGoal__0__List)
+					.children[1] as EBNF.ParseNodeGoal__1__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition)
 					.children[1] as EBNF.ParseNodeAltern)
@@ -281,7 +281,7 @@ describe('Parser', () => {
 						| "(" OPERATOR Unit Unit ")"
 					;
 				`).parse()
-					.children[1] as EBNF.ParseNodeGoal__0__List)
+					.children[1] as EBNF.ParseNodeGoal__1__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition)
 					.children[1] as EBNF.ParseNodeAltern)
