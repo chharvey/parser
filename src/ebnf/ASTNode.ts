@@ -227,75 +227,73 @@ export class ASTNodeOpUn extends ASTNodeOp {
 
 	/** @implements ASTNodeExpr */
 	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
-		const name: string = `${ nt }${ SUB_SEPARATOR }${ nt.subCount }${ SUB_SEPARATOR }List`;
-		const trans: EBNFChoice = this.operand.transform(nt, data);
-		return new Map<Unop, () => EBNFChoice>([
-			[Unop.PLUS, () => {
+		const name: string = nt.newSubexprName;
+		return new Map<Unop, (operand: EBNFChoice) => EBNFChoice>([
+			[Unop.PLUS, (operand) => {
 				const memoized: MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.PLUS)!;
-				if (!memoized.has(trans)) {
-					memoized.set(trans, name);
+				if (!memoized.has(operand)) {
+					memoized.set(operand, name);
 					data.push({
 						name,
-						defn: utils.NonemptyArray_flatMap(trans, (seq) => [
+						defn: utils.NonemptyArray_flatMap(operand, (seq) => [
 							seq,
 							[{prod: name}, ...seq],
 						]),
 					});
 				};
 				return [
-					[{prod: memoized.get(trans)!}],
+					[{prod: memoized.get(operand)!}],
 				];
 			}],
-			[Unop.HASH, () => {
+			[Unop.HASH, (operand) => {
 				const memoized: MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.HASH)!;
-				if (!memoized.has(trans)) {
-					memoized.set(trans, name);
+				if (!memoized.has(operand)) {
+					memoized.set(operand, name);
 					data.push({
 						name,
-						defn: utils.NonemptyArray_flatMap(trans, (seq) => [
+						defn: utils.NonemptyArray_flatMap(operand, (seq) => [
 							seq,
 							[{prod: name}, ',', ...seq],
 						]),
 					});
 				};
 				return [
-					[{prod: memoized.get(trans)!}],
+					[{prod: memoized.get(operand)!}],
 				];
 			}],
-			[Unop.PERC, () => {
+			[Unop.PERC, (operand) => {
 				const memoized: MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.PERC)!;
-				if (!memoized.has(trans)) {
-					const name1: string = `${ nt }${ SUB_SEPARATOR }${ nt.subCount }${ SUB_SEPARATOR }List`;
-					const newname: string = `${ name },${ name1 }`;
-					memoized.set(trans, newname);
+				if (!memoized.has(operand)) {
+					const names: string[] = [name, nt.newSubexprName];
+					memoized.set(operand, names.join(','));
 					data.push({
-						name,
-						defn: utils.NonemptyArray_flatMap(trans, (seq) => [
-							[...seq, ','              ],
-							[...seq, ',', {prod: name}],
+						name: names[0],
+						defn: utils.NonemptyArray_flatMap(operand, (seq) => [
+							[...seq, ','                  ],
+							[...seq, ',', {prod: names[0]}],
 						]),
 					});
 					data.push({
-						name: name1,
-						defn: utils.NonemptyArray_flatMap(trans, (seq) => [
+						name: names[1],
+						defn: utils.NonemptyArray_flatMap(operand, (seq) => [
 							seq,
-							[...seq, ',', {prod: name1}],
+							[...seq, ',', {prod: names[1]}],
 						]),
 					});
 				};
-				const names: string[] = memoized.get(trans)!.split(',');
+				const names: string[] = memoized.get(operand)!.split(',');
 				return [
 					[{prod: names[0]}],
 					[{prod: names[1]}],
 				];
 			}],
-			[Unop.OPT, () => {
+			[Unop.OPT, (operand) => {
 				return [
 					[''],
-					...trans,
+					...operand,
 				];
 			}],
-		]).get(this.operator)!();
+		]).get(this.operator)!(this.operand.transform(nt, data));
 	}
 }
 
@@ -464,11 +462,12 @@ class ConcreteNonterminal {
 	}
 
 	/**
-	 * Return the sub-expression count, and then increment it.
-	 * @return this ConcreteNonterminal’s current sub-expression counter
+	 * Generate a new name for a sublist of this ConcreteNonterminal,
+	 * incrementing its sub-expression counter each time.
+	 * @return a new name for a list containing this ConcreteNonterminal’s current sub-expression counter
 	 */
-	get subCount(): bigint {
-		return this.sub_count++;
+	get newSubexprName(): string {
+		return `${ this }${ SUB_SEPARATOR }${ this.sub_count++ }${ SUB_SEPARATOR }List`;
 	}
 
 	/** @override */
