@@ -182,12 +182,12 @@
 				}
 			}
 		
-			export class ProductionGoal__1__List extends Production {
-				static readonly instance: ProductionGoal__1__List = new ProductionGoal__1__List();
+			export class ProductionGoal__0__List extends Production {
+				static readonly instance: ProductionGoal__0__List = new ProductionGoal__0__List();
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						[ProductionProduction.instance],[ProductionGoal__1__List.instance,ProductionProduction.instance],
+						[ProductionProduction.instance],[ProductionGoal__0__List.instance,ProductionProduction.instance],
 					];
 				}
 			}
@@ -197,7 +197,7 @@
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						['\u0002','\u0003'],['\u0002',ProductionGoal__1__List.instance,'\u0003'],
+						['\u0002','\u0003'],['\u0002',ProductionGoal__0__List.instance,'\u0003'],
 					];
 				}
 			}
@@ -299,15 +299,15 @@
 				;
 			}
 		
-			export class ParseNodeGoal__1__List extends ParseNode {
+			export class ParseNodeGoal__0__List extends ParseNode {
 				declare readonly children:
-					readonly [ParseNodeProduction] | readonly [ParseNodeGoal__1__List,ParseNodeProduction]
+					readonly [ParseNodeProduction] | readonly [ParseNodeGoal__0__List,ParseNodeProduction]
 				;
 			}
 		
 			export class ParseNodeGoal extends ParseNode {
 				declare readonly children:
-					readonly [Token,Token] | readonly [Token,ParseNodeGoal__1__List,Token]
+					readonly [Token,Token] | readonly [Token,ParseNodeGoal__0__List,Token]
 				;
 			}
 		
@@ -318,9 +318,9 @@
 			 */
 			constructor (source: string) {
 				super(new LexerEBNF(source), new Grammar([
-					ProductionParameterSet__0__List.instance,ProductionParameterSet.instance,ProductionArgumentSet__0__List.instance,ProductionArgumentSet.instance,ProductionConditionSet__0__List.instance,ProductionConditionSet.instance,ProductionReference.instance,ProductionUnit.instance,ProductionUnary.instance,ProductionItem.instance,ProductionOrder.instance,ProductionConcat.instance,ProductionAltern.instance,ProductionDefinition.instance,ProductionNonterminalName.instance,ProductionProduction.instance,ProductionGoal__1__List.instance,ProductionGoal.instance,
+					ProductionParameterSet__0__List.instance,ProductionParameterSet.instance,ProductionArgumentSet__0__List.instance,ProductionArgumentSet.instance,ProductionConditionSet__0__List.instance,ProductionConditionSet.instance,ProductionReference.instance,ProductionUnit.instance,ProductionUnary.instance,ProductionItem.instance,ProductionOrder.instance,ProductionConcat.instance,ProductionAltern.instance,ProductionDefinition.instance,ProductionNonterminalName.instance,ProductionProduction.instance,ProductionGoal__0__List.instance,ProductionGoal.instance,
 				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
-					[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],[ProductionParameterSet.instance, ParseNodeParameterSet],[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],[ProductionArgumentSet.instance, ParseNodeArgumentSet],[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],[ProductionConditionSet.instance, ParseNodeConditionSet],[ProductionReference.instance, ParseNodeReference],[ProductionUnit.instance, ParseNodeUnit],[ProductionUnary.instance, ParseNodeUnary],[ProductionItem.instance, ParseNodeItem],[ProductionOrder.instance, ParseNodeOrder],[ProductionConcat.instance, ParseNodeConcat],[ProductionAltern.instance, ParseNodeAltern],[ProductionDefinition.instance, ParseNodeDefinition],[ProductionNonterminalName.instance, ParseNodeNonterminalName],[ProductionProduction.instance, ParseNodeProduction],[ProductionGoal__1__List.instance, ParseNodeGoal__1__List],[ProductionGoal.instance, ParseNodeGoal],
+					[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],[ProductionParameterSet.instance, ParseNodeParameterSet],[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],[ProductionArgumentSet.instance, ParseNodeArgumentSet],[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],[ProductionConditionSet.instance, ParseNodeConditionSet],[ProductionReference.instance, ParseNodeReference],[ProductionUnit.instance, ParseNodeUnit],[ProductionUnary.instance, ParseNodeUnary],[ProductionItem.instance, ParseNodeItem],[ProductionOrder.instance, ParseNodeOrder],[ProductionConcat.instance, ParseNodeConcat],[ProductionAltern.instance, ParseNodeAltern],[ProductionDefinition.instance, ParseNodeDefinition],[ProductionNonterminalName.instance, ParseNodeNonterminalName],[ProductionProduction.instance, ParseNodeProduction],[ProductionGoal__0__List.instance, ParseNodeGoal__0__List],[ProductionGoal.instance, ParseNodeGoal],
 				]));
 			}
 			// @ts-expect-error
