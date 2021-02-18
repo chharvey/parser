@@ -225,11 +225,11 @@ export class ASTNodeOpUn extends ASTNodeOp {
 
 	/** @implements ASTNodeExpr */
 	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
-		const name: string = nt.newSubexprName;
 		return new Map<Unop, (operand: EBNFChoice) => EBNFChoice>([
 			[Unop.PLUS, (operand) => {
 				const memoized: MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.PLUS)!;
 				if (!memoized.has(operand)) {
+					const name: string = nt.newSubexprName;
 					memoized.set(operand, name);
 					data.push({
 						name,
@@ -246,6 +246,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 			[Unop.HASH, (operand) => {
 				const memoized: MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.HASH)!;
 				if (!memoized.has(operand)) {
+					const name: string = nt.newSubexprName;
 					memoized.set(operand, name);
 					data.push({
 						name,
