@@ -25,7 +25,6 @@ const FAMILY_SYMBOL:   string = '$';
 
 export enum Unop {
 	PLUS,
-	STAR,
 	HASH,
 	OPT,
 }
@@ -213,9 +212,7 @@ abstract class ASTNodeOp extends ASTNodeExpr {
 export class ASTNodeOpUn extends ASTNodeOp {
 	private static readonly memoized: ReadonlyMap<Unop, MapEq<EBNFChoice, string>> = new Map<Unop, MapEq<EBNFChoice, string>>([
 		[Unop.PLUS, new MapEq<EBNFChoice, string>(deepStrictEqual)],
-		[Unop.STAR, new MapEq<EBNFChoice, string>(deepStrictEqual)],
 		[Unop.HASH, new MapEq<EBNFChoice, string>(deepStrictEqual)],
-		[Unop.OPT,  new MapEq<EBNFChoice, string>(deepStrictEqual)],
 	]);
 	declare readonly children: readonly [ASTNodeExpr];
 	constructor (
@@ -244,23 +241,6 @@ export class ASTNodeOpUn extends ASTNodeOp {
 					});
 				};
 				return [
-					[{prod: memoized.get(trans)!}],
-				];
-			}],
-			[Unop.STAR, () => {
-				const memoized: MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.STAR)!;
-				if (!memoized.has(trans)) {
-					memoized.set(trans, name);
-					data.push({
-						name,
-						defn: utils.NonemptyArray_flatMap(trans, (seq) => [
-							seq,
-							[{prod: name}, ...seq],
-						]),
-					});
-				};
-				return [
-					[''],
 					[{prod: memoized.get(trans)!}],
 				];
 			}],
