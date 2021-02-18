@@ -75,6 +75,29 @@ describe('Decorator', () => {
 				assert.strictEqual(ref['name'], 'Production');
 			});
 
+			specify('Unary ::= Unit "%"', () => {
+				/*
+					<Op operator=PERC source='Production%'
+						<Ref name='Production'/>
+					</Op>
+				*/
+				const op: ASTNODE.ASTNodeExpr = (((Decorator.decorate(new ParserEBNF(`
+					Goal ::= #x02 Production% #x03;
+				`).parse()).children[0] as ASTNODE.ASTNodeProduction)
+					.children[1] as ASTNODE.ASTNodeOpBin) // source='#x02 Production% #x03'
+					.children[0] as ASTNODE.ASTNodeOpBin) // source='#x02 Production%'
+					.children[1] as ASTNODE.ASTNodeExpr   // source='Production%'
+				;
+				assert.ok(op instanceof ASTNODE.ASTNodeOpUn);
+				assert.deepStrictEqual(
+					[op['operator'], op.source],
+					[Unop.PERC,      'Production %'],
+				);
+				const ref: ASTNODE.ASTNodeExpr = op.children[0];
+				assert.ok(ref instanceof ASTNODE.ASTNodeRef);
+				assert.strictEqual(ref['name'], 'Production');
+			});
+
 			specify('Altern ::= Altern "|" Concat;', () => {
 				/*
 					<Op operator=ALTERN>

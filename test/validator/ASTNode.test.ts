@@ -513,6 +513,71 @@ describe('ASTNode', () => {
 					});
 				});
 
+				describe('ASTNODE.ASTNodeOpUn[operator=PERC]', () => {
+					it('creates two new productions, with __0__List and __1__List appended to the name.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							NonTerm ::= ALPHA BETA% GAMMA;
+						`).parse()).children[0].transform(), [
+							{
+								name: 'NonTerm__0__List',
+								defn: [
+									[{term: 'BETA'}, ','                            ],
+									[{term: 'BETA'}, ',', {prod: 'NonTerm__0__List'}],
+								],
+							},
+							{
+								name: 'NonTerm__1__List',
+								defn: [
+									[{term: 'BETA'}                                 ],
+									[{term: 'BETA'}, ',', {prod: 'NonTerm__1__List'}],
+								],
+							},
+							{
+								name: 'NonTerm',
+								defn: [
+									[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
+									[{term: 'ALPHA'}, {prod: 'NonTerm__1__List'}, {term: 'GAMMA'}],
+								],
+							},
+						]);
+					});
+					it('memoizes reusable percent-lists.', () => {
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+							Alpha ::= BETA GAMMA%;
+							Delta ::= GAMMA% EPSILON;
+						`).parse()).transform(), [
+							{
+								name: 'Alpha__0__List',
+								defn: [
+									[{term: 'GAMMA'}, ','                          ],
+									[{term: 'GAMMA'}, ',', {prod: 'Alpha__0__List'}],
+								],
+							},
+							{
+								name: 'Alpha__1__List',
+								defn: [
+									[{term: 'GAMMA'}                               ],
+									[{term: 'GAMMA'}, ',', {prod: 'Alpha__1__List'}],
+								],
+							},
+							{
+								name: 'Alpha',
+								defn: [
+									[{term: 'BETA'}, {prod: 'Alpha__0__List'}],
+									[{term: 'BETA'}, {prod: 'Alpha__1__List'}],
+								],
+							},
+							{
+								name: 'Delta',
+								defn: [
+									[{prod: 'Alpha__0__List'}, {term: 'EPSILON'}],
+									[{prod: 'Alpha__1__List'}, {term: 'EPSILON'}],
+								],
+							},
+						]);
+					});
+				});
+
 				specify('ASTNODE.ASTNodeOpUn[operator=OPT]', () => {
 					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
 						NonTerm ::= ALPHA BETA? GAMMA;

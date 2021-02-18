@@ -89,6 +89,44 @@ ChoiceData Transform(SemanticOp[operator: HASH] expr, Text nt, Sequence<Producti
 	].
 ;
 
+ChoiceData Transform(SemanticOp[operator: PERC] expr, Text nt, Sequence<ProductionData> data) :=
+	1. *Assert:* `expr.children.count` is 1.
+	2. *Let* `operand` be *UnwrapAffirm:* Transform(expr.children.0, nt, data).
+	3. *If* a memoization record does not have an entry with key `operand`:
+		1. *Let* `newname0` be the concatenation of `nt` with "__‹n›__List", where ‹n› is a unique number.
+		2. *Let* `newname1` be the concatenation of `nt` with "__‹n›__List", where ‹n› is a unique number.
+		3. *Let* `names` be the concatenation of `newname0` with "," with `newname1`.
+		4. Add a new entry to the memoization record, with key `operand` and value `names`.
+		5. *Let* `flatmap0` be a flattened mapping from `operand` for each `seq` to [
+				[...seq, ","                  ],
+				[...seq, ",", [prod= newname0]],
+			].
+		6. *Let* `flatmap1` be a flattened mapping from `operand` for each `seq` to [
+				[...seq                       ],
+				[...seq, ",", [prod= newname1]],
+			].
+		7. Push [
+				name= newname0,
+				defn= flatmap0,
+			] to `prods`.
+		8. Push [
+				name= newname1,
+				defn= flatmap1,
+			] to `prods`.
+	4. *If* `newname0` is not set *or* `newname1` is not set:
+		1. *Let* `names` be the value for the entry with key `operand` in the memoization record.
+		2. *Set* `names` to the result of splitting `names` on ",".
+		3. *Assert:* `names` is a Sequence<Text> and `names.count` is 2.
+		4. *If* `newname0` is not set:
+			1. *Let* `newname0` be `names.0`.
+		5. *If* `newname1` is not set:
+			1. *Let* `newname1` be `names.1`.
+	5. *Return:* [
+		[[prod= newname0]],
+		[[prod= newname1]],
+	].
+;
+
 ChoiceData Transform(SemanticOp[operator: OPT] expr, Text nt, Sequence<ProductionData> data) :=
 	1. *Assert:* `expr.children.count` is 1.
 	2. *Let* `operand` be *UnwrapAffirm:* Transform(expr.children.0, nt, data).

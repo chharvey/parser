@@ -17,6 +17,7 @@ export class Decorator {
 	private static readonly OPS_UN: ReadonlyMap<string, Unop> = new Map<string, Unop>([
 		[`+`, Unop.PLUS],
 		[`#`, Unop.HASH],
+		[`%`, Unop.PERC],
 		[`?`, Unop.OPT],
 	]);
 

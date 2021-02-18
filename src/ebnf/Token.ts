@@ -28,7 +28,7 @@ export class TokenPunctuator extends Token {
 	static readonly PUNCTUATORS_4: readonly string[] = `:::=`.split(' ');
 	static readonly PUNCTUATORS_3: readonly string[] = `::=`.split(' ');
 	static readonly PUNCTUATORS_2: readonly string[] = ``.split(' ');
-	static readonly PUNCTUATORS_1: readonly string[] = `( ) < > + - * # ? . & | , ;`.split(' ');
+	static readonly PUNCTUATORS_1: readonly string[] = `( ) < > + - * # % ? . & | , ;`.split(' ');
 	constructor (lexer: Lexer, count: 1n | 2n | 3n | 4n = 1n) {
 		super('PUNCTUATOR', lexer, ...lexer.advance());
 		if (count >= 4n) {

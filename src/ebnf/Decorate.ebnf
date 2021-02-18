@@ -103,6 +103,10 @@ Decorate(Unary ::= Unit "#") -> SematicOp
 	:= (SematicOp[operator=HASH]
 		Decorate(Unit)
 	);
+Decorate(Unary ::= Unit "%") -> SematicOp
+	:= (SematicOp[operator=PERC]
+		Decorate(Unit)
+	);
 Decorate(Unary ::= Unit "?") -> SematicOp
 	:= (SematicOp[operator=OPT]
 		Decorate(Unit)
@@ -124,6 +128,12 @@ Decorate(Unary ::= Unit "*" "?") -> SematicOp
 Decorate(Unary ::= Unit "#" "?") -> SematicOp
 	:= (SematicOp[operator=OPT]
 		(SemanticOp[operator=HASH]
+			Decorate(Unit)
+		)
+	);
+Decorate(Unary ::= Unit "%" "?") -> SematicOp
+	:= (SematicOp[operator=OPT]
+		(SemanticOp[operator=PERC]
 			Decorate(Unit)
 		)
 	);

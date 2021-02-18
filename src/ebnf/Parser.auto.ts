@@ -107,7 +107,7 @@
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						[ProductionUnit.instance],[ProductionUnit.instance,'?'],[ProductionUnit.instance,'+'],[ProductionUnit.instance,'+','?'],[ProductionUnit.instance,'*'],[ProductionUnit.instance,'*','?'],[ProductionUnit.instance,'#'],[ProductionUnit.instance,'#','?'],
+						[ProductionUnit.instance],[ProductionUnit.instance,'?'],[ProductionUnit.instance,'+'],[ProductionUnit.instance,'+','?'],[ProductionUnit.instance,'*'],[ProductionUnit.instance,'*','?'],[ProductionUnit.instance,'#'],[ProductionUnit.instance,'#','?'],[ProductionUnit.instance,'%'],[ProductionUnit.instance,'%','?'],
 					];
 				}
 			}
@@ -253,7 +253,7 @@
 		
 			export class ParseNodeUnary extends ParseNode {
 				declare readonly children:
-					readonly [ParseNodeUnit] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token,Token] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token,Token] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token,Token]
+					readonly [ParseNodeUnit] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token,Token] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token,Token] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token,Token] | readonly [ParseNodeUnit,Token] | readonly [ParseNodeUnit,Token,Token]
 				;
 			}
 		

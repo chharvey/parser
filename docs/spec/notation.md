@@ -109,10 +109,10 @@ The following table is an informative summary of the operators described below.
 			<td><code>( … )</code></td>
 		</tr>
 		<tr>
-			<th rowspan="3">2</th>
+			<th rowspan="4">2</th>
 			<td>Repetition</td>
-			<td rowspan="3">unary postfix</td>
-			<td rowspan="3">left-to-right</td>
+			<td rowspan="4">unary postfix</td>
+			<td rowspan="4">left-to-right</td>
 			<td><code>… +</code></td>
 		</tr>
 		<tr>
@@ -120,8 +120,11 @@ The following table is an informative summary of the operators described below.
 			<td><code>… *</code></td>
 		</tr>
 		<tr>
-			<td>Comma-Separated Repition</td>
+			<td rowspan="2">Comma-Separated Repition</td>
 			<td><code>… #</code></td>
+		</tr>
+		<tr>
+			<td><code>… %</code></td>
 		</tr>
 		<tr>
 			<th>3</th>
@@ -132,13 +135,12 @@ The following table is an informative summary of the operators described below.
 		</tr>
 		<tr>
 			<th rowspan="2">4</th>
-			<td>Ordered Concatenation</td>
+			<td rowspan="2">Ordered Concatenation</td>
 			<td rowspan="2">binary infix</td>
 			<td rowspan="2">left-to-right</td>
 			<td><code>… …</code></td>
 		</tr>
 		<tr>
-			<td>Ordered Concatenation (Explicit)</td>
 			<td><code>… . …</code></td>
 		</tr>
 		<tr>
@@ -330,7 +332,9 @@ Comma-separated repetition is a repetition of one or more items with commas (**U
 Comma-separated repetition only specifies commas *between* the items, but does not necessarily
 specify a leading or trailing comma.
 
-Comma-separated repetition syntax uses the symbol `#` and is shorthand for a left-recursive list.
+Comma-separated repetition syntax uses one of two symbols: `#` and `%`.
+
+The symbol `#` is shorthand for a left-recursive list.
 ```
 N
 	::= A B# C;
@@ -346,8 +350,32 @@ N__0__List ::=
 ;
 ```
 
+The symbol `%` and is shorthand for two right-recursive lists.
+```
+N
+	::= A B% C;
+```
+transforms to
+```
+N ::=
+	| A N__0__List C
+	| A N__1__List C
+;
+
+N__0__List ::=
+	| B ","
+	| B "," N__0__List
+;
+
+N__1__List ::=
+	| B
+	| B "," N__1__List
+;
+```
+Right-recursion is needed for when a comma-separated list is followed by an optional trailing comma.
+
 Comma-separated repetition is stronger than concatenation:
-`A B#` is equivalent to `A (B#)`.
+`A B# C%` is equivalent to `A (B#) (C%)`.
 
 
 ### Optionality

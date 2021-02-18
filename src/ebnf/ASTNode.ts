@@ -26,6 +26,7 @@ const FAMILY_SYMBOL:   string = '$';
 export enum Unop {
 	PLUS,
 	HASH,
+	PERC,
 	OPT,
 }
 
@@ -213,6 +214,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 	private static readonly memoized: ReadonlyMap<Unop, MapEq<EBNFChoice, string>> = new Map<Unop, MapEq<EBNFChoice, string>>([
 		[Unop.PLUS, new MapEq<EBNFChoice, string>(deepStrictEqual)],
 		[Unop.HASH, new MapEq<EBNFChoice, string>(deepStrictEqual)],
+		[Unop.PERC, new MapEq<EBNFChoice, string>(deepStrictEqual)],
 	]);
 	declare readonly children: readonly [ASTNodeExpr];
 	constructor (
@@ -258,6 +260,33 @@ export class ASTNodeOpUn extends ASTNodeOp {
 				};
 				return [
 					[{prod: memoized.get(trans)!}],
+				];
+			}],
+			[Unop.PERC, () => {
+				const memoized: MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.PERC)!;
+				if (!memoized.has(trans)) {
+					const name1: string = `${ nt }${ SUB_SEPARATOR }${ nt.subCount }${ SUB_SEPARATOR }List`;
+					const newname: string = `${ name },${ name1 }`;
+					memoized.set(trans, newname);
+					data.push({
+						name,
+						defn: utils.NonemptyArray_flatMap(trans, (seq) => [
+							[...seq, ','              ],
+							[...seq, ',', {prod: name}],
+						]),
+					});
+					data.push({
+						name: name1,
+						defn: utils.NonemptyArray_flatMap(trans, (seq) => [
+							seq,
+							[...seq, ',', {prod: name1}],
+						]),
+					});
+				};
+				const names: string[] = memoized.get(trans)!.split(',');
+				return [
+					[{prod: names[0]}],
+					[{prod: names[1]}],
 				];
 			}],
 			[Unop.OPT, () => {
