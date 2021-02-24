@@ -62,7 +62,7 @@ export class Decorator {
 	): ASTNODE.ASTNodeExpr;
 	static decorate(node: PARSER.ParseNodeNonterminalName): ASTNODE.ASTNodeNonterminal;
 	static decorate(node: PARSER.ParseNodeProduction):      ASTNODE.ASTNodeProduction;
-	static decorate(node: PARSER.ParseNodeGoal__1__List):   NonemptyArray<ASTNODE.ASTNodeProduction>;
+	static decorate(node: PARSER.ParseNodeGoal__0__List):   NonemptyArray<ASTNODE.ASTNodeProduction>;
 	static decorate(node: PARSER.ParseNodeGoal):            ASTNODE.ASTNodeGoal;
 	static decorate(node: ParseNode): ASTNODE.ASTNodeEBNF | readonly ASTNODE.ASTNodeEBNF[];
 	static decorate(node: ParseNode): ASTNODE.ASTNodeEBNF | readonly ASTNODE.ASTNodeEBNF[] {
@@ -240,7 +240,7 @@ export class Decorator {
 				this.decorate(node.children[2]),
 			);
 
-		} else if (node instanceof PARSER.ParseNodeGoal__1__List) {
+		} else if (node instanceof PARSER.ParseNodeGoal__0__List) {
 			return (node.children.length === 1)
 				? [
 					this.decorate(node.children[0]),
