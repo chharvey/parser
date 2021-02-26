@@ -47,7 +47,7 @@ export class Parser {
 	constructor (
 		lexer: Lexer,
 		private readonly grammar: Grammar,
-		private readonly parsenode_map: Map<Production, typeof ParseNode>,
+		private readonly parsenode_map: ReadonlyMap<Production, typeof ParseNode>,
 	) {
 		this.token_generator = lexer.generate();
 		this.iterator_result_token = this.token_generator.next();
@@ -66,7 +66,7 @@ export class Parser {
 	 * @returns            whether the shift was successful
 	 */
 	private shift(curr_state: State): boolean {
-		const next_state: Set<Configuration> = new Set<Configuration>([...curr_state].filter((config) => {
+		const next_state: ReadonlySet<Configuration> = new Set<Configuration>([...curr_state].filter((config) => {
 			const next_symbol: GrammarSymbol | null = config.after[0] || null;
 			return (
 				(typeof next_symbol === 'string') ? this.lookahead.source === next_symbol :
@@ -106,7 +106,7 @@ export class Parser {
 				const rule: Rule = reductions[0].rule;
 				const children: (Token | ParseNode)[] = rule.symbols.map(() => this.stack.pop()![0]).reverse();
 				const node: ParseNode = this.makeParseNode(rule, children);
-				const next_state: Set<Configuration> = new Set<Configuration>((this.stack.length)
+				const next_state: ReadonlySet<Configuration> = new Set<Configuration>((this.stack.length)
 					? [...this.stack[this.stack.length - 1][1]]
 						.filter((config) => config.after[0] === rule.production)
 						.map((config) => config.advance())

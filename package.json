@@ -1,6 +1,6 @@
 {
   "name": "@chharvey/parser",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A parser generator.",
   "main": "index.js",
   "scripts": {
@@ -33,15 +33,15 @@
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.11.5",
     "gulp": "^4.0.2",
-    "gulp-mocha": "^7.0.2",
+    "gulp-mocha": "^8.0.0",
     "gulp-typedoc": "^2.2.5",
     "gulp-typescript": "^6.0.0-alpha.1",
     "ts-node": "^9.0.0",
-    "typedoc": "^0.19.2",
-    "typescript": "~4.0.3"
+    "typedoc": "^0.20.0",
+    "typescript": "~4.2.0"
   },
   "peerDependencies": {
-    "typescript": "3.7.0 - 4.0"
+    "typescript": ">=3.7.0"
   },
   "dependencies": {
     "extrajs": "^0.21.1",
