@@ -290,13 +290,12 @@ Repetition indicates one or more occurrences of a symbol in the formal grammar.
 Repetition syntax uses the symbol `+` and is shorthand for a left-recursive list:
 ```
 N
-	::= A B+;
+	::= A B+ C;
 ```
 transforms to
 ```
-N ::=
-	| A N__0__List
-;
+N
+	::= A N__0__List C;
 
 N__0__List ::=
 	| B
@@ -314,19 +313,12 @@ Optional repetition is the repetition of zero or more occurrences of a symbol on
 Optional repetition uses the symbol `*` and is shorthand for a repetition that may be present or absent:
 ```
 N
-	::= A B*;
+	::= A B* C;
 ```
-transforms to
+is shorthand for
 ```
-N ::=
-	| A
-	| A N__0__List
-;
-
-N__0__List ::=
-	| B
-	| N__0__List B
-;
+N
+	::= A B+? C;
 ```
 
 Optional repetition is stronger than concatenation:
@@ -341,13 +333,12 @@ specify a leading or trailing comma.
 Comma-separated repetition syntax uses the symbol `#` and is shorthand for a left-recursive list.
 ```
 N
-	::= A B#;
+	::= A B# C;
 ```
 transforms to
 ```
-N ::=
-	| A N__0__List
-;
+N
+	::= A N__0__List C;
 
 N__0__List ::=
 	| B
@@ -365,13 +356,13 @@ Optionality indicates that the symbol may be present or absent in the formal gra
 Optionality syntax uses the symbol `?` and is shorthand for an alternative choice:
 ```
 N
-	::= A B?;
+	::= A B? C;
 ```
 transforms to
 ```
 N ::=
-	| A
-	| A B
+	| A C
+	| A B C
 ;
 ```
 

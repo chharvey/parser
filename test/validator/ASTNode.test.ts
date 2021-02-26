@@ -465,57 +465,6 @@ describe('ASTNode', () => {
 					});
 				});
 
-				describe('ASTNODE.ASTNodeOpUn[operator=STAR]', () => {
-					it('creates a new production with __0__List appended to the name.', () => {
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
-							NonTerm ::= ALPHA BETA* GAMMA;
-						`).parse()).children[0].transform(), [
-							{
-								name: 'NonTerm__0__List',
-								defn: [
-									[{term: 'BETA'}],
-									[{prod: 'NonTerm__0__List'}, {term: 'BETA'}],
-								],
-							},
-							{
-								name: 'NonTerm',
-								defn: [
-									[{term: 'ALPHA'},                             {term: 'GAMMA'}],
-									[{term: 'ALPHA'}, {prod: 'NonTerm__0__List'}, {term: 'GAMMA'}],
-								],
-							},
-						]);
-					});
-					it('memoizes reusable star-lists.', () => {
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
-							Alpha ::= BETA GAMMA*;
-							Delta ::= GAMMA* EPSILON;
-						`).parse()).transform(), [
-							{
-								name: 'Alpha__0__List',
-								defn: [
-									[                          {term: 'GAMMA'}],
-									[{prod: 'Alpha__0__List'}, {term: 'GAMMA'}],
-								],
-							},
-							{
-								name: 'Alpha',
-								defn: [
-									[{term: 'BETA'}],
-									[{term: 'BETA'}, {prod: 'Alpha__0__List'}],
-								],
-							},
-							{
-								name: 'Delta',
-								defn: [
-									[                          {term: 'EPSILON'}],
-									[{prod: 'Alpha__0__List'}, {term: 'EPSILON'}],
-								],
-							},
-						]);
-					});
-				});
-
 				describe('ASTNODE.ASTNodeOpUn[operator=HASH]', () => {
 					it('creates a new production with __0__List appended to the name.', () => {
 						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`

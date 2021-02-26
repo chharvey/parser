@@ -12,12 +12,8 @@
 		"noEmitOnError":          true
 	},
 	"typedocOptions": {
-		"tsconfig":             "./",
-		"mode":                 "file",
-		"name":                 "@chharvey/parser",
-		"out":                  "./docs/api/",
-		"includeDeclarations":  true,
-		"excludeExternals":     true,
-		"ignoreCompilerErrors": true
+		"name":        "@chharvey/parser",
+		"entryPoints": "./index.ts",
+		"out":         "./docs/api/"
 	}
 }

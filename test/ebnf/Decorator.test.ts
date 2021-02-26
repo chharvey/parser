@@ -3,6 +3,7 @@ import * as assert from 'assert';
 import {
 	ParserEBNF,
 	ASTNODE,
+	Unop,
 	Binop,
 	Decorator,
 } from '../../src/ebnf/';
@@ -44,6 +45,34 @@ describe('Decorator', () => {
 				const prod: ASTNODE.ASTNodeProduction = goal.children[0];
 				assert.strictEqual(prod.children[0]['name'], 'Unit');
 				assert.strictEqual(prod.children[1].source, 'NUMBER | "(" OPERATOR Unit Unit ")"');
+			});
+
+			specify('Unary ::= Unit "*"', () => {
+				/*
+					<Op operator=OPT source='Production*'>
+						<Op operator=PLUS>
+							<Ref name='Production'/>
+						</Op>
+					</Op>
+				*/
+				const outer: ASTNODE.ASTNodeExpr = (((Decorator.decorate(new ParserEBNF(`
+					Goal ::= #x02 Production* #x03;
+				`).parse()).children[0] as ASTNODE.ASTNodeProduction)
+					.children[1] as ASTNODE.ASTNodeOpBin) // source='#x02 Production* #x03'
+					.children[0] as ASTNODE.ASTNodeOpBin) // source='#x02 Production*'
+					.children[1] as ASTNODE.ASTNodeExpr   // source='Production*'
+				;
+				assert.ok(outer instanceof ASTNODE.ASTNodeOpUn);
+				assert.deepStrictEqual(
+					[outer['operator'], outer.source],
+					[Unop.OPT,          'Production *'],
+				);
+				const inner: ASTNODE.ASTNodeExpr = outer.children[0];
+				assert.ok(inner instanceof ASTNODE.ASTNodeOpUn);
+				assert.strictEqual(inner['operator'], Unop.PLUS);
+				const ref: ASTNODE.ASTNodeExpr = inner.children[0];
+				assert.ok(ref instanceof ASTNODE.ASTNodeRef);
+				assert.strictEqual(ref['name'], 'Production');
 			});
 
 			specify('Altern ::= Altern "|" Concat;', () => {

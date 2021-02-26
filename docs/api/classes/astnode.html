@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for @chharvey/parser">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -38,8 +39,8 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">@chharvey/parser</a>
 				</li>
 				<li>
 					<a href="astnode.html">ASTNode</a>
@@ -72,13 +73,14 @@
 					</div>
 					<p>An ASTNode is an abstraction of a ParseNode, without syntactic details.
 					For example, the expression <code>5 + 2 * 3</code> can be represented by the following abstract tree:</p>
-					<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ASTNodeOperation</span> <span class="hljs-attr">operator</span>=<span class="hljs-string">&quot;+&quot;</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ASTNodeConstant</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;5&quot;</span>/&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ASTNodeOperation</span> <span class="hljs-attr">operator</span>=<span class="hljs-string">&quot;*&quot;</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ASTNodeConstant</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;2&quot;</span>/&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ASTNodeConstant</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;3&quot;</span>/&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">ASTNodeOperation</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">ASTNodeOperation</span>&gt;</span></code></pre>
+					<pre><code class="language-xml"><span style="color: #800000">&lt;ASTNodeOperation</span><span style="color: #000000"> </span><span style="color: #FF0000">operator</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;+&quot;</span><span style="color: #800000">&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;ASTNodeConstant</span><span style="color: #000000"> </span><span style="color: #FF0000">value</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;5&quot;</span><span style="color: #800000">/&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;ASTNodeOperation</span><span style="color: #000000"> </span><span style="color: #FF0000">operator</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;*&quot;</span><span style="color: #800000">&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;ASTNodeConstant</span><span style="color: #000000"> </span><span style="color: #FF0000">value</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;2&quot;</span><span style="color: #800000">/&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;ASTNodeConstant</span><span style="color: #000000"> </span><span style="color: #FF0000">value</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;3&quot;</span><span style="color: #800000">/&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;/ASTNodeOperation&gt;</span>
+<span style="color: #800000">&lt;/ASTNodeOperation&gt;</span>
+</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -86,18 +88,13 @@
 				<ul class="tsd-hierarchy">
 					<li>
 						<span class="target">ASTNode</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="astnodeebnf.html" class="tsd-signature-type">ASTNodeEBNF</a>
-							</li>
-						</ul>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/serializable.html" class="tsd-signature-type">Serializable</a></li>
+					<li><a href="../interfaces/serializable.html" class="tsd-signature-type" data-tsd-kind="Interface">Serializable</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -113,11 +110,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="astnode.html#attributes" class="tsd-kind-icon">attributes</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="astnode.html#children" class="tsd-kind-icon">children</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="astnode.html#col_index" class="tsd-kind-icon">col_<wbr>index</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="astnode.html#line_index" class="tsd-kind-icon">line_<wbr>index</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="astnode.html#parse_node" class="tsd-kind-icon">parse_<wbr>node</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="astnode.html#source" class="tsd-kind-icon">source</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="astnode.html#source_index" class="tsd-kind-icon">source_<wbr>index</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="astnode.html#tagname" class="tsd-kind-icon">tagname</a></li>
@@ -138,13 +133,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new ASTNode<span class="tsd-signature-symbol">(</span>parse_node<span class="tsd-signature-symbol">: </span><a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type">ParseNode</a>, attributes<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{}</span>, children<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">readonly </span><a href="astnode.html" class="tsd-signature-type">ASTNode</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnode.html" class="tsd-signature-type">ASTNode</a></li>
+						<li class="tsd-signature tsd-kind-icon">new ASTNode<span class="tsd-signature-symbol">(</span>parse_node<span class="tsd-signature-symbol">: </span><a href="token.html" class="tsd-signature-type" data-tsd-kind="Class">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type" data-tsd-kind="Class">ParseNode</a>, attributes<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{}</span>, children<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">readonly </span><a href="astnode.html" class="tsd-signature-type" data-tsd-kind="Class">ASTNode</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="astnode.html" class="tsd-signature-type" data-tsd-kind="Class">ASTNode</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/validator/ASTNode.ts#L34">src/validator/ASTNode.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/validator/ASTNode.ts#L34">src/validator/ASTNode.ts:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -155,19 +150,15 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>parse_node: <a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type">ParseNode</a></h5>
+									<h5>parse_node: <a href="token.html" class="tsd-signature-type" data-tsd-kind="Class">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type" data-tsd-kind="Class">ParseNode</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The node in the parse tree to which this ASTNode corresponds.</p>
-										</div>
+										<p>The node in the parse tree to which this ASTNode corresponds.</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> attributes: <span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5>attributes: <span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol"> = ...</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Any other attributes to attach.</p>
-										</div>
+										<p>Any other attributes to attach.</p>
 									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-index-signature">
@@ -176,67 +167,34 @@
 									</ul>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> children: <span class="tsd-signature-symbol">readonly </span><a href="astnode.html" class="tsd-signature-type">ASTNode</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></h5>
+									<h5>children: <span class="tsd-signature-symbol">readonly </span><a href="astnode.html" class="tsd-signature-type" data-tsd-kind="Class">ASTNode</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The set of child inputs that creates this ASTNode.</p>
-										</div>
+										<p>The set of child inputs that creates this ASTNode.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="astnode.html" class="tsd-signature-type">ASTNode</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="astnode.html" class="tsd-signature-type" data-tsd-kind="Class">ASTNode</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="attributes" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> attributes</h3>
-					<div class="tsd-signature tsd-kind-icon">attributes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/validator/ASTNode.ts#L45">src/validator/ASTNode.ts:45</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Any other attributes to attach.</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">unknown</span></h5>
-							</li>
-						</ul>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="children" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> children</h3>
-					<div class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">readonly </span><a href="astnode.html" class="tsd-signature-type">ASTNode</a><span class="tsd-signature-symbol">[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">readonly </span><a href="astnode.html" class="tsd-signature-type" data-tsd-kind="Class">ASTNode</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/validator/ASTNode.ts#L46">src/validator/ASTNode.ts:46</a></li>
-						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The set of child inputs that creates this ASTNode.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="col_index" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> col_<wbr>index</h3>
-					<div class="tsd-signature tsd-kind-icon">col_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = this.parse_node.col_index</span></div>
+					<div class="tsd-signature tsd-kind-icon">col_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#col_index">col_index</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/validator/ASTNode.ts#L34">src/validator/ASTNode.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/validator/ASTNode.ts#L34">src/validator/ASTNode.ts:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -250,11 +208,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="line_index" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> line_<wbr>index</h3>
-					<div class="tsd-signature tsd-kind-icon">line_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = this.parse_node.line_index</span></div>
+					<div class="tsd-signature tsd-kind-icon">line_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#line_index">line_index</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/validator/ASTNode.ts#L32">src/validator/ASTNode.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/validator/ASTNode.ts#L32">src/validator/ASTNode.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -265,29 +223,14 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="parse_node" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> parse_<wbr>node</h3>
-					<div class="tsd-signature tsd-kind-icon">parse_<wbr>node<span class="tsd-signature-symbol">:</span> <a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type">ParseNode</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/validator/ASTNode.ts#L44">src/validator/ASTNode.ts:44</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The node in the parse tree to which this ASTNode corresponds.</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="source" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> source</h3>
-					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = this.parse_node.source</span></div>
+					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#source">source</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/validator/ASTNode.ts#L28">src/validator/ASTNode.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/validator/ASTNode.ts#L28">src/validator/ASTNode.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -301,11 +244,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="source_index" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> source_<wbr>index</h3>
-					<div class="tsd-signature tsd-kind-icon">source_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = this.parse_node.source_index</span></div>
+					<div class="tsd-signature tsd-kind-icon">source_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#source_index">source_index</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/validator/ASTNode.ts#L30">src/validator/ASTNode.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/validator/ASTNode.ts#L30">src/validator/ASTNode.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -319,11 +262,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="tagname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> tagname</h3>
-					<div class="tsd-signature tsd-kind-icon">tagname<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = this.constructor.name.slice(&#x27;ASTNode&#x27;.length)</span></div>
+					<div class="tsd-signature tsd-kind-icon">tagname<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#tagname">tagname</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/validator/ASTNode.ts#L26">src/validator/ASTNode.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/validator/ASTNode.ts#L26">src/validator/ASTNode.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -348,7 +291,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#serialize">serialize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/validator/ASTNode.ts#L51">src/validator/ASTNode.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/validator/ASTNode.ts#L51">src/validator/ASTNode.ts:51</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -367,13 +310,16 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-reference">
+						<a href="../modules.html#filebound" class="tsd-kind-icon">Filebound</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -381,9 +327,6 @@
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="astnode.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="astnode.html#attributes" class="tsd-kind-icon">attributes</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="astnode.html#children" class="tsd-kind-icon">children</a>
@@ -393,9 +336,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="astnode.html#line_index" class="tsd-kind-icon">line_<wbr>index</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="astnode.html#parse_node" class="tsd-kind-icon">parse_<wbr>node</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="astnode.html#source" class="tsd-kind-icon">source</a>
@@ -413,6 +353,75 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="char.html" class="tsd-kind-icon">Char</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="grammar.html" class="tsd-kind-icon">Grammar</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror.html" class="tsd-kind-icon">Lex<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror01.html" class="tsd-kind-icon">Lex<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror02.html" class="tsd-kind-icon">Lex<wbr>Error02</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexer.html" class="tsd-kind-icon">Lexer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parseerror01.html" class="tsd-kind-icon">Parse<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parsenode.html" class="tsd-kind-icon">Parse<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parser.html" class="tsd-kind-icon">Parser</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="production.html" class="tsd-kind-icon">Production</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="scanner.html" class="tsd-kind-icon">Scanner</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="terminal.html" class="tsd-kind-icon">Terminal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="token.html" class="tsd-kind-icon">Token</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokencomment.html" class="tsd-kind-icon">Token<wbr>Comment</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokenfilebound.html" class="tsd-kind-icon">Token<wbr>Filebound</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokenwhitespace.html" class="tsd-kind-icon">Token<wbr>Whitespace</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/serializable.html" class="tsd-kind-icon">Serializable</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#ebnfobject" class="tsd-kind-icon">EBNFObject</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#grammarsymbol" class="tsd-kind-icon">Grammar<wbr>Symbol</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../modules.html#nonemptyarray" class="tsd-kind-icon">Nonempty<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generate" class="tsd-kind-icon">generate</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

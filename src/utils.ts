@@ -57,7 +57,7 @@ export function NonemptyArray_flatMap<T, U>(arr: NonemptyArray<T>, callback: (it
  * @param   attributes a map of key-value pairs
  * @returns            an XML string of space-separated attributes
  */
-export function stringifyAttributes(attributes: Map<string, string>): string {
+export function stringifyAttributes(attributes: ReadonlyMap<string, string>): string {
 	return [...attributes].map(([attr, val]) => `${ attr }="${ val
 		.replace(/\&/g, '&amp;' )
 		.replace(/\</g, '&lt;'  )

@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for @chharvey/parser">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -38,8 +39,8 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -49,11 +50,6 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
 			<h1>@chharvey/parser</h1>
 		</div>
 	</div>
@@ -78,74 +74,78 @@
 				<p>In this walkthrough we’ll define a simple s-expression language using only positive integers and
 					the binary operators <code>^</code>, <code>*</code>, and <code>+</code>.
 				For example, to write “the sum of 500 and the product of 2 and 30”, you would write</p>
-				<pre><code>(<span class="hljs-name"><span class="hljs-builtin-name">+</span></span> <span class="hljs-number">500</span> (<span class="hljs-name"><span class="hljs-builtin-name">*</span></span> <span class="hljs-number">2</span> <span class="hljs-number">30</span>))</code></pre>
+				<pre><code><span style="color: #000000">(+ </span><span style="color: #098658">500</span><span style="color: #000000"> (* </span><span style="color: #098658">2</span><span style="color: #000000"> </span><span style="color: #098658">30</span><span style="color: #000000">))</span>
+</code></pre>
 				<p>(Conventionally, this would be written as <code>500 + 2 * 30</code>.)
 					Being such a simple language, there are only three types of tokens: numbers, operators, and grouping symbols.
 				The lexicon of this language is described by the following EBNF:</p>
-				<pre><code>NUMBER
-<span class="hljs-title">    ::</span>:= [<span class="hljs-number">0</span>-<span class="hljs-number">9</span>]+<span class="hljs-comment">;</span>
+				<pre><code><span style="color: #0070C1">NUMBER</span>
+<span style="color: #000000">    :::= [</span><span style="color: #098658">0</span><span style="color: #000000">-</span><span style="color: #098658">9</span><span style="color: #000000">]+;</span>
 
-OPERATOR
-<span class="hljs-title">    ::</span>:= <span class="hljs-string">&quot;^&quot;</span> | <span class="hljs-string">&quot;*&quot;</span> | <span class="hljs-string">&quot;+&quot;</span><span class="hljs-comment">;</span>
+<span style="color: #0070C1">OPERATOR</span>
+<span style="color: #000000">    :::= </span><span style="color: #A31515">&quot;^&quot;</span><span style="color: #000000"> | </span><span style="color: #A31515">&quot;*&quot;</span><span style="color: #000000"> | </span><span style="color: #A31515">&quot;+&quot;</span><span style="color: #000000">;</span>
 
-GROUPING
-<span class="hljs-title">    ::</span>:= <span class="hljs-string">&quot;(&quot;</span> | <span class="hljs-string">&quot;)&quot;</span><span class="hljs-comment">;</span></code></pre>
+<span style="color: #0070C1">GROUPING</span>
+<span style="color: #000000">    :::= </span><span style="color: #A31515">&quot;(&quot;</span><span style="color: #000000"> | </span><span style="color: #A31515">&quot;)&quot;</span><span style="color: #000000">;</span>
+</code></pre>
 				<p>In practice, you’d implement a lexicon by writing a combination of loops and conditional statements.
 					This is called a lexer, and the process is called Lexical Analysis.
 				<em>(Pseudo-code below — do not take seriously!)</em></p>
-				<pre><code class="language-ts"><span class="hljs-keyword">const</span> input: <span class="hljs-built_in">string</span> = <span class="hljs-string">&#x27;(+ 500 (* 2 30))&#x27;</span>;
-<span class="hljs-keyword">let</span> i: <span class="hljs-built_in">number</span> = <span class="hljs-number">0</span>;
-<span class="hljs-keyword">let</span> current_character: <span class="hljs-built_in">string</span> = input[i];
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">advance</span>(<span class="hljs-params">t: <span class="hljs-built_in">string</span></span>): <span class="hljs-title">string</span> </span>{
-    t += current_character;
-    current_character = input[++i];
-    <span class="hljs-keyword">return</span> t;
-}
+				<pre><code class="language-ts"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">input</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;(+ 500 (* 2 30))&#039;</span><span style="color: #000000">;</span>
+<span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000"> = </span><span style="color: #098658">0</span><span style="color: #000000">;</span>
+<span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">current_character</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000"> = </span><span style="color: #001080">input</span><span style="color: #000000">[</span><span style="color: #001080">i</span><span style="color: #000000">];</span>
+<span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">advance</span><span style="color: #000000">(</span><span style="color: #001080">t</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">): </span><span style="color: #267F99">string</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">t</span><span style="color: #000000"> += </span><span style="color: #001080">current_character</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #001080">current_character</span><span style="color: #000000"> = </span><span style="color: #001080">input</span><span style="color: #000000">[++</span><span style="color: #001080">i</span><span style="color: #000000">];</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">t</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
 
-<span class="hljs-keyword">const</span> tokens: <span class="hljs-built_in">string</span>[] = [];
-<span class="hljs-keyword">while</span> (i &lt; input.length) {
-    <span class="hljs-keyword">let</span> token: <span class="hljs-built_in">string</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tokens</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">[] = [];</span>
+<span style="color: #AF00DB">while</span><span style="color: #000000"> (</span><span style="color: #001080">i</span><span style="color: #000000"> &lt; </span><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #001080">length</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">token</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;&#039;</span><span style="color: #000000">;</span>
 
-    <span class="hljs-comment">/* WHITESPACE */</span>
-    <span class="hljs-keyword">while</span> (<span class="hljs-regexp">/\s/</span>.test(current_character)) {
-        token = advance(token);
-    };
-    <span class="hljs-keyword">if</span> (token !== <span class="hljs-string">&#x27;&#x27;</span>) {
-        tokens.push(token);
-        <span class="hljs-keyword">continue</span>;
-    };
+<span style="color: #000000">    </span><span style="color: #008000">/* WHITESPACE */</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">while</span><span style="color: #000000"> (</span><span style="color: #811F3F">/\s/</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #001080">current_character</span><span style="color: #000000">)) {</span>
+<span style="color: #000000">        </span><span style="color: #001080">token</span><span style="color: #000000"> = </span><span style="color: #795E26">advance</span><span style="color: #000000">(</span><span style="color: #001080">token</span><span style="color: #000000">);</span>
+<span style="color: #000000">    };</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">token</span><span style="color: #000000"> !== </span><span style="color: #A31515">&#039;&#039;</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #001080">tokens</span><span style="color: #000000">.</span><span style="color: #795E26">push</span><span style="color: #000000">(</span><span style="color: #001080">token</span><span style="color: #000000">);</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">continue</span><span style="color: #000000">;</span>
+<span style="color: #000000">    };</span>
 
-    <span class="hljs-comment">/* NUMBER :::= [0-9]+; */</span>
-    <span class="hljs-keyword">while</span> (<span class="hljs-regexp">/[0-9]/</span>.test(current_character)) {
-        token = advance(token);
-    };
-    <span class="hljs-keyword">if</span> (token !== <span class="hljs-string">&#x27;&#x27;</span>) {
-        tokens.push(token);
-        <span class="hljs-keyword">continue</span>;
-    };
+<span style="color: #000000">    </span><span style="color: #008000">/* NUMBER :::= [0-9]+; */</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">while</span><span style="color: #000000"> (</span><span style="color: #811F3F">/</span><span style="color: #D16969">[</span><span style="color: #811F3F">0-9</span><span style="color: #D16969">]</span><span style="color: #811F3F">/</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #001080">current_character</span><span style="color: #000000">)) {</span>
+<span style="color: #000000">        </span><span style="color: #001080">token</span><span style="color: #000000"> = </span><span style="color: #795E26">advance</span><span style="color: #000000">(</span><span style="color: #001080">token</span><span style="color: #000000">);</span>
+<span style="color: #000000">    };</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">token</span><span style="color: #000000"> !== </span><span style="color: #A31515">&#039;&#039;</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #001080">tokens</span><span style="color: #000000">.</span><span style="color: #795E26">push</span><span style="color: #000000">(</span><span style="color: #001080">token</span><span style="color: #000000">);</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">continue</span><span style="color: #000000">;</span>
+<span style="color: #000000">    };</span>
 
-    <span class="hljs-comment">/* OPERATOR :::= &quot;^&quot; | &quot;*&quot; | &quot;+&quot;; */</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\^|\*|\+/</span>.test(current_character)) {
-        token = advance(token);
-    };
-    <span class="hljs-keyword">if</span> (token !== <span class="hljs-string">&#x27;&#x27;</span>) {
-        tokens.push(token);
-        <span class="hljs-keyword">continue</span>;
-    };
+<span style="color: #000000">    </span><span style="color: #008000">/* OPERATOR :::= &quot;^&quot; | &quot;*&quot; | &quot;+&quot;; */</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #811F3F">/</span><span style="color: #EE0000">\^|\*|\+</span><span style="color: #811F3F">/</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #001080">current_character</span><span style="color: #000000">)) {</span>
+<span style="color: #000000">        </span><span style="color: #001080">token</span><span style="color: #000000"> = </span><span style="color: #795E26">advance</span><span style="color: #000000">(</span><span style="color: #001080">token</span><span style="color: #000000">);</span>
+<span style="color: #000000">    };</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">token</span><span style="color: #000000"> !== </span><span style="color: #A31515">&#039;&#039;</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #001080">tokens</span><span style="color: #000000">.</span><span style="color: #795E26">push</span><span style="color: #000000">(</span><span style="color: #001080">token</span><span style="color: #000000">);</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">continue</span><span style="color: #000000">;</span>
+<span style="color: #000000">    };</span>
 
-    <span class="hljs-comment">/* GROUPING :::= &quot;(&quot; | &quot;)&quot;; */</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\(|\)/</span>.test(current_character)) {
-        token = advance(token);
-    };
-    <span class="hljs-keyword">if</span> (token !== <span class="hljs-string">&#x27;&#x27;</span>) {
-        tokens.push(token);
-        <span class="hljs-keyword">continue</span>;
-    };
+<span style="color: #000000">    </span><span style="color: #008000">/* GROUPING :::= &quot;(&quot; | &quot;)&quot;; */</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #811F3F">/</span><span style="color: #EE0000">\(|\)</span><span style="color: #811F3F">/</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #001080">current_character</span><span style="color: #000000">)) {</span>
+<span style="color: #000000">        </span><span style="color: #001080">token</span><span style="color: #000000"> = </span><span style="color: #795E26">advance</span><span style="color: #000000">(</span><span style="color: #001080">token</span><span style="color: #000000">);</span>
+<span style="color: #000000">    };</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">token</span><span style="color: #000000"> !== </span><span style="color: #A31515">&#039;&#039;</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #001080">tokens</span><span style="color: #000000">.</span><span style="color: #795E26">push</span><span style="color: #000000">(</span><span style="color: #001080">token</span><span style="color: #000000">);</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">continue</span><span style="color: #000000">;</span>
+<span style="color: #000000">    };</span>
 
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`Unrecognized character: \`<span class="hljs-subst">${ current_character }</span>\``</span>);
-};</code></pre>
+<span style="color: #000000">    </span><span style="color: #AF00DB">throw</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Error</span><span style="color: #000000">(</span><span style="color: #A31515">`Unrecognized character: </span><span style="color: #EE0000">\`</span><span style="color: #0000FF">${</span><span style="color: #000000FF"> </span><span style="color: #001080">current_character</span><span style="color: #000000FF"> </span><span style="color: #0000FF">}</span><span style="color: #EE0000">\`</span><span style="color: #A31515">`</span><span style="color: #000000">);</span>
+<span style="color: #000000">};</span>
+</code></pre>
 				<p>Once done, and after filtering out whitespace, the lexer would return the following sequence of tokens:</p>
-				<pre><code class="language-ts">[<span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;+&#x27;</span>, <span class="hljs-string">&#x27;500&#x27;</span>, <span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;*&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;30&#x27;</span>, <span class="hljs-string">&#x27;)&#x27;</span>, <span class="hljs-string">&#x27;)&#x27;</span>]</code></pre>
+				<pre><code class="language-ts"><span style="color: #000000">[</span><span style="color: #A31515">&#039;(&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;+&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;500&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;(&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;*&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;2&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;30&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;)&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;)&#039;</span><span style="color: #000000">]</span>
+</code></pre>
 				<p>(Note that a lexer only creates tokens, it does not care how they are arranged.
 					Thus the following code would lex sucessfully even if not syntactically well-formed:
 				<code>500) + *(2 30 ()</code>.)</p>
@@ -158,35 +158,36 @@ GROUPING
 				<p>First let’s tackle the tokens. Each kind of token (<code>NUMBER</code>, <code>OPERATOR</code>, <code>GROUPING</code>) must be a subclass of <code>Token</code>,
 					where the constructor takes a lexer and the first character of the token, and then
 				describes what the lexer should do next. See the <a href="./docs/api/">Token API</a> for details.</p>
-				<pre><code class="language-ts"><span class="hljs-comment">//-- file: Token.ts</span>
-<span class="hljs-keyword">import</span> {
-    Token,
-    Lexer,
-} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
+				<pre><code class="language-ts"><span style="color: #008000">//-- file: Token.ts</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">Token</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">Lexer</span><span style="color: #000000">,</span>
+<span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@chharvey/parser&#039;</span><span style="color: #000000">;</span>
 
-<span class="hljs-comment">/** NUMBER :::= [0-9]+; */</span>
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TokenNumber</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Token</span> </span>{
-    <span class="hljs-title">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
-        <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;NUMBER&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
-        <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">this</span>.lexer.isDone &amp;&amp; <span class="hljs-regexp">/[0-9]/</span>.test(<span class="hljs-built_in">this</span>.lexer.c0.source)) {
-            <span class="hljs-built_in">this</span>.advance();
-        };
-    }
-}
-<span class="hljs-comment">/** OPERATOR :::= &quot;^&quot; | &quot;*&quot; | &quot;+&quot;; */</span>
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TokenOperator</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Token</span> </span>{
-    <span class="hljs-title">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
-        <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;OPERATOR&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
-        <span class="hljs-comment">// since only 1 character, no need to advance</span>
-    }
-}
-<span class="hljs-comment">/** GROUPING :::= &quot;(&quot; | &quot;)&quot;; */</span>
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TokenGrouping</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Token</span> </span>{
-    <span class="hljs-title">constructor</span> (<span class="hljs-params">lexer: Lexer</span>) {
-        <span class="hljs-built_in">super</span>(<span class="hljs-string">&#x27;GROUPING&#x27;</span>, lexer, ...lexer.advance()); <span class="hljs-comment">// already contains the 1st character</span>
-        <span class="hljs-comment">// since only 1 character, no need to advance</span>
-    }
-}</code></pre>
+<span style="color: #008000">/** NUMBER :::= [0-9]+; */</span>
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">TokenNumber</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">Token</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">constructor</span><span style="color: #000000"> (</span><span style="color: #001080">lexer</span><span style="color: #000000">: </span><span style="color: #267F99">Lexer</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">super</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;NUMBER&#039;</span><span style="color: #000000">, </span><span style="color: #001080">lexer</span><span style="color: #000000">, ...</span><span style="color: #001080">lexer</span><span style="color: #000000">.</span><span style="color: #795E26">advance</span><span style="color: #000000">()); </span><span style="color: #008000">// already contains the 1st character</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">while</span><span style="color: #000000"> (!</span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">lexer</span><span style="color: #000000">.</span><span style="color: #001080">isDone</span><span style="color: #000000"> &amp;&amp;</span><span style="color: #811F3F"> /</span><span style="color: #D16969">[</span><span style="color: #811F3F">0-9</span><span style="color: #D16969">]</span><span style="color: #811F3F">/</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">lexer</span><span style="color: #000000">.</span><span style="color: #001080">c0</span><span style="color: #000000">.</span><span style="color: #001080">source</span><span style="color: #000000">)) {</span>
+<span style="color: #000000">            </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #795E26">advance</span><span style="color: #000000">();</span>
+<span style="color: #000000">        };</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+<span style="color: #008000">/** OPERATOR :::= &quot;^&quot; | &quot;*&quot; | &quot;+&quot;; */</span>
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">TokenOperator</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">Token</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">constructor</span><span style="color: #000000"> (</span><span style="color: #001080">lexer</span><span style="color: #000000">: </span><span style="color: #267F99">Lexer</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">super</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;OPERATOR&#039;</span><span style="color: #000000">, </span><span style="color: #001080">lexer</span><span style="color: #000000">, ...</span><span style="color: #001080">lexer</span><span style="color: #000000">.</span><span style="color: #795E26">advance</span><span style="color: #000000">()); </span><span style="color: #008000">// already contains the 1st character</span>
+<span style="color: #000000">        </span><span style="color: #008000">// since only 1 character, no need to advance</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+<span style="color: #008000">/** GROUPING :::= &quot;(&quot; | &quot;)&quot;; */</span>
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">TokenGrouping</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">Token</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">constructor</span><span style="color: #000000"> (</span><span style="color: #001080">lexer</span><span style="color: #000000">: </span><span style="color: #267F99">Lexer</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">super</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;GROUPING&#039;</span><span style="color: #000000">, </span><span style="color: #001080">lexer</span><span style="color: #000000">, ...</span><span style="color: #001080">lexer</span><span style="color: #000000">.</span><span style="color: #795E26">advance</span><span style="color: #000000">()); </span><span style="color: #008000">// already contains the 1st character</span>
+<span style="color: #000000">        </span><span style="color: #008000">// since only 1 character, no need to advance</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+</code></pre>
 				<p>Whitespace tokens are already taken care of, so we don’t need to write it ourselves.
 				(Thus this project <em>should not</em> be used for whitespace-sensitive languages.)</p>
 				<a href="#step-1b-define-the-lexer" id="step-1b-define-the-lexer" style="color: inherit; text-decoration: none;">
@@ -195,42 +196,45 @@ GROUPING
 				<p>The name of your lexer must be <code>Lexer‹id›</code>, where <code>‹id›</code> is some identifier. Here we’ll use <code>LexerSExpr</code>.
 					(The <code>‹id›</code> is important because we’ll use it when generating our parser later.)
 				Put the conditions of the psuedo-code above into this lexer’s <code>generate_do()</code> method.</p>
-				<pre><code class="language-ts"><span class="hljs-comment">//-- file: Lexer.ts</span>
-<span class="hljs-keyword">import</span> {
-    Char,
-    Token,
-    Lexer,
-} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> TOKEN <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Token&#x27;</span>;
+				<pre><code class="language-ts"><span style="color: #008000">//-- file: Lexer.ts</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">Char</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">Token</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">Lexer</span><span style="color: #000000">,</span>
+<span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@chharvey/parser&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">TOKEN</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./Token&#039;</span><span style="color: #000000">;</span>
 
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LexerSExpr</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Lexer</span> </span>{
-    <span class="hljs-keyword">protected</span> generate_do(): Token | <span class="hljs-literal">null</span> {
-        <span class="hljs-keyword">return</span> (
-            (<span class="hljs-regexp">/[0-9]/</span>.test(<span class="hljs-built_in">this</span>.c0.source))       ? TOKEN.TokenNumber  (<span class="hljs-built_in">this</span>) :
-            (Char.inc([<span class="hljs-string">&#x27;^&#x27;</span>, <span class="hljs-string">&#x27;*&#x27;</span>, <span class="hljs-string">&#x27;+&#x27;</span>], <span class="hljs-built_in">this</span>.c0)) ? TOKEN.TokenOperator(<span class="hljs-built_in">this</span>) :
-            (Char.inc([<span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;)&#x27;</span>],      <span class="hljs-built_in">this</span>.c0)) ? TOKEN.TokenGrouping(<span class="hljs-built_in">this</span>) :
-            <span class="hljs-literal">null</span>
-        );
-    }
-}</code></pre>
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">LexerSExpr</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">Lexer</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">protected</span><span style="color: #000000"> </span><span style="color: #795E26">generate_do</span><span style="color: #000000">(): </span><span style="color: #267F99">Token</span><span style="color: #000000"> | </span><span style="color: #267F99">null</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">return</span><span style="color: #000000"> (</span>
+<span style="color: #000000">            (</span><span style="color: #811F3F">/</span><span style="color: #D16969">[</span><span style="color: #811F3F">0-9</span><span style="color: #D16969">]</span><span style="color: #811F3F">/</span><span style="color: #000000">.</span><span style="color: #795E26">test</span><span style="color: #000000">(</span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">c0</span><span style="color: #000000">.</span><span style="color: #001080">source</span><span style="color: #000000">))       ? </span><span style="color: #0070C1">TOKEN</span><span style="color: #000000">.</span><span style="color: #795E26">TokenNumber</span><span style="color: #000000">  (</span><span style="color: #0000FF">this</span><span style="color: #000000">) :</span>
+<span style="color: #000000">            (</span><span style="color: #001080">Char</span><span style="color: #000000">.</span><span style="color: #795E26">inc</span><span style="color: #000000">([</span><span style="color: #A31515">&#039;^&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;*&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;+&#039;</span><span style="color: #000000">], </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">c0</span><span style="color: #000000">)) ? </span><span style="color: #0070C1">TOKEN</span><span style="color: #000000">.</span><span style="color: #795E26">TokenOperator</span><span style="color: #000000">(</span><span style="color: #0000FF">this</span><span style="color: #000000">) :</span>
+<span style="color: #000000">            (</span><span style="color: #001080">Char</span><span style="color: #000000">.</span><span style="color: #795E26">inc</span><span style="color: #000000">([</span><span style="color: #A31515">&#039;(&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;)&#039;</span><span style="color: #000000">],      </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">c0</span><span style="color: #000000">)) ? </span><span style="color: #0070C1">TOKEN</span><span style="color: #000000">.</span><span style="color: #795E26">TokenGrouping</span><span style="color: #000000">(</span><span style="color: #0000FF">this</span><span style="color: #000000">) :</span>
+<span style="color: #000000">            </span><span style="color: #0000FF">null</span>
+<span style="color: #000000">        );</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+</code></pre>
 				<p>If we want to check if our lexer is working property, we can call its <code>generate()</code> method,
 				which returns a generator of tokens.</p>
-				<pre><code class="language-ts"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testLexer</span>(<span class="hljs-params"></span>): <span class="hljs-title">void</span> </span>{
-    <span class="hljs-keyword">const</span> tokens: Token[] = [...new LexerSExpr(<span class="hljs-string">&#x27;(+ 500 (* 2 30))&#x27;</span>).generate()];
-    <span class="hljs-built_in">console</span>.log(tokens.map(<span class="hljs-function">(<span class="hljs-params">t</span>) =&gt;</span> t.serialize()));
-}</code></pre>
+				<pre><code class="language-ts"><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">testLexer</span><span style="color: #000000">(): </span><span style="color: #267F99">void</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tokens</span><span style="color: #000000">: </span><span style="color: #267F99">Token</span><span style="color: #000000">[] = [...</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">LexerSExpr</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;(+ 500 (* 2 30))&#039;</span><span style="color: #000000">).</span><span style="color: #795E26">generate</span><span style="color: #000000">()];</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">tokens</span><span style="color: #000000">.</span><span style="color: #795E26">map</span><span style="color: #000000">((</span><span style="color: #001080">t</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">t</span><span style="color: #000000">.</span><span style="color: #795E26">serialize</span><span style="color: #000000">()));</span>
+<span style="color: #000000">}</span>
+</code></pre>
 				<p>We can expect this sequence of tokens:</p>
-				<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FILEBOUND</span>&gt;</span><span class="hljs-symbol">&amp;#x02;</span><span class="hljs-tag">&lt;/<span class="hljs-name">FILEBOUND</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>(<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">OPERATOR</span>&gt;</span>+<span class="hljs-tag">&lt;/<span class="hljs-name">OPERATOR</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>(<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">OPERATOR</span>&gt;</span>*<span class="hljs-tag">&lt;/<span class="hljs-name">OPERATOR</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>)<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>)<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">FILEBOUND</span>&gt;</span><span class="hljs-symbol">&amp;#x03;</span><span class="hljs-tag">&lt;/<span class="hljs-name">FILEBOUND</span>&gt;</span></code></pre>
+				<pre><code class="language-xml"><span style="color: #800000">&lt;FILEBOUND&gt;</span><span style="color: #0000FF">&amp;#x02;</span><span style="color: #800000">&lt;/FILEBOUND&gt;</span>
+<span style="color: #800000">&lt;GROUPING&gt;</span><span style="color: #000000">(</span><span style="color: #800000">&lt;/GROUPING&gt;</span>
+<span style="color: #800000">&lt;OPERATOR&gt;</span><span style="color: #000000">+</span><span style="color: #800000">&lt;/OPERATOR&gt;</span>
+<span style="color: #800000">&lt;NUMBER&gt;</span><span style="color: #000000">5</span><span style="color: #800000">&lt;/NUMBER&gt;</span>
+<span style="color: #800000">&lt;GROUPING&gt;</span><span style="color: #000000">(</span><span style="color: #800000">&lt;/GROUPING&gt;</span>
+<span style="color: #800000">&lt;OPERATOR&gt;</span><span style="color: #000000">*</span><span style="color: #800000">&lt;/OPERATOR&gt;</span>
+<span style="color: #800000">&lt;NUMBER&gt;</span><span style="color: #000000">2</span><span style="color: #800000">&lt;/NUMBER&gt;</span>
+<span style="color: #800000">&lt;NUMBER&gt;</span><span style="color: #000000">3</span><span style="color: #800000">&lt;/NUMBER&gt;</span>
+<span style="color: #800000">&lt;GROUPING&gt;</span><span style="color: #000000">)</span><span style="color: #800000">&lt;/GROUPING&gt;</span>
+<span style="color: #800000">&lt;GROUPING&gt;</span><span style="color: #000000">)</span><span style="color: #800000">&lt;/GROUPING&gt;</span>
+<span style="color: #800000">&lt;FILEBOUND&gt;</span><span style="color: #0000FF">&amp;#x03;</span><span style="color: #800000">&lt;/FILEBOUND&gt;</span>
+</code></pre>
 				<a href="#step-2-define-a-syntax" id="step-2-define-a-syntax" style="color: inherit; text-decoration: none;">
 					<h3>Step 2: Define A Syntax</h3>
 				</a>
@@ -246,13 +250,14 @@ GROUPING
 				</a>
 				<p>To get started, create an EBNF file defining the syntax of your language.
 				For example, our s-expression language is defined like this:</p>
-				<pre><code><span class="hljs-comment">//-- file: syntax.ebnf</span>
+				<pre><code><span style="color: #008000">//-- file: syntax.ebnf</span>
 
-<span class="hljs-built_in">Unit</span>
-    ::= NUMBER | <span class="hljs-string">&quot;(&quot;</span> OPERATOR <span class="hljs-built_in">Unit</span> <span class="hljs-built_in">Unit</span> <span class="hljs-string">&quot;)&quot;</span>;
+<span style="color: #001080">Unit</span>
+<span style="color: #000000">    ::= </span><span style="color: #0070C1">NUMBER</span><span style="color: #000000"> | </span><span style="color: #A31515">&quot;(&quot;</span><span style="color: #000000"> </span><span style="color: #0070C1">OPERATOR</span><span style="color: #000000"> </span><span style="color: #001080">Unit</span><span style="color: #000000"> </span><span style="color: #001080">Unit</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;)&quot;</span><span style="color: #000000">;</span>
 
-Goal
-    ::= #x02 <span class="hljs-built_in">Unit</span>? #x03;</code></pre>
+<span style="color: #001080">Goal</span>
+<span style="color: #000000">    ::= #</span><span style="color: #001080">x02</span><span style="color: #000000"> </span><span style="color: #001080">Unit</span><span style="color: #000000">? #</span><span style="color: #001080">x03</span><span style="color: #000000">;</span>
+</code></pre>
 				<p>EBNF Formatting conventions:</p>
 				<ul>
 					<li>Terminal literals (strings) are enclosed in <code>&quot;double-quotes&quot;</code>.</li>
@@ -271,24 +276,25 @@ Goal
 				</a>
 				<p>We’ll need to define our terminal types by hand by extending <code>Terminal</code>.
 				The good news is that there’s only one method to override.</p>
-				<pre><code class="language-ts"><span class="hljs-comment">//-- file: Terminal.ts</span>
-<span class="hljs-keyword">import</span> {
-    Terminal,
-} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> TOKEN <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Token&#x27;</span>;
+				<pre><code class="language-ts"><span style="color: #008000">//-- file: Terminal.ts</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">Terminal</span><span style="color: #000000">,</span>
+<span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@chharvey/parser&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">TOKEN</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./Token&#039;</span><span style="color: #000000">;</span>
 
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TerminalNumber</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Terminal</span> </span>{
-    <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> instance: TerminalNumber = <span class="hljs-keyword">new</span> TerminalNumber();
-    match(candidate: Token): <span class="hljs-built_in">boolean</span> {
-        <span class="hljs-keyword">return</span> candidate <span class="hljs-keyword">instanceof</span> TOKEN.TokenNumber;
-    }
-}
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TerminalOperator</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Terminal</span> </span>{
-    <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> instance: TerminalOperator = <span class="hljs-keyword">new</span> TerminalOperator();
-    match(candidate: Token): <span class="hljs-built_in">boolean</span> {
-        <span class="hljs-keyword">return</span> candidate <span class="hljs-keyword">instanceof</span> TOKEN.TokenOperator;
-    }
-}</code></pre>
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">TerminalNumber</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">Terminal</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">static</span><span style="color: #000000"> </span><span style="color: #0000FF">readonly</span><span style="color: #000000"> </span><span style="color: #001080">instance</span><span style="color: #000000">: </span><span style="color: #267F99">TerminalNumber</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TerminalNumber</span><span style="color: #000000">();</span>
+<span style="color: #000000">    </span><span style="color: #795E26">match</span><span style="color: #000000">(</span><span style="color: #001080">candidate</span><span style="color: #000000">: </span><span style="color: #267F99">Token</span><span style="color: #000000">): </span><span style="color: #267F99">boolean</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">candidate</span><span style="color: #000000"> </span><span style="color: #0000FF">instanceof</span><span style="color: #000000"> </span><span style="color: #267F99">TOKEN</span><span style="color: #000000">.</span><span style="color: #267F99">TokenNumber</span><span style="color: #000000">;</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">TerminalOperator</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">Terminal</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">static</span><span style="color: #000000"> </span><span style="color: #0000FF">readonly</span><span style="color: #000000"> </span><span style="color: #001080">instance</span><span style="color: #000000">: </span><span style="color: #267F99">TerminalOperator</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TerminalOperator</span><span style="color: #000000">();</span>
+<span style="color: #000000">    </span><span style="color: #795E26">match</span><span style="color: #000000">(</span><span style="color: #001080">candidate</span><span style="color: #000000">: </span><span style="color: #267F99">Token</span><span style="color: #000000">): </span><span style="color: #267F99">boolean</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">candidate</span><span style="color: #000000"> </span><span style="color: #0000FF">instanceof</span><span style="color: #000000"> </span><span style="color: #267F99">TOKEN</span><span style="color: #000000">.</span><span style="color: #267F99">TokenOperator</span><span style="color: #000000">;</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+</code></pre>
 				<p>Don’t worry about the static <code>instance</code> field; this is required for logistical reasons
 					but I’m working on a way to get rid of it.
 					The important thing is to define the <code>match()</code> method, which decides whether a given lexical token
@@ -307,135 +313,81 @@ Goal
 				<p>Before we can use our parser, it needs to be generated first.
 					This project’s generator takes an EBNF string and outputs another string in TypeScript format,
 				which we’ll write to file.</p>
-				<pre><code class="language-ts"><span class="hljs-comment">//-- file: main.ts</span>
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;fs&#x27;</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;path&#x27;</span>;
-<span class="hljs-keyword">import</span> {
-    generate,
-} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@chharvey/parser&#x27;</span>;
+				<pre><code class="language-ts"><span style="color: #008000">//-- file: main.ts</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">fs</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;fs&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">path</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;path&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">generate</span><span style="color: #000000">,</span>
+<span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@chharvey/parser&#039;</span><span style="color: #000000">;</span>
 
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">beforeRun</span>(<span class="hljs-params"></span>): <span class="hljs-title">void</span> </span>{
-    <span class="hljs-keyword">const</span> grammar: <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">string</span>&gt; = fs.promises.readFile(path.join(__dirname, <span class="hljs-string">&#x27;./syntax.ebnf&#x27;</span>), <span class="hljs-string">&#x27;utf8&#x27;</span>);
-    <span class="hljs-keyword">await</span> fs.promises.writeFile(
-        path.join(__dirname, <span class="hljs-string">&#x27;./Parser.auto.ts&#x27;</span>),
-        generate(<span class="hljs-keyword">await</span> grammar, <span class="hljs-string">&#x27;SExpr&#x27;</span>), <span class="hljs-comment">// custom identifier from our lexer name</span>
-    );
-}</code></pre>
+<span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">beforeRun</span><span style="color: #000000">(): </span><span style="color: #267F99">void</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">grammar</span><span style="color: #000000">: </span><span style="color: #267F99">Promise</span><span style="color: #000000">&lt;</span><span style="color: #267F99">string</span><span style="color: #000000">&gt; = </span><span style="color: #001080">fs</span><span style="color: #000000">.</span><span style="color: #001080">promises</span><span style="color: #000000">.</span><span style="color: #795E26">readFile</span><span style="color: #000000">(</span><span style="color: #001080">path</span><span style="color: #000000">.</span><span style="color: #795E26">join</span><span style="color: #000000">(</span><span style="color: #001080">__dirname</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;./syntax.ebnf&#039;</span><span style="color: #000000">), </span><span style="color: #A31515">&#039;utf8&#039;</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">fs</span><span style="color: #000000">.</span><span style="color: #001080">promises</span><span style="color: #000000">.</span><span style="color: #795E26">writeFile</span><span style="color: #000000">(</span>
+<span style="color: #000000">        </span><span style="color: #001080">path</span><span style="color: #000000">.</span><span style="color: #795E26">join</span><span style="color: #000000">(</span><span style="color: #001080">__dirname</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;./Parser.auto.ts&#039;</span><span style="color: #000000">),</span>
+<span style="color: #000000">        </span><span style="color: #795E26">generate</span><span style="color: #000000">(</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">grammar</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;SExpr&#039;</span><span style="color: #000000">), </span><span style="color: #008000">// custom identifier from our lexer name</span>
+<span style="color: #000000">    );</span>
+<span style="color: #000000">}</span>
+</code></pre>
 				<p>For an example of this output, see <a href="./test/sample/Parser.auto.ts">this project’s sample parser</a>.</p>
 				<p>After our parser and all its components are written to file, even though it’s auto-generated,
 					it’s a good idea to check it in to version control.
 				This is because you’ll import from it when using it:</p>
-				<pre><code class="language-ts"><span class="hljs-comment">//-- file: main.ts</span>
-<span class="hljs-keyword">import</span> {ParserSExpr} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Parser.auto&#x27;</span>;
+				<pre><code class="language-ts"><span style="color: #008000">//-- file: main.ts</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> {</span><span style="color: #001080">ParserSExpr</span><span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./Parser.auto&#039;</span><span style="color: #000000">;</span>
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>): <span class="hljs-title">void</span> </span>{
-    <span class="hljs-keyword">const</span> tree = <span class="hljs-keyword">new</span> ParserSExpr(<span class="hljs-string">&#x27;(+ 5 (* 2 3))&#x27;</span>).parse();
-    <span class="hljs-built_in">console</span>.log(tree.serialize());
-}</code></pre>
+<span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">run</span><span style="color: #000000">(): </span><span style="color: #267F99">void</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tree</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">ParserSExpr</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;(+ 5 (* 2 3))&#039;</span><span style="color: #000000">).</span><span style="color: #795E26">parse</span><span style="color: #000000">();</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">tree</span><span style="color: #000000">.</span><span style="color: #795E26">serialize</span><span style="color: #000000">());</span>
+<span style="color: #000000">}</span>
+</code></pre>
 				<p>We can expect a parse tree like the following:</p>
-				<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Goal</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">FILEBOUND</span>&gt;</span><span class="hljs-symbol">&amp;#x02;</span><span class="hljs-tag">&lt;/<span class="hljs-name">FILEBOUND</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">Unit</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>(<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">OPERATOR</span>&gt;</span>+<span class="hljs-tag">&lt;/<span class="hljs-name">OPERATOR</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">Unit</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">Unit</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">Unit</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>(<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">OPERATOR</span>&gt;</span>*<span class="hljs-tag">&lt;/<span class="hljs-name">OPERATOR</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">Unit</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">Unit</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">Unit</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">Unit</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>)<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">Unit</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">GROUPING</span>&gt;</span>)<span class="hljs-tag">&lt;/<span class="hljs-name">GROUPING</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">Unit</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">FILEBOUND</span>&gt;</span><span class="hljs-symbol">&amp;#x03;</span><span class="hljs-tag">&lt;/<span class="hljs-name">FILEBOUND</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">Goal</span>&gt;</span></code></pre>
+				<pre><code class="language-xml"><span style="color: #800000">&lt;Goal&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;FILEBOUND&gt;</span><span style="color: #0000FF">&amp;#x02;</span><span style="color: #800000">&lt;/FILEBOUND&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;Unit&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;GROUPING&gt;</span><span style="color: #000000">(</span><span style="color: #800000">&lt;/GROUPING&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;OPERATOR&gt;</span><span style="color: #000000">+</span><span style="color: #800000">&lt;/OPERATOR&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;Unit&gt;</span>
+<span style="color: #000000">            </span><span style="color: #800000">&lt;NUMBER&gt;</span><span style="color: #000000">5</span><span style="color: #800000">&lt;/NUMBER&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;/Unit&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;Unit&gt;</span>
+<span style="color: #000000">            </span><span style="color: #800000">&lt;GROUPING&gt;</span><span style="color: #000000">(</span><span style="color: #800000">&lt;/GROUPING&gt;</span>
+<span style="color: #000000">            </span><span style="color: #800000">&lt;OPERATOR&gt;</span><span style="color: #000000">*</span><span style="color: #800000">&lt;/OPERATOR&gt;</span>
+<span style="color: #000000">            </span><span style="color: #800000">&lt;Unit&gt;</span>
+<span style="color: #000000">                </span><span style="color: #800000">&lt;NUMBER&gt;</span><span style="color: #000000">2</span><span style="color: #800000">&lt;/NUMBER&gt;</span>
+<span style="color: #000000">            </span><span style="color: #800000">&lt;/Unit&gt;</span>
+<span style="color: #000000">            </span><span style="color: #800000">&lt;Unit&gt;</span>
+<span style="color: #000000">                </span><span style="color: #800000">&lt;NUMBER&gt;</span><span style="color: #000000">3</span><span style="color: #800000">&lt;/NUMBER&gt;</span>
+<span style="color: #000000">            </span><span style="color: #800000">&lt;/Unit&gt;</span>
+<span style="color: #000000">            </span><span style="color: #800000">&lt;GROUPING&gt;</span><span style="color: #000000">)</span><span style="color: #800000">&lt;/GROUPING&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;/Unit&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;GROUPING&gt;</span><span style="color: #000000">)</span><span style="color: #800000">&lt;/GROUPING&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;/Unit&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;FILEBOUND&gt;</span><span style="color: #0000FF">&amp;#x03;</span><span style="color: #800000">&lt;/FILEBOUND&gt;</span>
+<span style="color: #800000">&lt;/Goal&gt;</span>
+</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum">
-						<a href="enums/binop.html" class="tsd-kind-icon">Binop</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="enums/filebound.html" class="tsd-kind-icon">Filebound</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="enums/unop.html" class="tsd-kind-icon">Unop</a>
+					<li class=" tsd-kind-reference">
+						<a href="modules.html#filebound" class="tsd-kind-icon">Filebound</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/astnode.html" class="tsd-kind-icon">ASTNode</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/astnodearg.html" class="tsd-kind-icon">ASTNode<wbr>Arg</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodecondition.html" class="tsd-kind-icon">ASTNode<wbr>Condition</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodeconst.html" class="tsd-kind-icon">ASTNode<wbr>Const</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodeebnf.html" class="tsd-kind-icon">ASTNodeEBNF</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodeexpr.html" class="tsd-kind-icon">ASTNode<wbr>Expr</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodegoal.html" class="tsd-kind-icon">ASTNode<wbr>Goal</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodeitem.html" class="tsd-kind-icon">ASTNode<wbr>Item</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodenonterminal.html" class="tsd-kind-icon">ASTNode<wbr>Nonterminal</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodeop.html" class="tsd-kind-icon">ASTNode<wbr>Op</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodeopbin.html" class="tsd-kind-icon">ASTNode<wbr>OpBin</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodeopun.html" class="tsd-kind-icon">ASTNode<wbr>OpUn</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodeparam.html" class="tsd-kind-icon">ASTNode<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnodeproduction.html" class="tsd-kind-icon">ASTNode<wbr>Production</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/astnoderef.html" class="tsd-kind-icon">ASTNode<wbr>Ref</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/char.html" class="tsd-kind-icon">Char</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/concretenonterminal.html" class="tsd-kind-icon">Concrete<wbr>Nonterminal</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/concretereference.html" class="tsd-kind-icon">Concrete<wbr>Reference</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/configuration.html" class="tsd-kind-icon">Configuration</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/decorator.html" class="tsd-kind-icon">Decorator</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
@@ -456,12 +408,6 @@ Goal
 						<a href="classes/lexer.html" class="tsd-kind-icon">Lexer</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/lexerebnf.html" class="tsd-kind-icon">LexerEBNF</a>
-					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="classes/mapeq.html" class="tsd-kind-icon">Map<wbr>Eq</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -471,124 +417,10 @@ Goal
 						<a href="classes/parsenode.html" class="tsd-kind-icon">Parse<wbr>Node</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/parsenodealtern.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Altern</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeargumentset.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Argument<wbr>Set</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeargumentset__0__list.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Argument<wbr>Set__0__<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeconcat.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Concat</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeconditionset.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Condition<wbr>Set</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeconditionset__0__list.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Condition<wbr>Set__0__<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodedefinition.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Definition</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodegoal.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Goal</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodegoal__0__list.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Goal__0__<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeitem.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Item</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodenonterminalname.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Nonterminal<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeorder.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Order</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeparameterset.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Parameter<wbr>Set</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeparameterset__0__list.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Parameter<wbr>Set__0__<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeproduction.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Production</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodereference.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Reference</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeunary.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Unary</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/parsenodeunit.html" class="tsd-kind-icon">Parse<wbr>Node<wbr>Unit</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/parser.html" class="tsd-kind-icon">Parser</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/parserebnf.html" class="tsd-kind-icon">ParserEBNF</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/production.html" class="tsd-kind-icon">Production</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionaltern.html" class="tsd-kind-icon">Production<wbr>Altern</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionargumentset.html" class="tsd-kind-icon">Production<wbr>Argument<wbr>Set</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionargumentset__0__list.html" class="tsd-kind-icon">Production<wbr>Argument<wbr>Set__0__<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionconcat.html" class="tsd-kind-icon">Production<wbr>Concat</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionconditionset.html" class="tsd-kind-icon">Production<wbr>Condition<wbr>Set</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionconditionset__0__list.html" class="tsd-kind-icon">Production<wbr>Condition<wbr>Set__0__<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productiondefinition.html" class="tsd-kind-icon">Production<wbr>Definition</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productiongoal.html" class="tsd-kind-icon">Production<wbr>Goal</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productiongoal__0__list.html" class="tsd-kind-icon">Production<wbr>Goal__0__<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionitem.html" class="tsd-kind-icon">Production<wbr>Item</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionnonterminalname.html" class="tsd-kind-icon">Production<wbr>Nonterminal<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionorder.html" class="tsd-kind-icon">Production<wbr>Order</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionparameterset.html" class="tsd-kind-icon">Production<wbr>Parameter<wbr>Set</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionparameterset__0__list.html" class="tsd-kind-icon">Production<wbr>Parameter<wbr>Set__0__<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionproduction.html" class="tsd-kind-icon">Production<wbr>Production</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionreference.html" class="tsd-kind-icon">Production<wbr>Reference</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionunary.html" class="tsd-kind-icon">Production<wbr>Unary</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/productionunit.html" class="tsd-kind-icon">Production<wbr>Unit</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/rule.html" class="tsd-kind-icon">Rule</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/scanner.html" class="tsd-kind-icon">Scanner</a>
@@ -597,43 +429,13 @@ Goal
 						<a href="classes/terminal.html" class="tsd-kind-icon">Terminal</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/terminalcharclass.html" class="tsd-kind-icon">Terminal<wbr>Char<wbr>Class</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/terminalcharcode.html" class="tsd-kind-icon">Terminal<wbr>Char<wbr>Code</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/terminalidentifier.html" class="tsd-kind-icon">Terminal<wbr>Identifier</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/terminalstring.html" class="tsd-kind-icon">Terminal<wbr>String</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/token.html" class="tsd-kind-icon">Token</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/tokencharclass.html" class="tsd-kind-icon">Token<wbr>Char<wbr>Class</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/tokencharcode.html" class="tsd-kind-icon">Token<wbr>Char<wbr>Code</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/tokencomment.html" class="tsd-kind-icon">Token<wbr>Comment</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/tokencommentebnf.html" class="tsd-kind-icon">Token<wbr>CommentEBNF</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/tokenfilebound.html" class="tsd-kind-icon">Token<wbr>Filebound</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/tokenidentifier.html" class="tsd-kind-icon">Token<wbr>Identifier</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/tokenpunctuator.html" class="tsd-kind-icon">Token<wbr>Punctuator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/tokenstring.html" class="tsd-kind-icon">Token<wbr>String</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/tokenwhitespace.html" class="tsd-kind-icon">Token<wbr>Whitespace</a>
@@ -642,82 +444,16 @@ Goal
 						<a href="interfaces/serializable.html" class="tsd-kind-icon">Serializable</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#ebnfchoice" class="tsd-kind-icon">EBNFChoice</a>
+						<a href="modules.html#ebnfobject" class="tsd-kind-icon">EBNFObject</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#ebnfitem" class="tsd-kind-icon">EBNFItem</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#ebnfobject" class="tsd-kind-icon">EBNFObject</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#ebnfsequence" class="tsd-kind-icon">EBNFSequence</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#errorcodeconstructorproperties" class="tsd-kind-icon">Error<wbr>Code<wbr>Constructor<wbr>Properties</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#grammarsymbol" class="tsd-kind-icon">Grammar<wbr>Symbol</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#grammarterminal" class="tsd-kind-icon">Grammar<wbr>Terminal</a>
+						<a href="modules.html#grammarsymbol" class="tsd-kind-icon">Grammar<wbr>Symbol</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#mutable" class="tsd-kind-icon">Mutable</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#nonemptyarray" class="tsd-kind-icon">Nonempty<wbr>Array</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#state" class="tsd-kind-icon">State</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#family_symbol" class="tsd-kind-icon">FAMILY_<wbr>SYMBOL</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#param_separator" class="tsd-kind-icon">PARAM_<wbr>SEPARATOR</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#sub_separator" class="tsd-kind-icon">SUB_<wbr>SEPARATOR</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#nonemptyarray_flatmap" class="tsd-kind-icon">Nonempty<wbr>Array_<wbr>flat<wbr>Map</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#arrayrandom" class="tsd-kind-icon">array<wbr>Random</a>
+						<a href="modules.html#nonemptyarray" class="tsd-kind-icon">Nonempty<wbr>Array</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="globals.html#dedent" class="tsd-kind-icon">dedent</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#generate" class="tsd-kind-icon">generate</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#macrototitle" class="tsd-kind-icon">macro<wbr>ToTitle</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#randombool" class="tsd-kind-icon">random<wbr>Bool</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#randomchar" class="tsd-kind-icon">random<wbr>Char</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#randomint" class="tsd-kind-icon">random<wbr>Int</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#sanitizecontent" class="tsd-kind-icon">sanitize<wbr>Content</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#stringofsymbols" class="tsd-kind-icon">string<wbr>OfSymbols</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#stringifyattributes" class="tsd-kind-icon">stringify<wbr>Attributes</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#titletomacro" class="tsd-kind-icon">title<wbr>ToMacro</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#utf16encoding" class="tsd-kind-icon">utf16<wbr>Encoding</a>
+						<a href="modules.html#generate" class="tsd-kind-icon">generate</a>
 					</li>
 				</ul>
 			</nav>

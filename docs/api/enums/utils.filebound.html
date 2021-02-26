@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for @chharvey/parser">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -38,8 +39,8 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,10 +52,13 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">@chharvey/parser</a>
 				</li>
 				<li>
-					<a href="filebound.html">Filebound</a>
+					<a href="../modules/utils.html">utils</a>
+				</li>
+				<li>
+					<a href="utils.filebound.html">Filebound</a>
 				</li>
 			</ul>
 			<h1>Enumeration Filebound</h1>
@@ -78,8 +82,8 @@
 						<section class="tsd-index-section ">
 							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="filebound.html#eot" class="tsd-kind-icon">EOT</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="filebound.html#sot" class="tsd-kind-icon">SOT</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="utils.filebound.html#eot" class="tsd-kind-icon">EOT</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="utils.filebound.html#sot" class="tsd-kind-icon">SOT</a></li>
 							</ul>
 						</section>
 					</div>
@@ -90,10 +94,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="eot" class="tsd-anchor"></a>
 					<h3>EOT</h3>
-					<div class="tsd-signature tsd-kind-icon">EOT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">EOT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;\u0003&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/utils.ts#L11">src/utils.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/utils.ts#L11">src/utils.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -105,10 +109,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="sot" class="tsd-anchor"></a>
 					<h3>SOT</h3>
-					<div class="tsd-signature tsd-kind-icon">SOT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">SOT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;\u0002&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/utils.ts#L9">src/utils.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/utils.ts#L9">src/utils.ts:9</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -122,8 +126,11 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class="current tsd-kind-namespace">
+						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -131,19 +138,37 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-enum">
-						<a href="filebound.html" class="tsd-kind-icon">Filebound</a>
+					<li class="current tsd-kind-enum tsd-parent-kind-namespace">
+						<a href="utils.filebound.html" class="tsd-kind-icon">Filebound</a>
 						<ul>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="filebound.html#eot" class="tsd-kind-icon">EOT</a>
+								<a href="utils.filebound.html#eot" class="tsd-kind-icon">EOT</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="filebound.html#sot" class="tsd-kind-icon">SOT</a>
+								<a href="utils.filebound.html#sot" class="tsd-kind-icon">SOT</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="../modules/utils.html#nonemptyarray_flatmap" class="tsd-kind-icon">Nonempty<wbr>Array_<wbr>flat<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="../modules/utils.html#macrototitle" class="tsd-kind-icon">macro<wbr>ToTitle</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="../modules/utils.html#sanitizecontent" class="tsd-kind-icon">sanitize<wbr>Content</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="../modules/utils.html#stringofsymbols" class="tsd-kind-icon">string<wbr>OfSymbols</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="../modules/utils.html#stringifyattributes" class="tsd-kind-icon">stringify<wbr>Attributes</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace">
+						<a href="../modules/utils.html#titletomacro" class="tsd-kind-icon">title<wbr>ToMacro</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

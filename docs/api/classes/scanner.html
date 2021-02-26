@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for @chharvey/parser">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -38,8 +39,8 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">@chharvey/parser</a>
 				</li>
 				<li>
 					<a href="scanner.html">Scanner</a>
@@ -117,13 +118,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Scanner<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="scanner.html" class="tsd-signature-type">Scanner</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Scanner<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="scanner.html" class="tsd-signature-type" data-tsd-kind="Class">Scanner</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Scanner.ts#L13">src/scanner/Scanner.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Scanner.ts#L13">src/scanner/Scanner.ts:13</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -136,13 +137,11 @@
 								<li>
 									<h5>source: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>the source text</p>
-										</div>
+										<p>the source text</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="scanner.html" class="tsd-signature-type">Scanner</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="scanner.html" class="tsd-signature-type" data-tsd-kind="Class">Scanner</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -155,7 +154,7 @@
 					<div class="tsd-signature tsd-kind-icon">source_<wbr>text<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Scanner.ts#L13">src/scanner/Scanner.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Scanner.ts#L13">src/scanner/Scanner.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -171,13 +170,13 @@
 					<a name="generate" class="tsd-anchor"></a>
 					<h3>generate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Scanner.ts#L27">src/scanner/Scanner.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Scanner.ts#L27">src/scanner/Scanner.ts:27</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -185,7 +184,7 @@
 									<p>Return the next character in source text.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>the next character in source text</p>
 						</li>
 					</ul>
@@ -195,13 +194,55 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-reference">
+						<a href="../modules.html#filebound" class="tsd-kind-icon">Filebound</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="astnode.html" class="tsd-kind-icon">ASTNode</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="char.html" class="tsd-kind-icon">Char</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="grammar.html" class="tsd-kind-icon">Grammar</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror.html" class="tsd-kind-icon">Lex<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror01.html" class="tsd-kind-icon">Lex<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror02.html" class="tsd-kind-icon">Lex<wbr>Error02</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexer.html" class="tsd-kind-icon">Lexer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parseerror01.html" class="tsd-kind-icon">Parse<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parsenode.html" class="tsd-kind-icon">Parse<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parser.html" class="tsd-kind-icon">Parser</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="production.html" class="tsd-kind-icon">Production</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -220,6 +261,36 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="terminal.html" class="tsd-kind-icon">Terminal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="token.html" class="tsd-kind-icon">Token</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokencomment.html" class="tsd-kind-icon">Token<wbr>Comment</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokenfilebound.html" class="tsd-kind-icon">Token<wbr>Filebound</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokenwhitespace.html" class="tsd-kind-icon">Token<wbr>Whitespace</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/serializable.html" class="tsd-kind-icon">Serializable</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#ebnfobject" class="tsd-kind-icon">EBNFObject</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#grammarsymbol" class="tsd-kind-icon">Grammar<wbr>Symbol</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../modules.html#nonemptyarray" class="tsd-kind-icon">Nonempty<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generate" class="tsd-kind-icon">generate</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

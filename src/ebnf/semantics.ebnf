@@ -31,7 +31,7 @@ SemanticRef[name: Text] ::=
 SemanticItem
 	::= SemanticExpr SemanticCondition*;
 
-SemanticOp[operator: PLUS | STAR | HASH | OPT]
+SemanticOp[operator: PLUS | HASH | OPT]
 	::= SemanticExpr;
 SemanticOp[operator: ORDER | CONCAT | ALTERN]
 	::= SemanticExpr SemanticExpr;

@@ -16,7 +16,6 @@ import * as PARSER from './Parser.auto';
 export class Decorator {
 	private static readonly OPS_UN: ReadonlyMap<string, Unop> = new Map<string, Unop>([
 		[`+`, Unop.PLUS],
-		[`*`, Unop.STAR],
 		[`#`, Unop.HASH],
 		[`?`, Unop.OPT],
 	]);
@@ -153,22 +152,31 @@ export class Decorator {
 
 		} else if (node instanceof PARSER.ParseNodeUnary) {
 			let operand: ASTNODE.ASTNodeExpr = this.decorate(node.children[0]);
-			if (node.children.length === 1) {
-				return operand;
+			if (node.children.length > 1) {
+				const operator: string = node.children[1]!.source;
+				operand = (operator === '*')
+					? new ASTNODE.ASTNodeOpUn(
+						node,
+						Unop.OPT,
+						new ASTNODE.ASTNodeOpUn(
+							node,
+							Unop.PLUS,
+							operand,
+						),
+					)
+					: new ASTNODE.ASTNodeOpUn(
+						node,
+						this.OPS_UN.get(operator)!,
+						operand,
+					);
+				if (node.children.length > 2) {
+					operand = new ASTNODE.ASTNodeOpUn(
+						node,
+						Unop.OPT,
+						operand,
+					);
+				};
 			};
-			operand = new ASTNODE.ASTNodeOpUn(
-				node,
-				this.OPS_UN.get(node.children[1].source)!,
-				operand,
-			);
-			if (node.children.length === 2) {
-				return operand;
-			};
-			operand = new ASTNODE.ASTNodeOpUn(
-				node,
-				Unop.OPT,
-				operand,
-			);
 			return operand;
 
 		} else if (node instanceof PARSER.ParseNodeItem) {

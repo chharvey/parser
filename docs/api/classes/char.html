@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for @chharvey/parser">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -38,8 +39,8 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">@chharvey/parser</a>
 				</li>
 				<li>
 					<a href="char.html">Char</a>
@@ -89,7 +90,7 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/serializable.html" class="tsd-signature-type">Serializable</a></li>
+					<li><a href="../interfaces/serializable.html" class="tsd-signature-type" data-tsd-kind="Interface">Serializable</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -107,7 +108,6 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="char.html#col_index" class="tsd-kind-icon">col_<wbr>index</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="char.html#line_index" class="tsd-kind-icon">line_<wbr>index</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="char.html#scanner" class="tsd-kind-icon">scanner</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="char.html#source" class="tsd-kind-icon">source</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="char.html#source_index" class="tsd-kind-icon">source_<wbr>index</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="char.html#tagname" class="tsd-kind-icon">tagname</a></li>
@@ -131,13 +131,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Char<span class="tsd-signature-symbol">(</span>scanner<span class="tsd-signature-symbol">: </span><a href="scanner.html" class="tsd-signature-type">Scanner</a>, source_index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="char.html" class="tsd-signature-type">Char</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Char<span class="tsd-signature-symbol">(</span>scanner<span class="tsd-signature-symbol">: </span><a href="scanner.html" class="tsd-signature-type" data-tsd-kind="Class">Scanner</a>, source_index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L62">src/scanner/Char.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Char.ts#L62">src/scanner/Char.ts:62</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -148,23 +148,19 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>scanner: <a href="scanner.html" class="tsd-signature-type">Scanner</a></h5>
+									<h5>scanner: <a href="scanner.html" class="tsd-signature-type" data-tsd-kind="Class">Scanner</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The scanner containing the source text.</p>
-										</div>
+										<p>The scanner containing the source text.</p>
 									</div>
 								</li>
 								<li>
 									<h5>source_index: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The index of the character in source text.</p>
-										</div>
+										<p>The index of the character in source text.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="char.html" class="tsd-signature-type">Char</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -178,7 +174,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#col_index">col_index</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L62">src/scanner/Char.ts:62</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Char.ts#L62">src/scanner/Char.ts:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -196,7 +192,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#line_index">line_index</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L60">src/scanner/Char.ts:60</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Char.ts#L60">src/scanner/Char.ts:60</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -207,29 +203,14 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="scanner" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> scanner</h3>
-					<div class="tsd-signature tsd-kind-icon">scanner<span class="tsd-signature-symbol">:</span> <a href="scanner.html" class="tsd-signature-type">Scanner</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L70">src/scanner/Char.ts:70</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The scanner containing the source text.</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="source" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> source</h3>
-					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = this.scanner.source_text[this.source_index]</span></div>
+					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#source">source</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L58">src/scanner/Char.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Char.ts#L58">src/scanner/Char.ts:58</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -246,24 +227,21 @@
 					<div class="tsd-signature tsd-kind-icon">source_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#source_index">source_index</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L72">src/scanner/Char.ts:72</a></li>
-						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The index of the character in source text.</p>
+							<p>The index of the first character/token in source text.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="tagname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> tagname</h3>
-					<div class="tsd-signature tsd-kind-icon">tagname<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;char&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">tagname<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#x27;char&#x27;</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#tagname">tagname</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L56">src/scanner/Char.ts:56</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Char.ts#L56">src/scanner/Char.ts:56</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -281,13 +259,13 @@
 					<a name="lookahead" class="tsd-anchor"></a>
 					<h3>lookahead</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">lookahead<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon">lookahead<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L103">src/scanner/Char.ts:103</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Char.ts#L103">src/scanner/Char.ts:103</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -303,13 +281,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> n: <span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> = 1n</span></h5>
+									<h5>n: <span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> = ...</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the number of times to lookahead</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></h4>
 							<p>the character succeeding this character</p>
 						</li>
 					</ul>
@@ -325,7 +303,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#serialize">serialize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L83">src/scanner/Char.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Char.ts#L83">src/scanner/Char.ts:83</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -343,13 +321,13 @@
 					<a name="eq" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> eq</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">eq<span class="tsd-signature-symbol">(</span>expected<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, test<span class="tsd-signature-symbol">: </span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, <span class="tsd-signature-symbol">...</span>tests<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">eq<span class="tsd-signature-symbol">(</span>expected<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, test<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a>, <span class="tsd-signature-symbol">...</span>tests<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L29">src/scanner/Char.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Char.ts#L29">src/scanner/Char.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -376,13 +354,13 @@
 									</div>
 								</li>
 								<li>
-									<h5>test: <a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+									<h5>test: <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the first Char object test</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>tests: <span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>tests: <span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>succeeding Char objects to concatenate and test</p>
 									</div>
@@ -397,13 +375,13 @@
 					<a name="inc" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> inc</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">inc<span class="tsd-signature-symbol">(</span>expected<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, test<span class="tsd-signature-symbol">: </span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, <span class="tsd-signature-symbol">...</span>tests<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">inc<span class="tsd-signature-symbol">(</span>expected<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, test<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a>, <span class="tsd-signature-symbol">...</span>tests<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/scanner/Char.ts#L49">src/scanner/Char.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/scanner/Char.ts#L49">src/scanner/Char.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -430,13 +408,13 @@
 									</div>
 								</li>
 								<li>
-									<h5>test: <a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+									<h5>test: <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the first Char object test</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>tests: <span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>tests: <span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>succeeding Char objects to concatenate and test</p>
 									</div>
@@ -452,13 +430,19 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-reference">
+						<a href="../modules.html#filebound" class="tsd-kind-icon">Filebound</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="astnode.html" class="tsd-kind-icon">ASTNode</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -472,9 +456,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="char.html#line_index" class="tsd-kind-icon">line_<wbr>index</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="char.html#scanner" class="tsd-kind-icon">scanner</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="char.html#source" class="tsd-kind-icon">source</a>
@@ -501,6 +482,72 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="grammar.html" class="tsd-kind-icon">Grammar</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror.html" class="tsd-kind-icon">Lex<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror01.html" class="tsd-kind-icon">Lex<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror02.html" class="tsd-kind-icon">Lex<wbr>Error02</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexer.html" class="tsd-kind-icon">Lexer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parseerror01.html" class="tsd-kind-icon">Parse<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parsenode.html" class="tsd-kind-icon">Parse<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parser.html" class="tsd-kind-icon">Parser</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="production.html" class="tsd-kind-icon">Production</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="scanner.html" class="tsd-kind-icon">Scanner</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="terminal.html" class="tsd-kind-icon">Terminal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="token.html" class="tsd-kind-icon">Token</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokencomment.html" class="tsd-kind-icon">Token<wbr>Comment</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokenfilebound.html" class="tsd-kind-icon">Token<wbr>Filebound</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokenwhitespace.html" class="tsd-kind-icon">Token<wbr>Whitespace</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/serializable.html" class="tsd-kind-icon">Serializable</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#ebnfobject" class="tsd-kind-icon">EBNFObject</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#grammarsymbol" class="tsd-kind-icon">Grammar<wbr>Symbol</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../modules.html#nonemptyarray" class="tsd-kind-icon">Nonempty<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generate" class="tsd-kind-icon">generate</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

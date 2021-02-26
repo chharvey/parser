@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for @chharvey/parser">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -38,8 +39,8 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">@chharvey/parser</a>
 				</li>
 				<li>
 					<a href="parsenode.html">ParseNode</a>
@@ -76,21 +77,22 @@
 					</div>
 					<p>A ParseNode is an arrangement of Tokens in a tree structure.
 					For example, parsing the expression <code>5 + 2 * 3</code> might yield the following tree:</p>
-					<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ParseNodeAdd</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ParseNodeAdd</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ParseNodeMult</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">ParseNodeMult</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">ParseNodeAdd</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">PUNCTUATOR</span>&gt;</span>+<span class="hljs-tag">&lt;/<span class="hljs-name">PUNCTUATOR</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ParseNodeMult</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ParseNodeMult</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">ParseNodeMult</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">PUNCTUATOR</span>&gt;</span>*<span class="hljs-tag">&lt;/<span class="hljs-name">PUNCTUATOR</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">NUMBER</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">NUMBER</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">ParseNodeMult</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">ParseNodeAdd</span>&gt;</span></code></pre>
+					<pre><code class="language-xml"><span style="color: #800000">&lt;ParseNodeAdd&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;ParseNodeAdd&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;ParseNodeMult&gt;</span>
+<span style="color: #000000">            </span><span style="color: #800000">&lt;NUMBER&gt;</span><span style="color: #000000">5</span><span style="color: #800000">&lt;/NUMBER&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;/ParseNodeMult&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;/ParseNodeAdd&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;PUNCTUATOR&gt;</span><span style="color: #000000">+</span><span style="color: #800000">&lt;/PUNCTUATOR&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;ParseNodeMult&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;ParseNodeMult&gt;</span>
+<span style="color: #000000">            </span><span style="color: #800000">&lt;NUMBER&gt;</span><span style="color: #000000">2</span><span style="color: #800000">&lt;/NUMBER&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;/ParseNodeMult&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;PUNCTUATOR&gt;</span><span style="color: #000000">*</span><span style="color: #800000">&lt;/PUNCTUATOR&gt;</span>
+<span style="color: #000000">        </span><span style="color: #800000">&lt;NUMBER&gt;</span><span style="color: #000000">3</span><span style="color: #800000">&lt;/NUMBER&gt;</span>
+<span style="color: #000000">    </span><span style="color: #800000">&lt;/ParseNodeMult&gt;</span>
+<span style="color: #800000">&lt;/ParseNodeAdd&gt;</span>
+</code></pre>
 					<dl class="tsd-comment-tags">
 						<dt>see</dt>
 						<dd><p><a href="http://parsingintro.sourceforge.net/#contents_item_8.2">http://parsingintro.sourceforge.net/#contents_item_8.2</a></p>
@@ -103,69 +105,13 @@
 				<ul class="tsd-hierarchy">
 					<li>
 						<span class="target">ParseNode</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="parsenodeparameterset__0__list.html" class="tsd-signature-type">ParseNodeParameterSet__0__List</a>
-							</li>
-							<li>
-								<a href="parsenodeparameterset.html" class="tsd-signature-type">ParseNodeParameterSet</a>
-							</li>
-							<li>
-								<a href="parsenodeargumentset__0__list.html" class="tsd-signature-type">ParseNodeArgumentSet__0__List</a>
-							</li>
-							<li>
-								<a href="parsenodeargumentset.html" class="tsd-signature-type">ParseNodeArgumentSet</a>
-							</li>
-							<li>
-								<a href="parsenodeconditionset__0__list.html" class="tsd-signature-type">ParseNodeConditionSet__0__List</a>
-							</li>
-							<li>
-								<a href="parsenodeconditionset.html" class="tsd-signature-type">ParseNodeConditionSet</a>
-							</li>
-							<li>
-								<a href="parsenodereference.html" class="tsd-signature-type">ParseNodeReference</a>
-							</li>
-							<li>
-								<a href="parsenodeunit.html" class="tsd-signature-type">ParseNodeUnit</a>
-							</li>
-							<li>
-								<a href="parsenodeunary.html" class="tsd-signature-type">ParseNodeUnary</a>
-							</li>
-							<li>
-								<a href="parsenodeitem.html" class="tsd-signature-type">ParseNodeItem</a>
-							</li>
-							<li>
-								<a href="parsenodeorder.html" class="tsd-signature-type">ParseNodeOrder</a>
-							</li>
-							<li>
-								<a href="parsenodeconcat.html" class="tsd-signature-type">ParseNodeConcat</a>
-							</li>
-							<li>
-								<a href="parsenodealtern.html" class="tsd-signature-type">ParseNodeAltern</a>
-							</li>
-							<li>
-								<a href="parsenodedefinition.html" class="tsd-signature-type">ParseNodeDefinition</a>
-							</li>
-							<li>
-								<a href="parsenodenonterminalname.html" class="tsd-signature-type">ParseNodeNonterminalName</a>
-							</li>
-							<li>
-								<a href="parsenodeproduction.html" class="tsd-signature-type">ParseNodeProduction</a>
-							</li>
-							<li>
-								<a href="parsenodegoal__0__list.html" class="tsd-signature-type">ParseNodeGoal__0__List</a>
-							</li>
-							<li>
-								<a href="parsenodegoal.html" class="tsd-signature-type">ParseNodeGoal</a>
-							</li>
-						</ul>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/serializable.html" class="tsd-signature-type">Serializable</a></li>
+					<li><a href="../interfaces/serializable.html" class="tsd-signature-type" data-tsd-kind="Interface">Serializable</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -206,13 +152,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Parse<wbr>Node<span class="tsd-signature-symbol">(</span>children<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type">ParseNode</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="parsenode.html" class="tsd-signature-type">ParseNode</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Parse<wbr>Node<span class="tsd-signature-symbol">(</span>children<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><a href="token.html" class="tsd-signature-type" data-tsd-kind="Class">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type" data-tsd-kind="Class">ParseNode</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="parsenode.html" class="tsd-signature-type" data-tsd-kind="Class">ParseNode</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/parser/ParseNode.ts#L81">src/parser/ParseNode.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/parser/ParseNode.ts#L81">src/parser/ParseNode.ts:81</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -223,15 +169,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>children: <span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type">ParseNode</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>children: <span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><a href="token.html" class="tsd-signature-type" data-tsd-kind="Class">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type" data-tsd-kind="Class">ParseNode</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The set of child inputs that creates this ParseNode.</p>
-										</div>
+										<p>The set of child inputs that creates this ParseNode.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="parsenode.html" class="tsd-signature-type">ParseNode</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="parsenode.html" class="tsd-signature-type" data-tsd-kind="Class">ParseNode</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -241,26 +185,18 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="children" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> children</h3>
-					<div class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type">ParseNode</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-symbol">(</span><a href="token.html" class="tsd-signature-type" data-tsd-kind="Class">Token</a><span class="tsd-signature-symbol"> | </span><a href="parsenode.html" class="tsd-signature-type" data-tsd-kind="Class">ParseNode</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/parser/ParseNode.ts#L88">src/parser/ParseNode.ts:88</a></li>
-						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The set of child inputs that creates this ParseNode.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="col_index" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> col_<wbr>index</h3>
-					<div class="tsd-signature tsd-kind-icon">col_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = this.children[0].col_index</span></div>
+					<div class="tsd-signature tsd-kind-icon">col_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#col_index">col_index</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/parser/ParseNode.ts#L81">src/parser/ParseNode.ts:81</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/parser/ParseNode.ts#L81">src/parser/ParseNode.ts:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -274,11 +210,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="line_index" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> line_<wbr>index</h3>
-					<div class="tsd-signature tsd-kind-icon">line_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = this.children[0].line_index</span></div>
+					<div class="tsd-signature tsd-kind-icon">line_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#line_index">line_index</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/parser/ParseNode.ts#L79">src/parser/ParseNode.ts:79</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/parser/ParseNode.ts#L79">src/parser/ParseNode.ts:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -292,11 +228,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="source" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> source</h3>
-					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = this.children.map((child) &#x3D;&gt; child.source).join(&#x27; &#x27;)</span></div>
+					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#source">source</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/parser/ParseNode.ts#L75">src/parser/ParseNode.ts:75</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/parser/ParseNode.ts#L75">src/parser/ParseNode.ts:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -310,11 +246,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="source_index" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> source_<wbr>index</h3>
-					<div class="tsd-signature tsd-kind-icon">source_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = this.children[0].source_index</span></div>
+					<div class="tsd-signature tsd-kind-icon">source_<wbr>index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#source_index">source_index</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/parser/ParseNode.ts#L77">src/parser/ParseNode.ts:77</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/parser/ParseNode.ts#L77">src/parser/ParseNode.ts:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -328,11 +264,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="tagname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> tagname</h3>
-					<div class="tsd-signature tsd-kind-icon">tagname<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = this.constructor.name.slice(&#x27;ParseNode&#x27;.length)</span></div>
+					<div class="tsd-signature tsd-kind-icon">tagname<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#tagname">tagname</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/parser/ParseNode.ts#L73">src/parser/ParseNode.ts:73</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/parser/ParseNode.ts#L73">src/parser/ParseNode.ts:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -357,7 +293,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/serializable.html">Serializable</a>.<a href="../interfaces/serializable.html#serialize">serialize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/parser/ParseNode.ts#L93">src/parser/ParseNode.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/parser/ParseNode.ts#L93">src/parser/ParseNode.ts:93</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -375,13 +311,13 @@
 					<a name="classnameof" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> classname<wbr>Of</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">classname<wbr>Of<span class="tsd-signature-symbol">(</span>json<span class="tsd-signature-symbol">: </span><a href="../globals.html#ebnfobject" class="tsd-signature-type">EBNFObject</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>prod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">classname<wbr>Of<span class="tsd-signature-symbol">(</span>json<span class="tsd-signature-symbol">: </span><a href="../modules.html#ebnfobject" class="tsd-signature-type" data-tsd-kind="Type alias">EBNFObject</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>prod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/parser/ParseNode.ts#L44">src/parser/ParseNode.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/parser/ParseNode.ts#L44">src/parser/ParseNode.ts:44</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -392,7 +328,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>json: <a href="../globals.html#ebnfobject" class="tsd-signature-type">EBNFObject</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>prod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>json: <a href="../modules.html#ebnfobject" class="tsd-signature-type" data-tsd-kind="Type alias">EBNFObject</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>prod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>a JSON object representing a production</p>
 									</div>
@@ -407,13 +343,13 @@
 					<a name="fromjson" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> fromJSON</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">fromJSON<span class="tsd-signature-symbol">(</span>json<span class="tsd-signature-symbol">: </span><a href="../globals.html#ebnfobject" class="tsd-signature-type">EBNFObject</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">fromJSON<span class="tsd-signature-symbol">(</span>json<span class="tsd-signature-symbol">: </span><a href="../modules.html#ebnfobject" class="tsd-signature-type" data-tsd-kind="Type alias">EBNFObject</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/parser/ParseNode.ts#L54">src/parser/ParseNode.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/parser/ParseNode.ts#L54">src/parser/ParseNode.ts:54</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -425,7 +361,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>json: <a href="../globals.html#ebnfobject" class="tsd-signature-type">EBNFObject</a></h5>
+									<h5>json: <a href="../modules.html#ebnfobject" class="tsd-signature-type" data-tsd-kind="Type alias">EBNFObject</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>a JSON object representing a production</p>
 									</div>
@@ -441,13 +377,46 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-reference">
+						<a href="../modules.html#filebound" class="tsd-kind-icon">Filebound</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="astnode.html" class="tsd-kind-icon">ASTNode</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="char.html" class="tsd-kind-icon">Char</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="grammar.html" class="tsd-kind-icon">Grammar</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror.html" class="tsd-kind-icon">Lex<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror01.html" class="tsd-kind-icon">Lex<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror02.html" class="tsd-kind-icon">Lex<wbr>Error02</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexer.html" class="tsd-kind-icon">Lexer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parseerror01.html" class="tsd-kind-icon">Parse<wbr>Error01</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -487,6 +456,45 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="parser.html" class="tsd-kind-icon">Parser</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="production.html" class="tsd-kind-icon">Production</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="scanner.html" class="tsd-kind-icon">Scanner</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="terminal.html" class="tsd-kind-icon">Terminal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="token.html" class="tsd-kind-icon">Token</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokencomment.html" class="tsd-kind-icon">Token<wbr>Comment</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokenfilebound.html" class="tsd-kind-icon">Token<wbr>Filebound</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokenwhitespace.html" class="tsd-kind-icon">Token<wbr>Whitespace</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/serializable.html" class="tsd-kind-icon">Serializable</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#ebnfobject" class="tsd-kind-icon">EBNFObject</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#grammarsymbol" class="tsd-kind-icon">Grammar<wbr>Symbol</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../modules.html#nonemptyarray" class="tsd-kind-icon">Nonempty<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generate" class="tsd-kind-icon">generate</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

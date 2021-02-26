@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for @chharvey/parser">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -38,8 +39,8 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">@chharvey/parser</a>
 				</li>
 				<li>
 					<a href="lexer.html">Lexer</a>
@@ -81,11 +82,6 @@
 				<ul class="tsd-hierarchy">
 					<li>
 						<span class="target">Lexer</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="lexerebnf.html" class="tsd-signature-type">LexerEBNF</a>
-							</li>
-						</ul>
 					</li>
 				</ul>
 			</section>
@@ -137,13 +133,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Lexer<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="lexer.html" class="tsd-signature-type">Lexer</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Lexer<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="lexer.html" class="tsd-signature-type" data-tsd-kind="Class">Lexer</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L30">src/lexer/Lexer.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L30">src/lexer/Lexer.ts:30</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -156,13 +152,11 @@
 								<li>
 									<h5>source: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>the source text</p>
-										</div>
+										<p>the source text</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="lexer.html" class="tsd-signature-type">Lexer</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="lexer.html" class="tsd-signature-type" data-tsd-kind="Class">Lexer</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -172,10 +166,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_c0" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _c0</h3>
-					<div class="tsd-signature tsd-kind-icon">_c0<span class="tsd-signature-symbol">:</span> <a href="char.html" class="tsd-signature-type">Char</a></div>
+					<div class="tsd-signature tsd-kind-icon">_c0<span class="tsd-signature-symbol">:</span> <a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L24">src/lexer/Lexer.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L24">src/lexer/Lexer.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -187,10 +181,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_c1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _c1</h3>
-					<div class="tsd-signature tsd-kind-icon">_c1<span class="tsd-signature-symbol">:</span> <a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<div class="tsd-signature tsd-kind-icon">_c1<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L26">src/lexer/Lexer.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L26">src/lexer/Lexer.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -202,10 +196,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_c2" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _c2</h3>
-					<div class="tsd-signature tsd-kind-icon">_c2<span class="tsd-signature-symbol">:</span> <a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<div class="tsd-signature tsd-kind-icon">_c2<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L28">src/lexer/Lexer.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L28">src/lexer/Lexer.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -217,10 +211,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_c3" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _c3</h3>
-					<div class="tsd-signature tsd-kind-icon">_c3<span class="tsd-signature-symbol">:</span> <a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<div class="tsd-signature tsd-kind-icon">_c3<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L30">src/lexer/Lexer.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L30">src/lexer/Lexer.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -232,10 +226,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="char_generator" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> char_<wbr>generator</h3>
-					<div class="tsd-signature tsd-kind-icon">char_<wbr>generator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">char_<wbr>generator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L20">src/lexer/Lexer.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L20">src/lexer/Lexer.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -247,10 +241,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="iterator_result_char" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> iterator_<wbr>result_<wbr>char</h3>
-					<div class="tsd-signature tsd-kind-icon">iterator_<wbr>result_<wbr>char<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IteratorResult</span><span class="tsd-signature-symbol">&lt;</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">iterator_<wbr>result_<wbr>char<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IteratorResult</span><span class="tsd-signature-symbol">&lt;</span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L22">src/lexer/Lexer.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L22">src/lexer/Lexer.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -266,13 +260,13 @@
 					<a name="c0" class="tsd-anchor"></a>
 					<h3>c0</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> c0<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="char.html" class="tsd-signature-type">Char</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> c0<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L45">src/lexer/Lexer.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L45">src/lexer/Lexer.ts:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -281,7 +275,7 @@
 									<dd></dd>
 								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="char.html" class="tsd-signature-type">Char</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -289,13 +283,13 @@
 					<a name="c1" class="tsd-anchor"></a>
 					<h3>c1</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> c1<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> c1<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L46">src/lexer/Lexer.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L46">src/lexer/Lexer.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -304,7 +298,7 @@
 									<dd></dd>
 								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -312,13 +306,13 @@
 					<a name="c2" class="tsd-anchor"></a>
 					<h3>c2</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> c2<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> c2<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L47">src/lexer/Lexer.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L47">src/lexer/Lexer.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -327,7 +321,7 @@
 									<dd></dd>
 								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -335,13 +329,13 @@
 					<a name="c3" class="tsd-anchor"></a>
 					<h3>c3</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> c3<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> c3<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L48">src/lexer/Lexer.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L48">src/lexer/Lexer.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -350,7 +344,7 @@
 									<dd></dd>
 								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -364,7 +358,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L49">src/lexer/Lexer.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L49">src/lexer/Lexer.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -384,14 +378,14 @@
 					<a name="advance" class="tsd-anchor"></a>
 					<h3>advance</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">advance<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1n</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol">]</span></li>
-						<li class="tsd-signature tsd-kind-icon">advance<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol">, </span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol">]</span></li>
+						<li class="tsd-signature tsd-kind-icon">advance<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">1n</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">]</span></li>
+						<li class="tsd-signature tsd-kind-icon">advance<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">...</span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L58">src/lexer/Lexer.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L58">src/lexer/Lexer.ts:58</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -409,19 +403,19 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> n: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1n</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> n: <span class="tsd-signature-type">1n</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the number of times to advance</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol">]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">]</span></h4>
 							<p>all the characters scanned since the last advance</p>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L59">src/lexer/Lexer.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L59">src/lexer/Lexer.ts:59</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -430,7 +424,7 @@
 									<h5>n: <span class="tsd-signature-type">bigint</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol">, </span><a href="char.html" class="tsd-signature-type">Char</a><span class="tsd-signature-symbol">]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">...</span><a href="char.html" class="tsd-signature-type" data-tsd-kind="Class">Char</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -438,13 +432,13 @@
 					<a name="generate" class="tsd-anchor"></a>
 					<h3>generate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><a href="token.html" class="tsd-signature-type" data-tsd-kind="Class">Token</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L86">src/lexer/Lexer.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L86">src/lexer/Lexer.ts:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -459,7 +453,7 @@
 									<dd></dd>
 								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><a href="token.html" class="tsd-signature-type" data-tsd-kind="Class">Token</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>the next token</p>
 						</li>
 					</ul>
@@ -468,16 +462,16 @@
 					<a name="generate_do" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> generate_<wbr>do</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">generate_<wbr>do<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon">generate_<wbr>do<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="token.html" class="tsd-signature-type" data-tsd-kind="Class">Token</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/7fb5ab4/src/lexer/Lexer.ts#L97">src/lexer/Lexer.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/lexer/Lexer.ts#L97">src/lexer/Lexer.ts:97</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="token.html" class="tsd-signature-type">Token</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="token.html" class="tsd-signature-type" data-tsd-kind="Class">Token</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -486,13 +480,37 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-reference">
+						<a href="../modules.html#filebound" class="tsd-kind-icon">Filebound</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="astnode.html" class="tsd-kind-icon">ASTNode</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="char.html" class="tsd-kind-icon">Char</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="grammar.html" class="tsd-kind-icon">Grammar</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror.html" class="tsd-kind-icon">Lex<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror01.html" class="tsd-kind-icon">Lex<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="lexerror02.html" class="tsd-kind-icon">Lex<wbr>Error02</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -547,6 +565,54 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parseerror01.html" class="tsd-kind-icon">Parse<wbr>Error01</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parsenode.html" class="tsd-kind-icon">Parse<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="parser.html" class="tsd-kind-icon">Parser</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="production.html" class="tsd-kind-icon">Production</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="scanner.html" class="tsd-kind-icon">Scanner</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="terminal.html" class="tsd-kind-icon">Terminal</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="token.html" class="tsd-kind-icon">Token</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokencomment.html" class="tsd-kind-icon">Token<wbr>Comment</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokenfilebound.html" class="tsd-kind-icon">Token<wbr>Filebound</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="tokenwhitespace.html" class="tsd-kind-icon">Token<wbr>Whitespace</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/serializable.html" class="tsd-kind-icon">Serializable</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#ebnfobject" class="tsd-kind-icon">EBNFObject</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#grammarsymbol" class="tsd-kind-icon">Grammar<wbr>Symbol</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../modules.html#nonemptyarray" class="tsd-kind-icon">Nonempty<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../modules.html#generate" class="tsd-kind-icon">generate</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
