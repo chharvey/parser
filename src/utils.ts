@@ -1,4 +1,3 @@
-import type {NonemptyArray} from './types.d';
 import type {GrammarSymbol} from './grammar/Grammar';
 
 
@@ -31,20 +30,6 @@ export function titleToMacro(s: string): string {
  */
 export function macroToTitle(s: string): string {
 	return s.split('_').map((ss) => `${ ss[0] }${ ss.slice(1).toLowerCase() }`).join('');
-}
-
-
-
-/**
- * {@link Array#flatMap}, but for nonempty arrays, with better type declarations.
- * @typeParam T         the type of items in the array
- * @typeParam U         the type of items in the returned array
- * @param     arr       the array to flatmap
- * @param     calllback the callback sent into `Array#flatMap`
- * @returns             `arr.flatMap(callback)`
- */
-export function NonemptyArray_flatMap<T, U>(arr: NonemptyArray<T>, callback: (it: T) => NonemptyArray<U>): NonemptyArray<U> {
-	return arr.flatMap((it) => callback(it)) as readonly U[] as NonemptyArray<U>;
 }
 
 
