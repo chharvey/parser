@@ -147,7 +147,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 				[{term: this.name}],
 			]
 			/* TitleCase: production identifier */
-			: utils.NonemptyArray_flatMap(this.expand(nt) as NonemptyArray<ConcreteReference>, (cr) => [
+			: utils.NonemptyArray_flatMap(this.expand(nt), (cr) => [
 				[{prod: cr.toString()}],
 			])
 		;
@@ -159,9 +159,9 @@ export class ASTNodeRef extends ASTNodeExpr {
 	 * @param   nt a specific nonterminal symbol that contains this expression
 	 * @returns    an array of objects representing references
 	 */
-	expand(nt: ConcreteNonterminal): ConcreteReference[] {
+	private expand(nt: ConcreteNonterminal): NonemptyArray<ConcreteReference> {
 		return (this.args.length)
-			? (this.ref as ASTNodeRef).expand(nt).flatMap((cr) =>
+			? utils.NonemptyArray_flatMap((this.ref as ASTNodeRef).expand(nt), (cr) =>
 				[...new Array(2 ** this.args.length)].map((_, count) =>
 					new ConcreteReference(cr.name, [
 						...cr.suffixes,
@@ -171,7 +171,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 							.map(([arg, _b]) => arg)
 						,
 					], nt)
-				).slice(1) // slice off the \b00 case because `R<+X, +Y>` should never give `R`.
+				).slice(1) as NonemptyArray<ConcreteReference> // slice off the \b00 case because `R<+X, +Y>` should never give `R`.
 			)
 			: [new ConcreteReference(this.name)]
 		;
