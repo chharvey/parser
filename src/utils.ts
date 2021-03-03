@@ -43,8 +43,8 @@ export function macroToTitle(s: string): string {
  * @param     calllback the callback sent into `Array#flatMap`
  * @returns             `arr.flatMap(callback)`
  */
-export function NonemptyArray_flatMap<T, U>(arr: NonemptyArray<T>, callback: (it: T) => NonemptyArray<U>): NonemptyArray<U> {
-	return arr.flatMap((it) => callback(it)) as readonly U[] as NonemptyArray<U>;
+export function NonemptyArray_flatMap<T, U>(arr: Readonly<NonemptyArray<T>>, callback: (it: T) => Readonly<NonemptyArray<U>>): NonemptyArray<U> {
+	return arr.flatMap((it) => callback(it)) as NonemptyArray<U>;
 }
 
 

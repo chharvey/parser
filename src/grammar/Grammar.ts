@@ -35,7 +35,7 @@ export class Grammar {
 	 * @param goal        The goal production of this Grammar.
 	 */
 	constructor (
-		private readonly productions: NonemptyArray<Production>,
+		private readonly productions: Readonly<NonemptyArray<Production>>,
 		readonly goal: Production,
 	) {
 		this.rules = this.productions.map((prod) => prod.toRules()).flat();

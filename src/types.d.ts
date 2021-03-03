@@ -4,7 +4,7 @@ export type Mutable<T> = {
 
 
 
-export type NonemptyArray<T> = readonly [T, ...readonly T[]];
+export type NonemptyArray<T> = [T, ...T[]];
 
 
 
@@ -21,9 +21,9 @@ export type EBNFObject = {
 	readonly family?: boolean | string,
 };
 
-export type EBNFChoice = NonemptyArray<EBNFSequence>;
+export type EBNFChoice = Readonly<NonemptyArray<EBNFSequence>>;
 
-export type EBNFSequence = NonemptyArray<EBNFItem>;
+export type EBNFSequence = Readonly<NonemptyArray<EBNFItem>>;
 
 export type EBNFItem =
 	| string

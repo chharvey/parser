@@ -147,7 +147,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 				[{term: this.name}],
 			]
 			/* TitleCase: production identifier */
-			: utils.NonemptyArray_flatMap(this.expand(nt) as readonly ConcreteReference[] as NonemptyArray<ConcreteReference>, (cr) => [
+			: utils.NonemptyArray_flatMap(this.expand(nt) as NonemptyArray<ConcreteReference>, (cr) => [
 				[{prod: cr.toString()}],
 			])
 		;
@@ -203,7 +203,7 @@ export class ASTNodeItem extends ASTNodeExpr {
 
 
 abstract class ASTNodeOp extends ASTNodeExpr {
-	constructor (parse_node: ParseNode, operator: number, operands: NonemptyArray<ASTNodeExpr>) {
+	constructor (parse_node: ParseNode, operator: number, operands: Readonly<NonemptyArray<ASTNodeExpr>>) {
 		super(parse_node, {operator}, operands);
 	}
 }
