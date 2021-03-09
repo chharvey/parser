@@ -157,7 +157,7 @@
 				/** @implements Production */
 				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
-						[ProductionAltern.instance],[ProductionAltern.instance,'.'],[ProductionAltern.instance,'&'],[ProductionAltern.instance,'|'],['.',ProductionAltern.instance],['.',ProductionAltern.instance,'.'],['.',ProductionAltern.instance,'&'],['.',ProductionAltern.instance,'|'],['&',ProductionAltern.instance],['&',ProductionAltern.instance,'.'],['&',ProductionAltern.instance,'&'],['&',ProductionAltern.instance,'|'],['|',ProductionAltern.instance],['|',ProductionAltern.instance,'.'],['|',ProductionAltern.instance,'&'],['|',ProductionAltern.instance,'|'],
+						[ProductionAltern.instance],['.',ProductionAltern.instance],['&',ProductionAltern.instance],['|',ProductionAltern.instance],
 					];
 				}
 			}
@@ -283,7 +283,7 @@
 		
 			export class ParseNodeDefinition extends ParseNode {
 				declare readonly children:
-					readonly [ParseNodeAltern] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token] | readonly [Token,ParseNodeAltern,Token]
+					readonly [ParseNodeAltern] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern] | readonly [Token,ParseNodeAltern]
 				;
 			}
 		
