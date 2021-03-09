@@ -3,6 +3,7 @@ import * as assert from 'assert';
 import type {
 	EBNFObject,
 } from '../src/types.d';
+import * as utils from '../src/utils';
 import {ParseNode} from '../src/parser/ParseNode';
 import {Parser} from '../src/parser/Parser';
 import {Production} from '../src/grammar/Production';
@@ -22,24 +23,22 @@ describe('generate', () => {
 			Goal ::= #x02 Unit? #x03;
 		`;
 		const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse()).transform();
-		assert.strictEqual(generate(ebnf, 'Sample'), (
-	`
-		import {
-			NonemptyArray,
-			Token,
-			ParseNode,
-			Parser,
-			Production,
-			Grammar,
-			GrammarSymbol,
-		} from '@chharvey/parser';
-		import {LexerSample} from './Lexer';
-		import * as TERMINAL from './Terminal';
-		${ jsons.map((prod) => Production.fromJSON(prod)).join('') }
-		${ jsons.map((prod) => ParseNode .fromJSON(prod)).join('') }
-		${ Grammar.fromJSON(jsons, 'Sample') }
-		${ Parser .fromJSON(jsons, 'Sample') }
-	`
-		));
+		assert.strictEqual(generate(ebnf, 'Sample'), utils.dedent`
+			import {
+				NonemptyArray,
+				Token,
+				ParseNode,
+				Parser,
+				Production,
+				Grammar,
+				GrammarSymbol,
+			} from '@chharvey/parser';
+			import {LexerSample} from './Lexer';
+			import * as TERMINAL from './Terminal';
+			${ jsons.map((prod) => Production.fromJSON(prod)).join('') }
+			${ jsons.map((prod) => ParseNode .fromJSON(prod)).join('') }
+			${ Grammar.fromJSON(jsons, 'Sample') }
+			${ Parser .fromJSON(jsons, 'Sample') }
+		`);
 	});
 });

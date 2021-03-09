@@ -2,6 +2,20 @@ import type {GrammarSymbol} from './grammar/Grammar';
 
 
 
+/**
+ * A template literal ‘tag’.
+ * @example
+ * ```
+ * declare const tag: TemplateTag;
+ * declare const template: unknown;
+ * tag`This is a ${ template } literal.`;
+ * ```
+ */
+type TemplateTag<Return, Interps extends unknown[] = unknown[]> =
+	(strings: TemplateStringsArray, ...interpolations: Interps) => Return;
+
+
+
 /** Characters representing bounds of a file. */
 export enum Filebound {
 	/** U+0002 START OF TEXT */
@@ -75,6 +89,64 @@ export function sanitizeContent(contents: string): string {
 		.replace(Filebound.SOT, '\u2402') // SYMBOL FOR START OF TEXT
 		.replace(Filebound.EOT, '\u2403') // SYMBOL FOR END   OF TEXT
 	;
+}
+
+
+
+/**
+ * Dedent a template literal with an auto-determined number of tabs.
+ * Remove up to `n` number of tabs from the beginning of each *literal* line in the template literal.
+ * Does not affect interpolated expressions.
+ * `n` is determined by the number of tabs following the first line break in the literal.
+ * If there are no line breaks, `0` is assumed.
+ * @example
+ * assert.strictEqual(dedent`
+ * 			this will be
+ * 	dedented by
+ * 		up to
+ * 				3 tabs
+ * `, `
+ * this will be
+ * dedented by
+ * up to
+ * 	3 tabs
+ * `);
+ * @returns a string with each line dedented by the determined number of tabs
+ */
+export function dedent(strings: TemplateStringsArray, ...interps: unknown[]): string;
+/**
+ * Dedent the given template literal with the provided number of tabs.
+ * Remove up to `n` number of tabs from the beginning of each *literal* line in the template literal.
+ * Does not affect interpolated expressions.
+ * @example
+ * assert.strictEqual(dedent(2)`
+ * 			this will be
+ * 	dedented by
+ * 		up to
+ * 				2 tabs
+ * `, `
+ * 	this will be
+ * dedented by
+ * up to
+ * 		2 tabs
+ * `);
+ * @param   n the number of tabs to dedent by
+ * @returns   a string with each line dedented by `n` tabs
+ */
+export function dedent(n: number): TemplateTag<string>;
+export function dedent(a: number | TemplateStringsArray, ...b: unknown[]): string | TemplateTag<string> {
+	if (typeof a === 'number') {
+		function replace(s: string): string {
+			return s.replace(new RegExp(`\\n\\t{0,${ Math.floor(Math.abs(a as number)) }}`, 'g'), '\n');
+		}
+		return (strings: TemplateStringsArray, ...interps: unknown[]): string => [
+			...interps.map((interp, i) => `${ replace(strings[i]) }${ interp }`),
+			replace(strings[strings.length - 1]), // strings.lastItem
+		].join('');
+	} else {
+		const matched: RegExpMatchArray | null = a[0].match(/\n\t*/);
+		return dedent(matched && matched[0] ? matched[0].slice(1).length : 0)(a, ...b);
+	};
 }
 
 

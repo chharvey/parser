@@ -1,6 +1,7 @@
 import type {
 	EBNFObject,
 } from '../types.d';
+import * as utils from '../utils';
 import {
 	Token,
 	TokenWhitespace,
@@ -40,7 +41,7 @@ export class Parser {
 	 * @returns          a string to print to a TypeScript file
 	 */
 	static fromJSON(jsons: EBNFObject[], langname: string): string {
-		return `
+		return utils.dedent`
 			export class Parser${ langname } extends Parser {
 				/**
 				 * Construct a new Parser${ langname } object.
@@ -48,7 +49,7 @@ export class Parser {
 				 */
 				constructor (source: string) {
 					super(new Lexer${ langname }(source), grammar_${ langname }, new Map<Production, typeof ParseNode>([
-						${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t\t\t\t') },
+						${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t') },
 					]));
 				}
 				// @ts-expect-error

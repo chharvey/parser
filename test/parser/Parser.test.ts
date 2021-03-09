@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 
 import {Filebound} from '../../src/utils';
+import * as utils from '../../src/utils';
 import {
 	Token,
 	TokenFilebound,
@@ -32,24 +33,22 @@ describe('Parser', () => {
 			assert.strictEqual(Parser.fromJSON(Decorator.decorate(new ParserEBNF(`
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
-			`).parse()).transform(), 'Sample'), (
-		`
-			export class ParserSample extends Parser {
-				/**
-				 * Construct a new ParserSample object.
-				 * @param source the source text to parse
-				 */
-				constructor (source: string) {
-					super(new LexerSample(source), grammar_Sample, new Map<Production, typeof ParseNode>([
-						[ProductionUnit.instance, ParseNodeUnit],
-						[ProductionGoal.instance, ParseNodeGoal],
-					]));
+			`).parse()).transform(), 'Sample'), (utils.dedent`
+				export class ParserSample extends Parser {
+					/**
+					 * Construct a new ParserSample object.
+					 * @param source the source text to parse
+					 */
+					constructor (source: string) {
+						super(new LexerSample(source), grammar_Sample, new Map<Production, typeof ParseNode>([
+							[ProductionUnit.instance, ParseNodeUnit],
+							[ProductionGoal.instance, ParseNodeGoal],
+						]));
+					}
+					// @ts-expect-error
+					declare parse(): ParseNodeGoal;
 				}
-				// @ts-expect-error
-				declare parse(): ParseNodeGoal;
-			}
-		`
-			));
+			`));
 		});
 	});
 

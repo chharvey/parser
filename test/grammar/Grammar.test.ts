@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 
+import * as utils from '../../src/utils';
 import {Grammar} from '../../src/grammar/Grammar';
 import {
 	ParserEBNF,
@@ -14,14 +15,12 @@ describe('Grammar', () => {
 			assert.strictEqual(Grammar.fromJSON(Decorator.decorate(new ParserEBNF(`
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
-			`).parse()).transform(), 'Sample'), (
-		`
-			export const grammar_Sample: Grammar = new Grammar([
-				ProductionUnit.instance,
-				ProductionGoal.instance,
-			], ProductionGoal.instance);
-		`
-			));
+			`).parse()).transform(), 'Sample'), utils.dedent`
+				export const grammar_Sample: Grammar = new Grammar([
+					ProductionUnit.instance,
+					ProductionGoal.instance,
+				], ProductionGoal.instance);
+			`);
 		});
 	});
 });
