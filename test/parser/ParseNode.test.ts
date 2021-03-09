@@ -3,6 +3,7 @@ import * as assert from 'assert';
 import type {
 	EBNFObject,
 } from '../../src/types.d';
+import * as utils from '../../src/utils';
 import {ParseNode} from '../../src/parser/ParseNode';
 import {
 	ParserSample,
@@ -28,21 +29,19 @@ describe('ParseNode', () => {
 						['\\u0002', {prod: 'Unit'}, '\\u0003'],
 					],
 				},
-			] as EBNFObject[]).map((prod) => ParseNode.fromJSON(prod)), [
-		`
-			export class ParseNodeUnit extends ParseNode {
-				declare readonly children:
-					readonly [Token] | readonly [Token,Token,ParseNodeUnit,ParseNodeUnit,Token]
-				;
-			}
-		`, `
-			export class ParseNodeGoal extends ParseNode {
-				declare readonly children:
-					readonly [Token,Token] | readonly [Token,ParseNodeUnit,Token]
-				;
-			}
-		`
-			]);
+			] as EBNFObject[]).map((prod) => ParseNode.fromJSON(prod)), [utils.dedent`
+				export class ParseNodeUnit extends ParseNode {
+					declare readonly children:
+						readonly [Token] | readonly [Token,Token,ParseNodeUnit,ParseNodeUnit,Token]
+					;
+				}
+			`, utils.dedent`
+				export class ParseNodeGoal extends ParseNode {
+					declare readonly children:
+						readonly [Token,Token] | readonly [Token,ParseNodeUnit,Token]
+					;
+				}
+			`]);
 		});
 	});
 

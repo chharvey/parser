@@ -3,6 +3,7 @@ import * as assert from 'assert';
 import type {
 	EBNFObject,
 } from '../../src/types.d';
+import * as utils from '../../src/utils';
 import {Production} from '../../src/grammar/Production';
 import {Rule} from '../../src/grammar/Rule';
 import {
@@ -29,35 +30,33 @@ describe('Production', () => {
 						['\\u0002', {prod: 'Unit'}, '\\u0003'],
 					],
 				},
-			] as EBNFObject[]).map((prod) => Production.fromJSON(prod)), [
-		`
-			export class ProductionUnit extends Production {
-				static readonly instance: ProductionUnit = new ProductionUnit();
-				/** @implements Production */
-				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
-					return [
-						${ `
-							[TERMINAL.TerminalNumber.instance],
-							['(', TERMINAL.TerminalOperator.instance, ProductionUnit.instance, ProductionUnit.instance, ')'],
-						`.replace(/\s+/g, '') }
-					];
+			] as EBNFObject[]).map((prod) => Production.fromJSON(prod)), [utils.dedent`
+				export class ProductionUnit extends Production {
+					static readonly instance: ProductionUnit = new ProductionUnit();
+					/** @implements Production */
+					get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+						return [
+							${ `
+								[TERMINAL.TerminalNumber.instance],
+								['(', TERMINAL.TerminalOperator.instance, ProductionUnit.instance, ProductionUnit.instance, ')'],
+							`.replace(/\s+/g, '') }
+						];
+					}
 				}
-			}
-		`, `
-			export class ProductionGoal extends Production {
-				static readonly instance: ProductionGoal = new ProductionGoal();
-				/** @implements Production */
-				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
-					return [
-						${ `
-							['\\u0002',                          '\\u0003'],
-							['\\u0002', ProductionUnit.instance, '\\u0003'],
-						`.replace(/\s+/g, '') }
-					];
+			`, utils.dedent`
+				export class ProductionGoal extends Production {
+					static readonly instance: ProductionGoal = new ProductionGoal();
+					/** @implements Production */
+					get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+						return [
+							${ `
+								['\\u0002',                          '\\u0003'],
+								['\\u0002', ProductionUnit.instance, '\\u0003'],
+							`.replace(/\s+/g, '') }
+						];
+					}
 				}
-			}
-		`
-			]);
+			`]);
 		});
 	});
 
