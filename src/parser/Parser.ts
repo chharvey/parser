@@ -1,3 +1,6 @@
+import type {
+	EBNFObject,
+} from '../types.d';
 import {
 	Token,
 	TokenWhitespace,
@@ -6,7 +9,7 @@ import {
 import {ParseNode} from './ParseNode';
 import type {Lexer} from '../lexer/Lexer';
 import {Terminal} from '../grammar/Terminal';
-import type {Production} from '../grammar/Production';
+import {Production} from '../grammar/Production';
 import type {Rule} from '../grammar/Rule';
 import type {Configuration} from '../grammar/Configuration';
 import type {
@@ -29,6 +32,32 @@ type State = ReadonlySet<Configuration>
  * @see http://www2.lawrence.edu/fast/GREGGJ/CMSC515/parsing/LR_parsing.html
  */
 export class Parser {
+	/**
+	 * Takes a set of JSON objects representing syntactic productions
+	 * and returns a string in TypeScript language representing a subclass of {@link Parser}.
+	 * @param   jsons    a set of JSON productions
+	 * @param   langname the language name
+	 * @returns          a string to print to a TypeScript file
+	 */
+	static fromJSON(jsons: EBNFObject[], langname: string): string {
+		return `
+			export class Parser${ langname } extends Parser {
+				/**
+				 * Construct a new Parser${ langname } object.
+				 * @param source the source text to parse
+				 */
+				constructor (source: string) {
+					super(new Lexer${ langname }(source), grammar_${ langname }, new Map<Production, typeof ParseNode>([
+						${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t\t\t\t') },
+					]));
+				}
+				// @ts-expect-error
+				declare parse(): ParseNodeGoal;
+			}
+		`;
+	}
+
+
 	/** A token generator produced by a Lexer. */
 	private readonly token_generator: Generator<Token>;
 	/** The result of the lexer iterator. */
