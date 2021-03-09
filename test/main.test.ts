@@ -42,9 +42,11 @@ describe('generate', () => {
 			 */
 			constructor (source: string) {
 				super(new LexerSample(source), new Grammar([
-					ProductionUnit.instance,ProductionGoal.instance,
+					ProductionUnit.instance,
+					ProductionGoal.instance,
 				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
-					[ProductionUnit.instance, ParseNodeUnit],[ProductionGoal.instance, ParseNodeGoal],
+					[ProductionUnit.instance, ParseNodeUnit],
+					[ProductionGoal.instance, ParseNodeGoal],
 				]));
 			}
 			// @ts-expect-error
