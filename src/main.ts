@@ -26,15 +26,16 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 		import * as TERMINAL from './Terminal';
 		${ nonabstract.map((j) => Production.fromJSON(j)).join('') }
 		${ jsons.map((j) => ParseNode .fromJSON(j)).join('') }
+		export const grammar_${ langname }: Grammar = new Grammar([
+			${ nonabstract.map((json) => `${ Production.classnameOf(json) }.instance`).join(',\n\t\t\t') },
+		], ProductionGoal.instance);
 		export class Parser${ langname } extends Parser {
 			/**
 			 * Construct a new Parser${ langname } object.
 			 * @param source the source text to parse
 			 */
 			constructor (source: string) {
-				super(new Lexer${ langname }(source), new Grammar([
-					${ nonabstract.map((json) => `${ Production.classnameOf(json) }.instance`).join(',\n\t\t\t\t\t') },
-				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
+				super(new Lexer${ langname }(source), grammar_${ langname }, new Map<Production, typeof ParseNode>([
 					${ nonabstract.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t\t\t') },
 				]));
 			}

@@ -55,16 +55,17 @@
 				;
 			}
 		
+		export const grammar_Sample: Grammar = new Grammar([
+			ProductionUnit.instance,
+			ProductionGoal.instance,
+		], ProductionGoal.instance);
 		export class ParserSample extends Parser {
 			/**
 			 * Construct a new ParserSample object.
 			 * @param source the source text to parse
 			 */
 			constructor (source: string) {
-				super(new LexerSample(source), new Grammar([
-					ProductionUnit.instance,
-					ProductionGoal.instance,
-				], ProductionGoal.instance), new Map<Production, typeof ParseNode>([
+				super(new LexerSample(source), grammar_Sample, new Map<Production, typeof ParseNode>([
 					[ProductionUnit.instance, ParseNodeUnit],
 					[ProductionGoal.instance, ParseNodeGoal],
 				]));
