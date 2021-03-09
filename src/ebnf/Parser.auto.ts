@@ -311,26 +311,28 @@
 				;
 			}
 		
-		export const grammar_EBNF: Grammar = new Grammar([
-			ProductionParameterSet__0__List.instance,
-			ProductionParameterSet.instance,
-			ProductionArgumentSet__0__List.instance,
-			ProductionArgumentSet.instance,
-			ProductionConditionSet__0__List.instance,
-			ProductionConditionSet.instance,
-			ProductionReference.instance,
-			ProductionUnit.instance,
-			ProductionUnary.instance,
-			ProductionItem.instance,
-			ProductionOrder.instance,
-			ProductionConcat.instance,
-			ProductionAltern.instance,
-			ProductionDefinition.instance,
-			ProductionNonterminalName.instance,
-			ProductionProduction.instance,
-			ProductionGoal__0__List.instance,
-			ProductionGoal.instance,
-		], ProductionGoal.instance);
+		
+			export const grammar_EBNF: Grammar = new Grammar([
+				ProductionParameterSet__0__List.instance,
+				ProductionParameterSet.instance,
+				ProductionArgumentSet__0__List.instance,
+				ProductionArgumentSet.instance,
+				ProductionConditionSet__0__List.instance,
+				ProductionConditionSet.instance,
+				ProductionReference.instance,
+				ProductionUnit.instance,
+				ProductionUnary.instance,
+				ProductionItem.instance,
+				ProductionOrder.instance,
+				ProductionConcat.instance,
+				ProductionAltern.instance,
+				ProductionDefinition.instance,
+				ProductionNonterminalName.instance,
+				ProductionProduction.instance,
+				ProductionGoal__0__List.instance,
+				ProductionGoal.instance,
+			], ProductionGoal.instance);
+		
 		export class ParserEBNF extends Parser {
 			/**
 			 * Construct a new ParserEBNF object.

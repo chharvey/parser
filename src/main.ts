@@ -3,6 +3,7 @@ import type {
 } from './types';
 import {ParseNode} from './parser/ParseNode';
 import {Production} from './grammar/Production';
+import {Grammar} from './grammar/Grammar';
 import {
 	ParserEBNF,
 	Decorator,
@@ -26,9 +27,7 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 		import * as TERMINAL from './Terminal';
 		${ nonabstract.map((j) => Production.fromJSON(j)).join('') }
 		${ jsons.map((j) => ParseNode .fromJSON(j)).join('') }
-		export const grammar_${ langname }: Grammar = new Grammar([
-			${ nonabstract.map((json) => `${ Production.classnameOf(json) }.instance`).join(',\n\t\t\t') },
-		], ProductionGoal.instance);
+		${ Grammar.fromJSON(nonabstract, langname) }
 		export class Parser${ langname } extends Parser {
 			/**
 			 * Construct a new Parser${ langname } object.

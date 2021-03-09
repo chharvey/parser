@@ -55,10 +55,12 @@
 				;
 			}
 		
-		export const grammar_Sample: Grammar = new Grammar([
-			ProductionUnit.instance,
-			ProductionGoal.instance,
-		], ProductionGoal.instance);
+		
+			export const grammar_Sample: Grammar = new Grammar([
+				ProductionUnit.instance,
+				ProductionGoal.instance,
+			], ProductionGoal.instance);
+		
 		export class ParserSample extends Parser {
 			/**
 			 * Construct a new ParserSample object.
