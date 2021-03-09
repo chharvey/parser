@@ -6,6 +6,7 @@ export {
 	TokenCharClass,
 	TokenCommentEBNF,
 } from './Token';
+export * as TOKEN from './Token';
 
 export * as ASTNODE from './ASTNode';
 export {
@@ -21,6 +22,7 @@ export {
 	TerminalString,
 	TerminalCharClass,
 } from './Terminal';
+export * as TERMINAL from './Terminal';
 
 export * as PARSER from './Parser.auto';
 export {ParserEBNF} from './Parser.auto';

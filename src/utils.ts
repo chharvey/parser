@@ -1,4 +1,10 @@
 import type {GrammarSymbol} from './grammar/Grammar';
+import type {NonemptyArray} from './types';
+
+
+
+type RangeNumber = readonly [number, number];
+type RangeString = readonly [string, string];
 
 
 
@@ -8,6 +14,96 @@ export enum Filebound {
 	SOT = '\u0002',
 	/** U+0003 END OF TEXT */
 	EOT = '\u0003',
+}
+
+
+
+/**
+ * Return a random boolean value.
+ * @returns a random boolean value
+ */
+export function randomBool(): boolean {
+	return Math.random() < 0.5;
+}
+
+
+
+/**
+ * Return a random integer from 0 to the argument.
+ * @example
+ * randomInt(16); // returns a random integer within the interval [0, 16)
+ * @param   upper the upper bound, exclusive
+ * @returns       a random integer between 0 (inclusive) and `upper` (exclusive)
+ */
+export function randomInt(upper: number): number;
+/**
+ * Return a random integer from the lower argument to the upper argument.
+ * @example
+ * randomInt(16, 32); // returns a random integer within the interval [16, 32)
+ * @param   lower the lower bound, inclusive
+ * @param   upper the upper bound, exclusive
+ * @returns       a random integer between `lower` (inclusive) and `upper` (exclusive)
+ */
+export function randomInt(lower: number, upper: number): number;
+export function randomInt(a: number, b?: number): number {
+	if (b === void 0) {
+		b = a;
+		a = 0;
+	};
+	return Math.floor(Math.random() * (b - a) + a);
+}
+
+
+
+/**
+ * Return a random code point within the given bound(s) of characters.
+ * @example
+ * randomInt(['\x04', '\x08'], ['\x16', '\x32']); // returns a random character within the union of the ranges
+ * @param   bounds0 the first range to include: a 2-tuple of characters, inclusive
+ * @param   bounds  any other ranges to include
+ * @returns         a random character within the union of the given ranges
+ */
+export function randomChar(
+	bounds0: RangeString = ['\u0020', '\u007e'],
+	...bounds: readonly RangeString[]
+): string {
+	const ranges: readonly RangeNumber[] = [bounds0, ...bounds].map((bound) => [
+		 bound[0].codePointAt(0) || randomInt(0x20,     0x7e),
+		(bound[1].codePointAt(0) || randomInt(0x20 - 1, 0x7e - 1)) + 1,
+	] as const) as NonemptyArray<RangeNumber>;
+	const total_length: number = ranges.reduce((length, range) => length + range[1] - range[0], 0);
+	const random: number = Math.random();
+	return String.fromCodePoint(Math.floor(ranges
+
+		// map the ranges to their lengths, normalized
+		.map((range) => (range[1] - range[0]) / total_length)
+
+		// map the lengths to domains of type `RangeNumber`
+		.reduce<RangeNumber[]>((accum, length) => {
+			const last_item: RangeNumber = accum[accum.length - 1] || [0, 0];
+			return [...accum, [last_item[1], last_item[1] + length]];
+		}, [])
+
+		// map the domains to linear functions of the form `y = m(x - h) + k`
+		.map(([lower, upper], i) => (lower <= random && random < upper)
+			? total_length * (random - lower) + ranges[i][0]
+			: null
+		)
+
+		// find the function that produced a number
+		.find((x): x is number => typeof x === 'number')!
+	));
+}
+
+
+
+/**
+ * Return a random item from a nonempty array.
+ * @param   array the nonempty array to select from
+ * @returns       a random item from the array
+ */
+export function randomArrayItem<T>(array: Readonly<NonemptyArray<T>>): T {
+	return array[randomInt(array.length)];
 }
 
 

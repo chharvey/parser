@@ -21,4 +21,12 @@ export abstract class Terminal {
 	 * @returns           does the given Token satisfy this Terminal?
 	 */
 	abstract match(candidate: Token): boolean;
+
+	/**
+	 * Generate a random instance of this Terminal.
+	 * @returns a well-formed string satisfying this Terminal
+	 * @note This is an instance method even though it may be implemented as if it were static (not referencing `this`).
+	 * This is because this method will be instance when the lexical grammar is automated.
+	 */
+	abstract random(): string;
 }
