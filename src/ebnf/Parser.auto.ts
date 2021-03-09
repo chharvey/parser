@@ -333,35 +333,37 @@
 				ProductionGoal.instance,
 			], ProductionGoal.instance);
 		
-		export class ParserEBNF extends Parser {
-			/**
-			 * Construct a new ParserEBNF object.
-			 * @param source the source text to parse
-			 */
-			constructor (source: string) {
-				super(new LexerEBNF(source), grammar_EBNF, new Map<Production, typeof ParseNode>([
-					[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],
-					[ProductionParameterSet.instance, ParseNodeParameterSet],
-					[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],
-					[ProductionArgumentSet.instance, ParseNodeArgumentSet],
-					[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],
-					[ProductionConditionSet.instance, ParseNodeConditionSet],
-					[ProductionReference.instance, ParseNodeReference],
-					[ProductionUnit.instance, ParseNodeUnit],
-					[ProductionUnary.instance, ParseNodeUnary],
-					[ProductionItem.instance, ParseNodeItem],
-					[ProductionOrder.instance, ParseNodeOrder],
-					[ProductionConcat.instance, ParseNodeConcat],
-					[ProductionAltern.instance, ParseNodeAltern],
-					[ProductionDefinition.instance, ParseNodeDefinition],
-					[ProductionNonterminalName.instance, ParseNodeNonterminalName],
-					[ProductionProduction.instance, ParseNodeProduction],
-					[ProductionGoal__0__List.instance, ParseNodeGoal__0__List],
-					[ProductionGoal.instance, ParseNodeGoal],
-				]));
+		
+			export class ParserEBNF extends Parser {
+				/**
+				 * Construct a new ParserEBNF object.
+				 * @param source the source text to parse
+				 */
+				constructor (source: string) {
+					super(new LexerEBNF(source), grammar_EBNF, new Map<Production, typeof ParseNode>([
+						[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],
+						[ProductionParameterSet.instance, ParseNodeParameterSet],
+						[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],
+						[ProductionArgumentSet.instance, ParseNodeArgumentSet],
+						[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],
+						[ProductionConditionSet.instance, ParseNodeConditionSet],
+						[ProductionReference.instance, ParseNodeReference],
+						[ProductionUnit.instance, ParseNodeUnit],
+						[ProductionUnary.instance, ParseNodeUnary],
+						[ProductionItem.instance, ParseNodeItem],
+						[ProductionOrder.instance, ParseNodeOrder],
+						[ProductionConcat.instance, ParseNodeConcat],
+						[ProductionAltern.instance, ParseNodeAltern],
+						[ProductionDefinition.instance, ParseNodeDefinition],
+						[ProductionNonterminalName.instance, ParseNodeNonterminalName],
+						[ProductionProduction.instance, ParseNodeProduction],
+						[ProductionGoal__0__List.instance, ParseNodeGoal__0__List],
+						[ProductionGoal.instance, ParseNodeGoal],
+					]));
+				}
+				// @ts-expect-error
+				declare parse(): ParseNodeGoal;
 			}
-			// @ts-expect-error
-			declare parse(): ParseNodeGoal;
-		}
+		
 	
 		

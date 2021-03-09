@@ -2,6 +2,7 @@ import type {
 	EBNFObject,
 } from './types';
 import {ParseNode} from './parser/ParseNode';
+import {Parser} from './parser/Parser';
 import {Production} from './grammar/Production';
 import {Grammar} from './grammar/Grammar';
 import {
@@ -28,18 +29,6 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 		${ nonabstract.map((j) => Production.fromJSON(j)).join('') }
 		${ jsons.map((j) => ParseNode .fromJSON(j)).join('') }
 		${ Grammar.fromJSON(nonabstract, langname) }
-		export class Parser${ langname } extends Parser {
-			/**
-			 * Construct a new Parser${ langname } object.
-			 * @param source the source text to parse
-			 */
-			constructor (source: string) {
-				super(new Lexer${ langname }(source), grammar_${ langname }, new Map<Production, typeof ParseNode>([
-					${ nonabstract.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t\t\t') },
-				]));
-			}
-			// @ts-expect-error
-			declare parse(): ParseNodeGoal;
-		}
+		${ Parser .fromJSON(nonabstract, langname) }
 	`;
 }

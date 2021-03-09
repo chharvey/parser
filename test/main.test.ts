@@ -4,6 +4,7 @@ import type {
 	EBNFObject,
 } from '../src/types.d';
 import {ParseNode} from '../src/parser/ParseNode';
+import {Parser} from '../src/parser/Parser';
 import {Production} from '../src/grammar/Production';
 import {Grammar} from '../src/grammar/Grammar';
 import {generate} from '../src/main';
@@ -37,20 +38,7 @@ describe('generate', () => {
 		${ jsons.map((prod) => Production.fromJSON(prod)).join('') }
 		${ jsons.map((prod) => ParseNode .fromJSON(prod)).join('') }
 		${ Grammar.fromJSON(jsons, 'Sample') }
-		export class ParserSample extends Parser {
-			/**
-			 * Construct a new ParserSample object.
-			 * @param source the source text to parse
-			 */
-			constructor (source: string) {
-				super(new LexerSample(source), grammar_Sample, new Map<Production, typeof ParseNode>([
-					[ProductionUnit.instance, ParseNodeUnit],
-					[ProductionGoal.instance, ParseNodeGoal],
-				]));
-			}
-			// @ts-expect-error
-			declare parse(): ParseNodeGoal;
-		}
+		${ Parser .fromJSON(jsons, 'Sample') }
 	`
 		));
 	});
