@@ -114,15 +114,15 @@ export function sanitizeContent(contents: string): string {
  * @returns a string with each line dedented by the determined number of tabs
  */
 export function dedent(strings: TemplateStringsArray, ...interps: unknown[]): string {
-		const matched: RegExpMatchArray | null = strings[0].match(/\n\t*/);
-		const a: number = matched && matched[0] ? matched[0].slice(1).length : 0;
-		function replace(s: string, n: number): string {
-			return s.replace(new RegExp(`\\n\\t{0,${ Math.floor(Math.abs(n)) }}`, 'g'), '\n');
-		}
-		return [
-			...interps.map((interp, i) => `${ replace(strings[i], a) }${ interp }`),
-			replace(strings[strings.length - 1], a), // strings.lastItem
-		].join('');
+	const matched: RegExpMatchArray | null = strings[0].match(/\n\t*/);
+	const n: number = matched && matched[0] ? matched[0].slice(1).length : 0;
+	function replace(s: string, n: number): string {
+		return (n <= 0) ? s : s.replace(new RegExp(`\\n\\t{0,${ Math.floor(n) }}`, 'g'), '\n');
+	}
+	return [
+		...interps.map((interp, i) => `${ replace(strings[i], n) }${ interp }`),
+		replace(strings[strings.length - 1], n), // strings.lastItem
+	].join('');
 }
 dedent as TemplateTag<string>;
 
