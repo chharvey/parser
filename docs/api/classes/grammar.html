@@ -110,6 +110,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grammar.html#closure" class="tsd-kind-icon">closure</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="grammar.html#first" class="tsd-kind-icon">first</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="grammar.html#follow" class="tsd-kind-icon">follow</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="grammar.html#fromjson" class="tsd-kind-icon">fromJSON</a></li>
 							</ul>
 						</section>
 					</div>
@@ -127,7 +128,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/grammar/Grammar.ts#L30">src/grammar/Grammar.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/3c5b229/src/grammar/Grammar.ts#L48">src/grammar/Grammar.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -170,7 +171,7 @@
 					<div class="tsd-signature tsd-kind-icon">rules<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">readonly </span><span class="tsd-signature-type">Rule</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/grammar/Grammar.ts#L30">src/grammar/Grammar.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/chharvey/parser/blob/3c5b229/src/grammar/Grammar.ts#L48">src/grammar/Grammar.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -192,7 +193,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/grammar/Grammar.ts#L88">src/grammar/Grammar.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/3c5b229/src/grammar/Grammar.ts#L106">src/grammar/Grammar.ts:106</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -229,7 +230,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/grammar/Grammar.ts#L53">src/grammar/Grammar.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/3c5b229/src/grammar/Grammar.ts#L71">src/grammar/Grammar.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -269,7 +270,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/chharvey/parser/blob/a675bcb/src/grammar/Grammar.ts#L70">src/grammar/Grammar.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/3c5b229/src/grammar/Grammar.ts#L88">src/grammar/Grammar.ts:88</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -294,6 +295,45 @@
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GrammarTerminal</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>the set of all possible terminal symbols, each of which may follow <code>symbol</code></p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="fromjson" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> fromJSON</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">fromJSON<span class="tsd-signature-symbol">(</span>jsons<span class="tsd-signature-symbol">: </span><a href="../modules.html#ebnfobject" class="tsd-signature-type" data-tsd-kind="Type alias">EBNFObject</a><span class="tsd-signature-symbol">[]</span>, langname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/chharvey/parser/blob/3c5b229/src/grammar/Grammar.ts#L38">src/grammar/Grammar.ts:38</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Takes a set of JSON objects representing syntactic productions
+									and returns a string in TypeScript language representing an instance of <a href="grammar.html">Grammar</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>jsons: <a href="../modules.html#ebnfobject" class="tsd-signature-type" data-tsd-kind="Type alias">EBNFObject</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a set of JSON productions</p>
+									</div>
+								</li>
+								<li>
+									<h5>langname: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the language name</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>a string to print to a TypeScript file</p>
 						</li>
 					</ul>
 				</section>
@@ -343,6 +383,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="grammar.html#follow" class="tsd-kind-icon">follow</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="grammar.html#fromjson" class="tsd-kind-icon">fromJSON</a>
 							</li>
 						</ul>
 					</li>

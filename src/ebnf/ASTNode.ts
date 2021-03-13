@@ -9,7 +9,6 @@ import type {
 	EBNFItem,
 } from '../types.d';
 import {MapEq} from '../MapEq';
-import * as utils from '../utils';
 import type {Token} from '../lexer/Token';
 import type {ParseNode} from '../parser/ParseNode';
 import {ASTNode} from '../validator/ASTNode';
@@ -147,9 +146,9 @@ export class ASTNodeRef extends ASTNodeExpr {
 				[{term: this.name}],
 			]
 			/* TitleCase: production identifier */
-			: utils.NonemptyArray_flatMap(this.expand(nt) as readonly ConcreteReference[] as NonemptyArray<ConcreteReference>, (cr) => [
+			: this.expand(nt).flatMap((cr) => [
 				[{prod: cr.toString()}],
-			])
+			]) as NonemptyArray<[{prod: string}]>
 		;
 	}
 
@@ -159,7 +158,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 	 * @param   nt a specific nonterminal symbol that contains this expression
 	 * @returns    an array of objects representing references
 	 */
-	expand(nt: ConcreteNonterminal): ConcreteReference[] {
+	private expand(nt: ConcreteNonterminal): NonemptyArray<ConcreteReference> {
 		return (this.args.length)
 			? (this.ref as ASTNodeRef).expand(nt).flatMap((cr) =>
 				[...new Array(2 ** this.args.length)].map((_, count) =>
@@ -172,7 +171,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 						,
 					], nt)
 				).slice(1) // slice off the \b00 case because `R<+X, +Y>` should never give `R`.
-			)
+			) as NonemptyArray<ConcreteReference>
 			: [new ConcreteReference(this.name)]
 		;
 	}
@@ -203,7 +202,7 @@ export class ASTNodeItem extends ASTNodeExpr {
 
 
 abstract class ASTNodeOp extends ASTNodeExpr {
-	constructor (parse_node: ParseNode, operator: number, operands: NonemptyArray<ASTNodeExpr>) {
+	constructor (parse_node: ParseNode, operator: number, operands: Readonly<NonemptyArray<ASTNodeExpr>>) {
 		super(parse_node, {operator}, operands);
 	}
 }
@@ -233,10 +232,10 @@ export class ASTNodeOpUn extends ASTNodeOp {
 					memoized.set(operand, name);
 					data.push({
 						name,
-						defn: utils.NonemptyArray_flatMap(operand, (seq) => [
+						defn: operand.flatMap((seq) => [
 							seq,
 							[{prod: name}, ...seq],
-						]),
+						]) as NonemptyArray<EBNFSequence>,
 					});
 				};
 				return [
@@ -250,10 +249,10 @@ export class ASTNodeOpUn extends ASTNodeOp {
 					memoized.set(operand, name);
 					data.push({
 						name,
-						defn: utils.NonemptyArray_flatMap(operand, (seq) => [
+						defn: operand.flatMap((seq) => [
 							seq,
 							[{prod: name}, ',', ...seq],
-						]),
+						]) as NonemptyArray<EBNFSequence>,
 					});
 				};
 				return [
@@ -287,17 +286,17 @@ export class ASTNodeOpBin extends ASTNodeOp {
 		const trans0: EBNFChoice = this.operand0.transform(nt, data);
 		const trans1: EBNFChoice = this.operand1.transform(nt, data);
 		return new Map<Binop, () => EBNFChoice>([
-			[Binop.ORDER, () => utils.NonemptyArray_flatMap(trans0, (seq0) =>
-				utils.NonemptyArray_flatMap(trans1, (seq1) => [
+			[Binop.ORDER, () => trans0.flatMap((seq0) =>
+				trans1.flatMap((seq1) => [
 					[...seq0, ...seq1],
-				])
-			)],
-			[Binop.CONCAT, () => utils.NonemptyArray_flatMap(trans0, (seq0) =>
-				utils.NonemptyArray_flatMap(trans1, (seq1) => [
+				] as const)
+			) as NonemptyArray<EBNFSequence>],
+			[Binop.CONCAT, () => trans0.flatMap((seq0) =>
+				trans1.flatMap((seq1) => [
 					[...seq0, ...seq1],
 					[...seq1, ...seq0],
-				])
-			)],
+				] as const)
+			) as NonemptyArray<EBNFSequence>],
 			[Binop.ALTERN, () => [
 				...trans0,
 				...trans1,
