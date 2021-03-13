@@ -113,41 +113,18 @@ export function sanitizeContent(contents: string): string {
  * `);
  * @returns a string with each line dedented by the determined number of tabs
  */
-export function dedent(strings: TemplateStringsArray, ...interps: unknown[]): string;
-/**
- * Dedent the given template literal with the provided number of tabs.
- * Remove up to `n` number of tabs from the beginning of each *literal* line in the template literal.
- * Does not affect interpolated expressions.
- * @example
- * assert.strictEqual(dedent(2)`
- * 			this will be
- * 	dedented by
- * 		up to
- * 				2 tabs
- * `, `
- * 	this will be
- * dedented by
- * up to
- * 		2 tabs
- * `);
- * @param   n the number of tabs to dedent by
- * @returns   a string with each line dedented by `n` tabs
- */
-export function dedent(n: number): TemplateTag<string>;
-export function dedent(a: number | TemplateStringsArray, ...b: unknown[]): string | TemplateTag<string> {
-	if (typeof a === 'number') {
-		function replace(s: string): string {
-			return s.replace(new RegExp(`\\n\\t{0,${ Math.floor(Math.abs(a as number)) }}`, 'g'), '\n');
-		}
-		return (strings: TemplateStringsArray, ...interps: unknown[]): string => [
-			...interps.map((interp, i) => `${ replace(strings[i]) }${ interp }`),
-			replace(strings[strings.length - 1]), // strings.lastItem
-		].join('');
-	} else {
-		const matched: RegExpMatchArray | null = a[0].match(/\n\t*/);
-		return dedent(matched && matched[0] ? matched[0].slice(1).length : 0)(a, ...b);
-	};
+export function dedent(strings: TemplateStringsArray, ...interps: unknown[]): string {
+	const matched: RegExpMatchArray | null = strings[0].match(/\n\t*/);
+	const n: number = matched && matched[0] ? matched[0].slice(1).length : 0;
+	function replace(s: string, n: number): string {
+		return (n <= 0) ? s : s.replace(new RegExp(`\\n\\t{0,${ Math.floor(n) }}`, 'g'), '\n');
+	}
+	return [
+		...interps.map((interp, i) => `${ replace(strings[i], n) }${ interp }`),
+		replace(strings[strings.length - 1], n), // strings.lastItem
+	].join('');
 }
+dedent as TemplateTag<string>;
 
 
 
