@@ -45,7 +45,7 @@ Altern ::= ( Altern "|"  )? Concat;
 
 
 Definition
-	::= ("." | "&" | "|")? Altern ("." | "&" | "|")?;
+	::= ("." | "&" | "|")? Altern;
 
 
 

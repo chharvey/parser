@@ -1,5 +1,18 @@
-import type {NonemptyArray} from './types.d';
 import type {GrammarSymbol} from './grammar/Grammar';
+
+
+
+/**
+ * A template literal ‘tag’.
+ * @example
+ * ```
+ * declare const tag: TemplateTag;
+ * declare const template: unknown;
+ * tag`This is a ${ template } literal.`;
+ * ```
+ */
+type TemplateTag<Return, Interps extends unknown[] = unknown[]> =
+	(strings: TemplateStringsArray, ...interpolations: Interps) => Return;
 
 
 
@@ -31,20 +44,6 @@ export function titleToMacro(s: string): string {
  */
 export function macroToTitle(s: string): string {
 	return s.split('_').map((ss) => `${ ss[0] }${ ss.slice(1).toLowerCase() }`).join('');
-}
-
-
-
-/**
- * {@link Array#flatMap}, but for nonempty arrays, with better type declarations.
- * @typeParam T         the type of items in the array
- * @typeParam U         the type of items in the returned array
- * @param     arr       the array to flatmap
- * @param     calllback the callback sent into `Array#flatMap`
- * @returns             `arr.flatMap(callback)`
- */
-export function NonemptyArray_flatMap<T, U>(arr: NonemptyArray<T>, callback: (it: T) => NonemptyArray<U>): NonemptyArray<U> {
-	return arr.flatMap((it) => callback(it)) as readonly U[] as NonemptyArray<U>;
 }
 
 
@@ -91,6 +90,41 @@ export function sanitizeContent(contents: string): string {
 		.replace(Filebound.EOT, '\u2403') // SYMBOL FOR END   OF TEXT
 	;
 }
+
+
+
+/**
+ * Dedent a template literal with an auto-determined number of tabs.
+ * Remove up to `n` number of tabs from the beginning of each *literal* line in the template literal.
+ * Does not affect interpolated expressions.
+ * `n` is determined by the number of tabs following the first line break in the literal.
+ * If there are no line breaks, `0` is assumed.
+ * @example
+ * assert.strictEqual(dedent`
+ * 			this will be
+ * 	dedented by
+ * 		up to
+ * 				3 tabs
+ * `, `
+ * this will be
+ * dedented by
+ * up to
+ * 	3 tabs
+ * `);
+ * @returns a string with each line dedented by the determined number of tabs
+ */
+export function dedent(strings: TemplateStringsArray, ...interps: unknown[]): string {
+	const matched: RegExpMatchArray | null = strings[0].match(/\n\t*/);
+	const n: number = matched && matched[0] ? matched[0].slice(1).length : 0;
+	function replace(s: string, n: number): string {
+		return (n <= 0) ? s : s.replace(new RegExp(`\\n\\t{0,${ Math.floor(n) }}`, 'g'), '\n');
+	}
+	return [
+		...interps.map((interp, i) => `${ replace(strings[i], n) }${ interp }`),
+		replace(strings[strings.length - 1], n), // strings.lastItem
+	].join('');
+}
+dedent as TemplateTag<string>;
 
 
 

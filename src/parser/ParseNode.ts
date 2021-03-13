@@ -52,7 +52,7 @@ export class ParseNode implements Serializable {
 	 * @returns      a string to print to a TypeScript file
 	 */
 	static fromJSON(json: EBNFObject): string {
-		return `
+		return utils.dedent`
 			export ${ (json.family === true) ? 'abstract ' : '' }class ${ this.classnameOf(json) } extends ${ (typeof json.family === 'string')
 				? this.classnameOf({prod: json.family})
 				: 'ParseNode'
