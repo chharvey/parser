@@ -136,12 +136,12 @@ export function dedent(strings: TemplateStringsArray, ...interps: unknown[]): st
 export function dedent(n: number): TemplateTag<string>;
 export function dedent(a: number | TemplateStringsArray, ...b: unknown[]): string | TemplateTag<string> {
 	if (typeof a === 'number') {
-		function replace(s: string): string {
-			return s.replace(new RegExp(`\\n\\t{0,${ Math.floor(Math.abs(a as number)) }}`, 'g'), '\n');
+		function replace(s: string, n: number): string {
+			return s.replace(new RegExp(`\\n\\t{0,${ Math.floor(Math.abs(n)) }}`, 'g'), '\n');
 		}
 		return (strings: TemplateStringsArray, ...interps: unknown[]): string => [
-			...interps.map((interp, i) => `${ replace(strings[i]) }${ interp }`),
-			replace(strings[strings.length - 1]), // strings.lastItem
+			...interps.map((interp, i) => `${ replace(strings[i], a) }${ interp }`),
+			replace(strings[strings.length - 1], a), // strings.lastItem
 		].join('');
 	} else {
 		const matched: RegExpMatchArray | null = a[0].match(/\n\t*/);
