@@ -17,7 +17,7 @@ export class Scanner {
 	 * @param source the source text
 	 */
 	constructor (source: string) {
-		this.source_text = `${ Filebound.SOT }\n${ source.replace(/\r\n|\r/g, '\n') }\n${ Filebound.EOT }`;
+		this.source_text = [Filebound.SOT, '\n', source.replace(/\r\n|\r/g, '\n'), '\n', Filebound.EOT].join('');
 	}
 
 	/**

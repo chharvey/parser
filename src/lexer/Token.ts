@@ -62,8 +62,8 @@ export class Token implements Serializable {
 	/** @implements Serializable */
 	serialize(): string {
 		return `<${ this.tagname } ${ utils.stringifyAttributes(new Map<string, string>([
-			['line', `${ this.line_index + 1 }`],
-			['col',  `${ this.col_index  + 1 }`],
+			['line', (this.line_index + 1).toString()],
+			['col',  (this.col_index  + 1).toString()],
 		])) }>${ utils.sanitizeContent(this.source) }</${ this.tagname }>`;
 	}
 
