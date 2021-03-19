@@ -27,7 +27,8 @@ export class ProductionUnit extends Production {
 	/** @implements Production */
 	get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 		return [
-			[TERMINAL.TerminalNumber.instance],['(',TERMINAL.TerminalOperator.instance,ProductionUnit.instance,ProductionUnit.instance,')'],
+			[TERMINAL.TerminalNumber.instance],
+			['(', TERMINAL.TerminalOperator.instance, ProductionUnit.instance, ProductionUnit.instance, ')'],
 		];
 	}
 }
@@ -37,7 +38,8 @@ export class ProductionGoal extends Production {
 	/** @implements Production */
 	get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 		return [
-			['\u0002','\u0003'],['\u0002',ProductionUnit.instance,'\u0003'],
+			['\u0002', '\u0003'],
+			['\u0002', ProductionUnit.instance, '\u0003'],
 		];
 	}
 }
@@ -45,13 +47,15 @@ export class ProductionGoal extends Production {
 
 export class ParseNodeUnit extends ParseNode {
 	declare readonly children:
-		readonly [Token] | readonly [Token,Token,ParseNodeUnit,ParseNodeUnit,Token]
+		| readonly [Token]
+		| readonly [Token, Token, ParseNodeUnit, ParseNodeUnit, Token]
 	;
 }
 
 export class ParseNodeGoal extends ParseNode {
 	declare readonly children:
-		readonly [Token,Token] | readonly [Token,ParseNodeUnit,Token]
+		| readonly [Token, Token]
+		| readonly [Token, ParseNodeUnit, Token]
 	;
 }
 

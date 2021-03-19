@@ -58,11 +58,11 @@ export class ParseNode implements Serializable {
 				: 'ParseNode'
 			} {
 				declare readonly children:
-					${ json.defn.map((seq) => `readonly [${ seq.map((it) =>
+					| ${ json.defn.map((seq) => `readonly [${ seq.map((it) =>
 						(typeof it === 'string' || 'term' in it)
 							? `Token`
 							: this.classnameOf(it)
-					) }]`).join(' | ') }
+					).join(', ') }]`).join('\n\t\t| ') }
 				;
 			}
 		`;
