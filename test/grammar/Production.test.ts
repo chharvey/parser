@@ -36,10 +36,8 @@ describe('Production', () => {
 					/** @implements Production */
 					get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 						return [
-							${ `
-								[TERMINAL.TerminalNumber.instance],
-								['(', TERMINAL.TerminalOperator.instance, ProductionUnit.instance, ProductionUnit.instance, ')'],
-							`.replace(/\s+/g, '') }
+							[TERMINAL.TerminalNumber.instance],
+							['(', TERMINAL.TerminalOperator.instance, ProductionUnit.instance, ProductionUnit.instance, ')'],
 						];
 					}
 				}
@@ -49,10 +47,8 @@ describe('Production', () => {
 					/** @implements Production */
 					get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 						return [
-							${ `
-								['\\u0002',                          '\\u0003'],
-								['\\u0002', ProductionUnit.instance, '\\u0003'],
-							`.replace(/\s+/g, '') }
+							['\\u0002', '\\u0003'],
+							['\\u0002', ProductionUnit.instance, '\\u0003'],
 						];
 					}
 				}

@@ -45,7 +45,7 @@ export abstract class Production {
 							(typeof it === 'string') ? `'${ it }'` :
 							('term' in it) ? `TERMINAL.Terminal${ utils.macroToTitle(it.term) }.instance` :
 							`${ this.classnameOf(it) }.instance`
-						) }]`) },
+						).join(', ') }],`).join('\n\t\t\t') }
 					];
 				}
 			}

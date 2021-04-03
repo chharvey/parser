@@ -43,7 +43,7 @@ export function titleToMacro(s: string): string {
  * @returns   the string in `AbcDef` format
  */
 export function macroToTitle(s: string): string {
-	return s.split('_').map((ss) => `${ ss[0] }${ ss.slice(1).toLowerCase() }`).join('');
+	return s.split('_').map((ss) => ss[0].concat(ss.slice(1).toLowerCase())).join('');
 }
 
 
@@ -120,7 +120,7 @@ export function dedent(strings: TemplateStringsArray, ...interps: unknown[]): st
 		return (n <= 0) ? s : s.replace(new RegExp(`\\n\\t{0,${ Math.floor(n) }}`, 'g'), '\n');
 	}
 	return [
-		...interps.map((interp, i) => `${ replace(strings[i], n) }${ interp }`),
+		...interps.flatMap((interp, i) => [replace(strings[i], n), interp]),
 		replace(strings[strings.length - 1], n), // strings.lastItem
 	].join('');
 }

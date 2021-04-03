@@ -32,13 +32,15 @@ describe('ParseNode', () => {
 			] as EBNFObject[]).map((prod) => ParseNode.fromJSON(prod)), [utils.dedent`
 				export class ParseNodeUnit extends ParseNode {
 					declare readonly children:
-						readonly [Token] | readonly [Token,Token,ParseNodeUnit,ParseNodeUnit,Token]
+						| readonly [Token]
+						| readonly [Token, Token, ParseNodeUnit, ParseNodeUnit, Token]
 					;
 				}
 			`, utils.dedent`
 				export class ParseNodeGoal extends ParseNode {
 					declare readonly children:
-						readonly [Token,Token] | readonly [Token,ParseNodeUnit,Token]
+						| readonly [Token, Token]
+						| readonly [Token, ParseNodeUnit, Token]
 					;
 				}
 			`]);
