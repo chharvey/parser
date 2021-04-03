@@ -58,11 +58,11 @@ export class ParseNode implements Serializable {
 				: 'ParseNode'
 			} {
 				declare readonly children:
-					${ json.defn.map((seq) => `readonly [${ seq.map((it) =>
+					| ${ json.defn.map((seq) => `readonly [${ seq.map((it) =>
 						(typeof it === 'string' || 'term' in it)
 							? `Token`
-							: `${ this.classnameOf(it) }`
-					) }]`).join(' | ') }
+							: this.classnameOf(it)
+					).join(', ') }]`).join('\n\t\t| ') }
 				;
 			}
 		`;
@@ -92,8 +92,8 @@ export class ParseNode implements Serializable {
 	/** @implements Serializable */
 	serialize(): string {
 		return `<${ this.tagname } ${ utils.stringifyAttributes(new Map<string, string>([
-			['line',   `${ this.line_index + 1 }`],
-			['col',    `${ this.col_index  + 1 }`],
+			['line',   (this.line_index + 1).toString()],
+			['col',    (this.col_index  + 1).toString()],
 			['source', this.source],
 		])) }>${ this.children.map((child) => child.serialize()).join('') }</${ this.tagname }>`;
 	}

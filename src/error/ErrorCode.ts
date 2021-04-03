@@ -64,7 +64,7 @@ export class ErrorCode extends Error {
 		};
 		super(props.message);
 		this.code       = props.code || 0;
-		this.name       = props.name ? `${ props.name }${ this.code || '' }` : ErrorCode.NAME;
+		this.name       = props.name ? props.name.concat(this.code as any || '') : ErrorCode.NAME;
 		this.line_index = props.line_index !== void 0 ? props.line_index : null;
 		this.col_index  = props.col_index  !== void 0 ? props.col_index  : null;
 	}

@@ -366,7 +366,7 @@ export class ASTNodeProduction extends ASTNodeEBNF {
 			defn: this.definition.transform(cn, productions_data),
 		}));
 		if (nonterms.length >= 2) {
-			const family_name: string = `${ nonterms[0].name }${ FAMILY_SYMBOL }`;
+			const family_name: string = nonterms[0].name.concat(FAMILY_SYMBOL);
 			productions_data.push({
 				name: family_name,
 				family: true,
@@ -414,10 +414,11 @@ class ConcreteReference {
 
 	/** @override */
 	toString(): string {
-		return `${ this.name }${ this.suffixes.map((s) => s.append === true || s.append === 'inherit' && this.nonterminal?.hasSuffix(s)
-			? `${ PARAM_SEPARATOR }${ s.source }`
-			: ''
-		).join('') }`;
+		return this.name.concat(...this.suffixes.flatMap((s) =>
+			(s.append === true || s.append === 'inherit' && this.nonterminal?.hasSuffix(s))
+				? [PARAM_SEPARATOR, s.source]
+				: ''
+		));
 	}
 }
 
@@ -444,7 +445,7 @@ class ConcreteNonterminal {
 
 	/** @override */
 	toString(): string {
-		return `${ this.name }${ this.suffixes.map((s) => `${ PARAM_SEPARATOR }${ s.source }`).join('') }`;
+		return this.name.concat(...this.suffixes.flatMap((s) => [PARAM_SEPARATOR, s.source]));
 	}
 
 	hasSuffix(p: ASTNodeParam | ASTNodeArg | ASTNodeCondition): boolean {

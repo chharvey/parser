@@ -50,8 +50,8 @@ export class ASTNode implements Serializable {
 	/** @implements Serializable */
 	serialize(): string {
 		const attributes: Map<string, string> = new Map<string, string>([
-			['line',   `${ this.line_index + 1 }`],
-			['col',    `${ this.col_index + 1 }`],
+			['line',   (this.line_index + 1).toString()],
+			['col',    (this.col_index  + 1).toString()],
 			['source', this.source],
 		]);
 		Object.entries(this.attributes).forEach(([key, value]) => {
