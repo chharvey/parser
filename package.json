@@ -19,6 +19,16 @@
   },
   "license": "MIT",
   "author": "Chris Harvey <chrisharvey2pi@gmail.com> (https://chharvey.github.io/)",
+  "files": [
+    "dist/",
+    "docs/*",
+    "!docs/api/",
+    "src/",
+    "test/sample/",
+    "index.js",
+    "index.ts",
+    "tsconfig.json"
+  ],
   "main": "index.js",
   "repository": {
     "type": "git",
