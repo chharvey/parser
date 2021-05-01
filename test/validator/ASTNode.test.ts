@@ -11,8 +11,8 @@ import {
 	Decorator,
 } from '../../src/ebnf/';
 import {
-	ParseNodeUnit,
 	ParserSample,
+	PARSER as PARSERSAMPLE,
 } from '../sample';
 
 
@@ -21,11 +21,11 @@ describe('ASTNode', () => {
 	describe('#serialize', () => {
 		it('prints a readable string.', () => {
 			const tree: ParseNode = new ParserSample(`(+ (* 2 3) 5)`).parse();
-			const add:   ParseNodeUnit = tree.children[1] as ParseNodeUnit;
-			const mult:  ParseNodeUnit = add .children[2] as ParseNodeUnit;
-			const five:  ParseNodeUnit = add .children[3] as ParseNodeUnit;
-			const two:   ParseNodeUnit = mult.children[2] as ParseNodeUnit;
-			const three: ParseNodeUnit = mult.children[3] as ParseNodeUnit;
+			const add:   PARSERSAMPLE.ParseNodeUnit = tree.children[1] as PARSERSAMPLE.ParseNodeUnit;
+			const mult:  PARSERSAMPLE.ParseNodeUnit = add .children[2] as PARSERSAMPLE.ParseNodeUnit;
+			const five:  PARSERSAMPLE.ParseNodeUnit = add .children[3] as PARSERSAMPLE.ParseNodeUnit;
+			const two:   PARSERSAMPLE.ParseNodeUnit = mult.children[2] as PARSERSAMPLE.ParseNodeUnit;
+			const three: PARSERSAMPLE.ParseNodeUnit = mult.children[3] as PARSERSAMPLE.ParseNodeUnit;
 			assert.strictEqual(new ASTNode(tree, {}, [ // normally, a decorator would do this programmatically
 				new ASTNode(add, {}, [
 					new ASTNode(mult, {}, [

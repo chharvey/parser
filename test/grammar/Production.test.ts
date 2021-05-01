@@ -6,9 +6,7 @@ import type {
 import * as utils from '../../src/utils';
 import {Production} from '../../src/grammar/Production';
 import {Rule} from '../../src/grammar/Rule';
-import {
-	ProductionUnit,
-} from '../sample/';
+import {PARSER as PARSERSAMPLE} from '../sample/';
 
 
 
@@ -58,15 +56,15 @@ describe('Production', () => {
 
 	describe('#displayName', () => {
 		it('returns the display name.', () => {
-			assert.strictEqual(ProductionUnit.instance.displayName, 'Unit');
+			assert.strictEqual(PARSERSAMPLE.ProductionUnit.instance.displayName, 'Unit');
 		});
 	});
 
 	describe('#toRules', () => {
 		it('decomposes the production into a list of rules.', () => {
-			assert.deepStrictEqual(ProductionUnit.instance.toRules(), [
-				new Rule(ProductionUnit.instance, 0),
-				new Rule(ProductionUnit.instance, 1),
+			assert.deepStrictEqual(PARSERSAMPLE.ProductionUnit.instance.toRules(), [
+				new Rule(PARSERSAMPLE.ProductionUnit.instance, 0),
+				new Rule(PARSERSAMPLE.ProductionUnit.instance, 1),
 			]);
 		});
 	});

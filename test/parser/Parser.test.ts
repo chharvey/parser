@@ -21,8 +21,7 @@ import {
 } from '../helpers';
 import {
 	ParserSample,
-	ParseNodeUnit,
-	ParseNodeGoal,
+	PARSER as PARSERSAMPLE,
 } from '../sample/';
 
 
@@ -75,9 +74,9 @@ describe('Parser', () => {
 						<FILEBOUND>␃</FILEBOUND>
 					</Goal>
 				*/
-				assert.ok(goal instanceof ParseNodeGoal);
+				assert.ok(goal instanceof PARSERSAMPLE.ParseNodeGoal);
 				assert_arrayLength(goal.children, 3, 'goal should have 3 children');
-				const [sot, unit, eot]: readonly [Token, ParseNodeUnit, Token] = goal.children;
+				const [sot, unit, eot]: readonly [Token, PARSERSAMPLE.ParseNodeUnit, Token] = goal.children;
 				assert.deepStrictEqual(
 					[sot.source,    unit.source,         eot.source],
 					[Filebound.SOT, `( + ( * 2 3 ) 5 )`, Filebound.EOT],
@@ -85,7 +84,7 @@ describe('Parser', () => {
 			});
 
 			specify('Unit ::= "(" OPERATOR Unit Unit ")";', () => {
-				const unit: ParseNodeUnit = new ParserSample(`(+ (* 2 3) 5)`).parse().children[1] as ParseNodeUnit;
+				const unit: PARSERSAMPLE.ParseNodeUnit = new ParserSample(`(+ (* 2 3) 5)`).parse().children[1] as PARSERSAMPLE.ParseNodeUnit;
 				/*
 					<Unit>
 						<PUNCTUATOR>(</PUNCTUATOR>
@@ -96,7 +95,7 @@ describe('Parser', () => {
 					</Unit>
 				*/
 				assert_arrayLength(unit.children, 5, 'unit should have 5 children');
-				const [open, op, left, right, close]: readonly [Token, Token, ParseNodeUnit, ParseNodeUnit, Token] = unit.children;
+				const [open, op, left, right, close]: readonly [Token, Token, PARSERSAMPLE.ParseNodeUnit, PARSERSAMPLE.ParseNodeUnit, Token] = unit.children;
 				assert.deepStrictEqual(
 					[open.source, op.source, left.source, right.source, close.source],
 					[`(`,         `+`,       `( * 2 3 )`, `5`,          `)`],
