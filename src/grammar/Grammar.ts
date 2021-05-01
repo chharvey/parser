@@ -127,4 +127,25 @@ export class Grammar {
 		});
 		return closure;
 	}
+
+	/**
+	 * Generate an instance of the language of this Grammar.
+	 * A language instance is a sequence of terminal symbols that can result from repeatedly replacing
+	 * any nonterminal in the sequence with a right-hand side of a production for which
+	 * the nonterminal is the left-hand side.
+	 * @returns a well-formed program
+	 */
+	random(): NonemptyArray<string> {
+		let returned: Readonly<NonemptyArray<string>> | null = null;
+		while (returned === null) {
+			try {
+				returned = this.goal.random();
+			} catch (err) { // discard infinite recursion but rethrow anything else
+				if (!(err instanceof RangeError) && err.message !== 'Maximum call stack size exceeded') {
+					throw err;
+				};
+			};
+		};
+		return [...returned];
+	}
 }

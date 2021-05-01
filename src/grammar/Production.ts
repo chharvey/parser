@@ -5,6 +5,7 @@ import type {
 	EBNFObject,
 } from '../types.d';
 import * as utils from '../utils';
+import {Terminal} from './Terminal';
 import {Rule} from './Rule';
 import type {
 	GrammarSymbol,
@@ -89,5 +90,18 @@ export abstract class Production {
 	 */
 	toRules(): Rule[] {
 		return this.sequences.map((_, i) => new Rule(this, i));
+	}
+
+	/**
+	 * Generate a random instance of this Production.
+	 * @returns a well-formed sequence of strings satisfying this Production
+	 * @final
+	 */
+	random(): NonemptyArray<string> {
+		return utils.randomArrayItem(this.sequences).map((symbol) => (
+			(typeof symbol === 'string') ? [symbol] :
+			(symbol instanceof Terminal) ? [symbol.random()] :
+			symbol.random()
+		).join(' ')) as NonemptyArray<string>;
 	}
 }
