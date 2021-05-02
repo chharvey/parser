@@ -22,19 +22,12 @@ export class Scanner {
 		return [Filebound.SOT, '\n', source.replace(/\r\n|\r/g, '\n'), '\n', Filebound.EOT].join('');
 	}
 
-
-	/**
-	 * Construct a new Scanner object.
-	 */
-	constructor () {
-	}
-
 	/**
 	 * Return the next character in source text.
 	 * @param source the source text
 	 * @returns the next character in source text
 	 */
-	* generate(source: string): Generator<Char> {
+	static * generate(source: string): Generator<Char> {
 		const source_text: string = Scanner.normalize(source);
 		for (let source_index: number = 0; source_index < source_text.length; source_index++) {
 			yield new Char(source_text, source_index);

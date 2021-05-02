@@ -34,7 +34,7 @@ export class Lexer {
 	 * @param source the source text
 	 */
 	constructor (source: string) {
-		this.char_generator = new Scanner().generate(source);
+		this.char_generator = Scanner.generate(source);
 		this.iterator_result_char = this.char_generator.next();
 		this._c0 = this.iterator_result_char.value as Char;
 		this._c1 = this._c0.lookahead();

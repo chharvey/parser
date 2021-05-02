@@ -26,7 +26,7 @@ describe('LexError', () => {
 
 		specify('LexError02', () => {
 			const src: string = `unfinished`;
-			const chars: Char[] = [...new Scanner().generate(src)].slice(2, -2); // slice off line normalization
+			const chars: Char[] = [...Scanner.generate(src)].slice(2, -2); // slice off line normalization
 			assert.strictEqual(
 				new LexError02(new Token('TOKEN', new LexerSample(src), chars[0], ...chars.slice(1))).message,
 				'Found end of file before end of TOKEN: \`unfinished\`.',
