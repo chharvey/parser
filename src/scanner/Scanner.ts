@@ -9,24 +9,21 @@ import {Char} from './Char';
  * @final
  */
 export class Scanner {
-	/** The entire source text of the program. */
-	readonly source_text: string;
-
 	/**
 	 * Construct a new Scanner object.
-	 * @param source the source text
 	 */
-	constructor (source: string) {
-		this.source_text = [Filebound.SOT, '\n', source.replace(/\r\n|\r/g, '\n'), '\n', Filebound.EOT].join('');
+	constructor () {
 	}
 
 	/**
 	 * Return the next character in source text.
+	 * @param source the source text
 	 * @returns the next character in source text
 	 */
-	* generate(): Generator<Char> {
-		for (let source_index: number = 0; source_index < this.source_text.length; source_index++) {
-			yield new Char(this, source_index);
+	* generate(source: string): Generator<Char> {
+		const source_text: string = [Filebound.SOT, '\n', source.replace(/\r\n|\r/g, '\n'), '\n', Filebound.EOT].join('');
+		for (let source_index: number = 0; source_index < source_text.length; source_index++) {
+			yield new Char(source_text, source_index);
 		};
 	}
 }
