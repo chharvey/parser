@@ -1,41 +1,44 @@
 import * as assert from 'assert';
 
 import {Filebound} from '../../src/utils';
-import type {Char} from '../../src/scanner/Char';
+import * as utils from '../../src/utils';
 import {Scanner} from '../../src/scanner/Scanner';
-import {
-	lastItem,
-} from '../helpers';
 
 
 
 describe('Scanner', () => {
-	describe('#generate', () => {
-		const chars: Char[] = [...new Scanner().generate(`
-		5  +  30 \u000d
-		6 ^ 2 - 37 *
-		( 4 * \u000d9 ^ 3
-		3 - 50 + * 2
-		5 + 03 + '' * 'hello' *  -2
-		600  /  3  *  2
-		600  /  (3  *  2
-		4 * 2 ^ 3
-		`)];
+	describe('.normalize', () => {
+		const normalized: string = Scanner.normalize(utils.dedent`
+			5  +  30 \u000d
+			6 ^ 2 - 37 *
+			( 4 * \u000d9 ^ 3
+			3 - 50 + * 2
+			5 + 03 + '' * 'hello' *  -2
+			600  /  3  *  2
+			600  /  (3  *  2
+			4 * 2 ^ 3
+		`);
 
 		it('wraps source text.', () => {
-			assert.strictEqual(chars[0].source, Filebound.SOT);
-			assert.strictEqual(chars[1].source, '\n');
-			assert.strictEqual(chars[5].source, '5');
-			assert.strictEqual(chars[chars.length - 2].source, '\n');
-			assert.strictEqual(lastItem(chars).source, Filebound.EOT);
+			assert.strictEqual(normalized[0], Filebound.SOT);
+			assert.strictEqual(normalized[1], '\n');
+			assert.strictEqual(normalized[3], '5');
+			assert.strictEqual(normalized[normalized.length - 2], '\n');
+			assert.strictEqual(normalized[normalized.length - 1], Filebound.EOT);
 		});
 
-		it('normalizes line endings.', () => {
-			assert.strictEqual(chars[14].source, '\n');
-			assert.strictEqual(chars[29].source, '\n');
-			assert.strictEqual(chars[32].source, '(');
-			assert.strictEqual(chars[38].source, '\n');
-			assert.strictEqual(chars[39].source, '9');
+		context('normalizes line endings.', () => {
+			it('replaces CR+LF with LF.', () => {
+				assert.strictEqual(normalized[12], '\n');
+			});
+			it('replaces CR (not followed by LF) with LF.', () => {
+				assert.strictEqual(normalized[32], '\n');
+				assert.strictEqual(normalized[33], '9');
+			});
+			it('leaves LF as LF.', () => {
+				assert.strictEqual(normalized[25], '\n');
+				assert.strictEqual(normalized[26], '(');
+			});
 		});
 	});
 });
