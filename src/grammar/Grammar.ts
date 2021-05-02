@@ -90,7 +90,7 @@ export class Grammar {
 			.filter((rule) => rule.symbols.includes(symbol))
 			.flatMap<GrammarTerminal>((rule) => {
 				const index: number = rule.symbols.indexOf(symbol);
-				return (index < rule.symbols.length - 1) // if (symbol !== rule.symbols.lastItem)
+				return (index < rule.symbols.length - 1) // COMBAK if (symbol !== rule.symbols.lastItem)
 					? [...this.first(rule.symbols[index + 1])]
 					: [...this.follow(rule.production)]
 			})

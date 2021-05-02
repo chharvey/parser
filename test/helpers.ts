@@ -14,11 +14,13 @@ export function lastIndex(iter: { length: number }): number {
 
 
 /**
- * Return the last item of an iterable.
- * @param   iter an iterable
+ * Return the last item of a string or array.
+ * @param   iter a string or array
  * @returns      the last entry
  */
-export function lastItem(iter: any[] | string): any {
+export function lastItem(iter: string): string;
+export function lastItem<T>(iter: T[]): T;
+export function lastItem<T>(iter: string | T[]): string | T {
 	return iter[lastIndex(iter)];
 }
 

@@ -121,7 +121,7 @@ export function dedent(strings: TemplateStringsArray, ...interps: unknown[]): st
 	}
 	return [
 		...interps.flatMap((interp, i) => [replace(strings[i], n), interp]),
-		replace(strings[strings.length - 1], n), // strings.lastItem
+		replace(strings[strings.length - 1], n), // COMBAK strings.lastItem
 	].join('');
 }
 dedent as TemplateTag<string>;
