@@ -12,17 +12,16 @@ import {
 	ParseError01,
 } from '../../src/error/ParseError';
 import {
-	PARSER as EBNF,
-	ParserEBNF,
+	PARSENODE as PARSENODE_EBNF,
+	PARSER as PARSER_EBNF,
 	Decorator,
 } from '../../src/ebnf/';
 import {
 	assert_arrayLength,
 } from '../helpers';
 import {
-	ParserSample,
-	ParseNodeUnit,
-	ParseNodeGoal,
+	PARSENODE as PARSENODE_SAMPLE,
+	PARSER as PARSER_SAMPLE,
 } from '../sample/';
 
 
@@ -30,11 +29,11 @@ import {
 describe('Parser', () => {
 	describe('.fromJSON', () => {
 		it('returns a string representing a new subclass of Parser.', () => {
-			assert.strictEqual(Parser.fromJSON(Decorator.decorate(new ParserEBNF().parse(`
+			assert.strictEqual(Parser.fromJSON(Decorator.decorate(PARSER_EBNF.parse(`
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
 			`)).transform(), 'Sample'), (utils.dedent`
-				export class ParserSample extends Parser {
+				class ParserSample extends Parser {
 					/**
 					 * Construct a new ParserSample object.
 					 */
@@ -47,6 +46,7 @@ describe('Parser', () => {
 					// @ts-expect-error
 					declare parse(source: string): ParseNodeGoal;
 				}
+				export const PARSER: ParserSample = new ParserSample();
 			`));
 		});
 	});
@@ -54,19 +54,19 @@ describe('Parser', () => {
 	describe('#parse', () => {
 		context('Goal ::= #x02 #x03', () => {
 			it('returns only file bounds.', () => {
-				const tree: ParseNode = new ParserSample().parse(``);
+				const tree: ParseNode = PARSER_SAMPLE.parse(``);
 				assert.strictEqual(tree.children.length, 2);
 				tree.children.forEach((child) => assert.ok(child instanceof TokenFilebound));
 			});
 		});
 
 		it('rejects unexpected tokens.', () => {
-			assert.throws(() => new ParserSample().parse(`(+ 3 4 5)`), ParseError01);
+			assert.throws(() => PARSER_SAMPLE.parse(`(+ 3 4 5)`), ParseError01);
 		});
 
 		describe('ParserSample', () => {
 			specify('Goal ::= #x02 Unit #x03;', () => {
-				const goal: ParseNode = new ParserSample().parse(`(+ (* 2 3) 5)`);
+				const goal: ParseNode = PARSER_SAMPLE.parse(`(+ (* 2 3) 5)`);
 				/*
 					<Goal>
 						<FILEBOUND>␂</FILEBOUND>
@@ -74,9 +74,9 @@ describe('Parser', () => {
 						<FILEBOUND>␃</FILEBOUND>
 					</Goal>
 				*/
-				assert.ok(goal instanceof ParseNodeGoal);
+				assert.ok(goal instanceof PARSENODE_SAMPLE.ParseNodeGoal);
 				assert_arrayLength(goal.children, 3, 'goal should have 3 children');
-				const [sot, unit, eot]: readonly [Token, ParseNodeUnit, Token] = goal.children;
+				const [sot, unit, eot]: readonly [Token, PARSENODE_SAMPLE.ParseNodeUnit, Token] = goal.children;
 				assert.deepStrictEqual(
 					[sot.source,    unit.source,         eot.source],
 					[Filebound.SOT, `( + ( * 2 3 ) 5 )`, Filebound.EOT],
@@ -84,7 +84,7 @@ describe('Parser', () => {
 			});
 
 			specify('Unit ::= "(" OPERATOR Unit Unit ")";', () => {
-				const unit: ParseNodeUnit = new ParserSample().parse(`(+ (* 2 3) 5)`).children[1] as ParseNodeUnit;
+				const unit: PARSENODE_SAMPLE.ParseNodeUnit = PARSER_SAMPLE.parse(`(+ (* 2 3) 5)`).children[1] as PARSENODE_SAMPLE.ParseNodeUnit;
 				/*
 					<Unit>
 						<PUNCTUATOR>(</PUNCTUATOR>
@@ -95,7 +95,7 @@ describe('Parser', () => {
 					</Unit>
 				*/
 				assert_arrayLength(unit.children, 5, 'unit should have 5 children');
-				const [open, op, left, right, close]: readonly [Token, Token, ParseNodeUnit, ParseNodeUnit, Token] = unit.children;
+				const [open, op, left, right, close]: readonly [Token, Token, PARSENODE_SAMPLE.ParseNodeUnit, PARSENODE_SAMPLE.ParseNodeUnit, Token] = unit.children;
 				assert.deepStrictEqual(
 					[open.source, op.source, left.source, right.source, close.source],
 					[`(`,         `+`,       `( * 2 3 )`, `5`,          `)`],
@@ -105,7 +105,7 @@ describe('Parser', () => {
 
 		describe('ParserEBNF', () => {
 			specify('Goal ::= #x02 Production* #x03;', () => {
-				const goal: ParseNode = new ParserEBNF().parse(`
+				const goal: ParseNode = PARSER_EBNF.parse(`
 					Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 					Goal ::= #x02 Unit? #x03;
 				`);
@@ -121,9 +121,9 @@ describe('Parser', () => {
 						<FILEBOUND>␃</FILEBOUND>
 					</Goal>
 				*/
-				assert.ok(goal instanceof EBNF.ParseNodeGoal);
+				assert.ok(goal instanceof PARSENODE_EBNF.ParseNodeGoal);
 				assert_arrayLength(goal.children, 3, 'goal should have 3 children');
-				const [sot, prod_list, eot]: readonly [Token, EBNF.ParseNodeGoal__0__List, Token] = goal.children;
+				const [sot, prod_list, eot]: readonly [Token, PARSENODE_EBNF.ParseNodeGoal__0__List, Token] = goal.children;
 				assert.ok(sot instanceof TokenFilebound);
 				assert.ok(eot instanceof TokenFilebound);
 				assert.deepStrictEqual(
@@ -131,9 +131,9 @@ describe('Parser', () => {
 					[Filebound.SOT, Filebound.EOT],
 				);
 				assert_arrayLength(prod_list.children, 2, 'outer production list should have 2 children');
-				const [first, second]: readonly [EBNF.ParseNodeGoal__0__List, EBNF.ParseNodeProduction] = prod_list.children;
+				const [first, second]: readonly [PARSENODE_EBNF.ParseNodeGoal__0__List, PARSENODE_EBNF.ParseNodeProduction] = prod_list.children;
 				assert_arrayLength(first.children, 1, 'inner production list should have 1 child');
-				const prod: EBNF.ParseNodeProduction = first.children[0];
+				const prod: PARSENODE_EBNF.ParseNodeProduction = first.children[0];
 				assert.deepStrictEqual(
 					[prod.source,                                      second.source],
 					[`Unit ::= NUMBER | "(" OPERATOR Unit Unit ")" ;`, `Goal ::= #x02 Unit ? #x03 ;`],
@@ -141,14 +141,14 @@ describe('Parser', () => {
 			});
 
 			specify('Production ::= NonterminalName "::=" Definition ";";', () => {
-				const prod: EBNF.ParseNodeProduction = (new ParserEBNF().parse(`
+				const prod: PARSENODE_EBNF.ParseNodeProduction = (PARSER_EBNF.parse(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
 					;
 				`)
-					.children[1] as EBNF.ParseNodeGoal__0__List)
-					.children[0] as EBNF.ParseNodeProduction
+					.children[1] as PARSENODE_EBNF.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE_EBNF.ParseNodeProduction
 				;
 				/*
 					<Production>
@@ -159,7 +159,7 @@ describe('Parser', () => {
 					</Production>
 				*/
 				assert_arrayLength(prod.children, 4, 'production should have 4 children');
-				const children: readonly [EBNF.ParseNodeNonterminalName, Token, EBNF.ParseNodeDefinition, Token] = prod.children;
+				const children: readonly [PARSENODE_EBNF.ParseNodeNonterminalName, Token, PARSENODE_EBNF.ParseNodeDefinition, Token] = prod.children;
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['Unit', '::=', '| NUMBER | "(" OPERATOR Unit Unit ")"', ';'],
@@ -167,14 +167,14 @@ describe('Parser', () => {
 			});
 
 			specify('Definition ::= "." Altern;', () => {
-				const defn: EBNF.ParseNodeDefinition = ((new ParserEBNF().parse(`
+				const defn: PARSENODE_EBNF.ParseNodeDefinition = ((PARSER_EBNF.parse(`
 					Unit ::=
 						. NUMBER | "(" OPERATOR Unit Unit ")"
 					;
 				`)
-					.children[1] as EBNF.ParseNodeGoal__0__List)
-					.children[0] as EBNF.ParseNodeProduction)
-					.children[2] as EBNF.ParseNodeDefinition
+					.children[1] as PARSENODE_EBNF.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE_EBNF.ParseNodeProduction)
+					.children[2] as PARSENODE_EBNF.ParseNodeDefinition
 				;
 				/*
 					<Definition>
@@ -183,9 +183,9 @@ describe('Parser', () => {
 					</Definition>
 				*/
 				assert_arrayLength(defn.children, 2, 'defn should have 2 children');
-				const children: readonly [Token, EBNF.ParseNodeAltern] | readonly [EBNF.ParseNodeAltern, Token] = defn.children;
+				const children: readonly [Token, PARSENODE_EBNF.ParseNodeAltern] | readonly [PARSENODE_EBNF.ParseNodeAltern, Token] = defn.children;
 				assert.ok(children[0] instanceof Token);
-				assert.ok(children[1] instanceof EBNF.ParseNodeAltern);
+				assert.ok(children[1] instanceof PARSENODE_EBNF.ParseNodeAltern);
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['.', 'NUMBER | "(" OPERATOR Unit Unit ")"'],
@@ -193,14 +193,14 @@ describe('Parser', () => {
 			});
 
 			specify('Definition ::= "&" Altern;', () => {
-				const defn: EBNF.ParseNodeDefinition = ((new ParserEBNF().parse(`
+				const defn: PARSENODE_EBNF.ParseNodeDefinition = ((PARSER_EBNF.parse(`
 					Unit ::=
 						& NUMBER | "(" OPERATOR Unit Unit ")"
 					;
 				`)
-					.children[1] as EBNF.ParseNodeGoal__0__List)
-					.children[0] as EBNF.ParseNodeProduction)
-					.children[2] as EBNF.ParseNodeDefinition
+					.children[1] as PARSENODE_EBNF.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE_EBNF.ParseNodeProduction)
+					.children[2] as PARSENODE_EBNF.ParseNodeDefinition
 				;
 				/*
 					<Definition>
@@ -209,9 +209,9 @@ describe('Parser', () => {
 					</Definition>
 				*/
 				assert_arrayLength(defn.children, 2, 'defn should have 2 children');
-				const children: readonly [Token, EBNF.ParseNodeAltern] | readonly [EBNF.ParseNodeAltern, Token] = defn.children;
+				const children: readonly [Token, PARSENODE_EBNF.ParseNodeAltern] | readonly [PARSENODE_EBNF.ParseNodeAltern, Token] = defn.children;
 				assert.ok(children[0] instanceof Token);
-				assert.ok(children[1] instanceof EBNF.ParseNodeAltern);
+				assert.ok(children[1] instanceof PARSENODE_EBNF.ParseNodeAltern);
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['&', 'NUMBER | "(" OPERATOR Unit Unit ")"'],
@@ -219,15 +219,15 @@ describe('Parser', () => {
 			});
 
 			specify('Definition ::= "|" Altern;', () => {
-				const defn: EBNF.ParseNodeDefinition = ((new ParserEBNF().parse(`
+				const defn: PARSENODE_EBNF.ParseNodeDefinition = ((PARSER_EBNF.parse(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
 					;
 				`)
-					.children[1] as EBNF.ParseNodeGoal__0__List)
-					.children[0] as EBNF.ParseNodeProduction)
-					.children[2] as EBNF.ParseNodeDefinition
+					.children[1] as PARSENODE_EBNF.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE_EBNF.ParseNodeProduction)
+					.children[2] as PARSENODE_EBNF.ParseNodeDefinition
 				;
 				/*
 					<Definition>
@@ -236,9 +236,9 @@ describe('Parser', () => {
 					</Definition>
 				*/
 				assert_arrayLength(defn.children, 2, 'defn should have 2 children');
-				const children: readonly [Token, EBNF.ParseNodeAltern] | readonly [EBNF.ParseNodeAltern, Token] = defn.children;
+				const children: readonly [Token, PARSENODE_EBNF.ParseNodeAltern] | readonly [PARSENODE_EBNF.ParseNodeAltern, Token] = defn.children;
 				assert.ok(children[0] instanceof Token);
-				assert.ok(children[1] instanceof EBNF.ParseNodeAltern);
+				assert.ok(children[1] instanceof PARSENODE_EBNF.ParseNodeAltern);
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['|', 'NUMBER | "(" OPERATOR Unit Unit ")"'],
@@ -246,16 +246,16 @@ describe('Parser', () => {
 			});
 
 			specify('Altern ::= Altern "|" Concat;', () => {
-				const altern: EBNF.ParseNodeAltern = (((new ParserEBNF().parse(`
+				const altern: PARSENODE_EBNF.ParseNodeAltern = (((PARSER_EBNF.parse(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
 					;
 				`)
-					.children[1] as EBNF.ParseNodeGoal__0__List)
-					.children[0] as EBNF.ParseNodeProduction)
-					.children[2] as EBNF.ParseNodeDefinition)
-					.children[1] as EBNF.ParseNodeAltern
+					.children[1] as PARSENODE_EBNF.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE_EBNF.ParseNodeProduction)
+					.children[2] as PARSENODE_EBNF.ParseNodeDefinition)
+					.children[1] as PARSENODE_EBNF.ParseNodeAltern
 				;
 				/*
 					<Altern>
@@ -265,7 +265,7 @@ describe('Parser', () => {
 					</Altern>
 				*/
 				assert_arrayLength(altern.children, 3, 'altern should have 3 children');
-				const children: readonly [EBNF.ParseNodeAltern, Token, EBNF.ParseNodeConcat] = altern.children;
+				const children: readonly [PARSENODE_EBNF.ParseNodeAltern, Token, PARSENODE_EBNF.ParseNodeConcat] = altern.children;
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['NUMBER', '|', '"(" OPERATOR Unit Unit ")"'],
@@ -273,17 +273,17 @@ describe('Parser', () => {
 			});
 
 			specify('Concat ::= Concat "&" Order;', () => {
-				const concat: EBNF.ParseNodeConcat = ((((new ParserEBNF().parse(`
+				const concat: PARSENODE_EBNF.ParseNodeConcat = ((((PARSER_EBNF.parse(`
 					Unit ::=
 						| NUMBER
 						| NULL & "(" OPERATOR Unit Unit ")"
 					;
 				`)
-					.children[1] as EBNF.ParseNodeGoal__0__List)
-					.children[0] as EBNF.ParseNodeProduction)
-					.children[2] as EBNF.ParseNodeDefinition)
-					.children[1] as EBNF.ParseNodeAltern)
-					.children[2] as EBNF.ParseNodeConcat
+					.children[1] as PARSENODE_EBNF.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE_EBNF.ParseNodeProduction)
+					.children[2] as PARSENODE_EBNF.ParseNodeDefinition)
+					.children[1] as PARSENODE_EBNF.ParseNodeAltern)
+					.children[2] as PARSENODE_EBNF.ParseNodeConcat
 				;
 				/*
 					<Concat>
@@ -293,7 +293,7 @@ describe('Parser', () => {
 					</Concat>
 				*/
 				assert_arrayLength(concat.children, 3, 'concat should have 3 children');
-				const children: readonly [EBNF.ParseNodeConcat, Token, EBNF.ParseNodeOrder] = concat.children;
+				const children: readonly [PARSENODE_EBNF.ParseNodeConcat, Token, PARSENODE_EBNF.ParseNodeOrder] = concat.children;
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['NULL', '&', '"(" OPERATOR Unit Unit ")"'],
@@ -301,18 +301,18 @@ describe('Parser', () => {
 			});
 
 			specify('Order ::= Order Item;', () => {
-				const order: EBNF.ParseNodeOrder = (((((new ParserEBNF().parse(`
+				const order: PARSENODE_EBNF.ParseNodeOrder = (((((PARSER_EBNF.parse(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
 					;
 				`)
-					.children[1] as EBNF.ParseNodeGoal__0__List)
-					.children[0] as EBNF.ParseNodeProduction)
-					.children[2] as EBNF.ParseNodeDefinition)
-					.children[1] as EBNF.ParseNodeAltern)
-					.children[2] as EBNF.ParseNodeConcat)
-					.children[0] as EBNF.ParseNodeOrder
+					.children[1] as PARSENODE_EBNF.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE_EBNF.ParseNodeProduction)
+					.children[2] as PARSENODE_EBNF.ParseNodeDefinition)
+					.children[1] as PARSENODE_EBNF.ParseNodeAltern)
+					.children[2] as PARSENODE_EBNF.ParseNodeConcat)
+					.children[0] as PARSENODE_EBNF.ParseNodeOrder
 				;
 				/*
 					<Order>
@@ -321,7 +321,7 @@ describe('Parser', () => {
 					</Order>
 				*/
 				assert_arrayLength(order.children, 2, 'order should have 2 children');
-				const children: readonly [EBNF.ParseNodeOrder, EBNF.ParseNodeItem] = order.children;
+				const children: readonly [PARSENODE_EBNF.ParseNodeOrder, PARSENODE_EBNF.ParseNodeItem] = order.children;
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['"(" OPERATOR Unit Unit', '")"'],

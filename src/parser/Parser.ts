@@ -42,7 +42,7 @@ export class Parser {
 	 */
 	static fromJSON(jsons: EBNFObject[], langname: string): string {
 		return utils.dedent`
-			export class Parser${ langname } extends Parser {
+			class Parser${ langname } extends Parser {
 				/**
 				 * Construct a new Parser${ langname } object.
 				 */
@@ -54,6 +54,7 @@ export class Parser {
 				// @ts-expect-error
 				declare parse(source: string): ParseNodeGoal;
 			}
+			export const PARSER: Parser${ langname } = new Parser${ langname }();
 		`;
 	}
 

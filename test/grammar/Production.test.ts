@@ -7,7 +7,7 @@ import * as utils from '../../src/utils';
 import {Production} from '../../src/grammar/Production';
 import {Rule} from '../../src/grammar/Rule';
 import {
-	ProductionUnit,
+	PARSENODE as PARSENODE_SAMPLE,
 } from '../sample/';
 
 
@@ -58,15 +58,15 @@ describe('Production', () => {
 
 	describe('#displayName', () => {
 		it('returns the display name.', () => {
-			assert.strictEqual(ProductionUnit.instance.displayName, 'Unit');
+			assert.strictEqual(PARSENODE_SAMPLE.ProductionUnit.instance.displayName, 'Unit');
 		});
 	});
 
 	describe('#toRules', () => {
 		it('decomposes the production into a list of rules.', () => {
-			assert.deepStrictEqual(ProductionUnit.instance.toRules(), [
-				new Rule(ProductionUnit.instance, 0),
-				new Rule(ProductionUnit.instance, 1),
+			assert.deepStrictEqual(PARSENODE_SAMPLE.ProductionUnit.instance.toRules(), [
+				new Rule(PARSENODE_SAMPLE.ProductionUnit.instance, 0),
+				new Rule(PARSENODE_SAMPLE.ProductionUnit.instance, 1),
 			]);
 		});
 	});

@@ -10,7 +10,7 @@ import {Production} from '../src/grammar/Production';
 import {Grammar} from '../src/grammar/Grammar';
 import {generate} from '../src/main';
 import {
-	ParserEBNF,
+	PARSER as PARSER_EBNF,
 	Decorator,
 } from '../src/ebnf/';
 
@@ -22,7 +22,7 @@ describe('generate', () => {
 			Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 			Goal ::= #x02 Unit? #x03;
 		`;
-		const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF().parse(ebnf)).transform();
+		const jsons: EBNFObject[] = Decorator.decorate(PARSER_EBNF.parse(ebnf)).transform();
 		assert.strictEqual(generate(ebnf, 'Sample'), utils.dedent`
 			import {
 				NonemptyArray,

@@ -7,13 +7,13 @@ import {Parser} from './parser/Parser';
 import {Production} from './grammar/Production';
 import {Grammar} from './grammar/Grammar';
 import {
-	ParserEBNF,
+	PARSER as PARSER_EBNF,
 	Decorator,
 } from './ebnf/';
 
 
 export function generate(ebnf: string, langname: string = 'Lang'): string {
-	const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF().parse(ebnf)).transform()
+	const jsons: EBNFObject[] = Decorator.decorate(PARSER_EBNF.parse(ebnf)).transform()
 	const nonabstract: EBNFObject[] = jsons.filter((j) => j.family !== true);
 	return utils.dedent`
 		import {

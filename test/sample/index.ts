@@ -16,10 +16,5 @@ export {
 
 
 
-export {
-	ParseNodeUnit,
-	ParseNodeGoal,
-	ParserSample,
-	ProductionUnit,
-	ProductionGoal,
-} from './Parser.auto'
+export * as PARSENODE from './Parser.auto';
+export {PARSER} from './Parser.auto';

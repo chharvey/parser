@@ -400,7 +400,7 @@ export const grammar_EBNF: Grammar = new Grammar([
 ], ProductionGoal.instance);
 
 
-export class ParserEBNF extends Parser {
+class ParserEBNF extends Parser {
 	/**
 	 * Construct a new ParserEBNF object.
 	 */
@@ -429,5 +429,6 @@ export class ParserEBNF extends Parser {
 	// @ts-expect-error
 	declare parse(source: string): ParseNodeGoal;
 }
+export const PARSER: ParserEBNF = new ParserEBNF();
 
 

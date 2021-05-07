@@ -269,10 +269,10 @@ it’s a good idea to check it in to version control.
 This is because you’ll import from it when using it:
 ```ts
 //-- file: main.ts
-import {ParserSExpr} from './Parser.auto';
+import {PARSER} from './Parser.auto';
 
 function run(): void {
-	const tree = new ParserSExpr().parse('(+ 5 (* 2 3))');
+	const tree = PARSER.parse('(+ 5 (* 2 3))');
 	console.log(tree.serialize());
 }
 ```
