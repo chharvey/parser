@@ -9,6 +9,7 @@ import {
 import {Lexer} from '../../src/lexer/Lexer';
 import {
 	LexError01,
+	LexError02,
 } from '../../src/error/LexError';
 import {
 	lastItem,
@@ -69,6 +70,19 @@ describe('Lexer', () => {
 
 		it('rejects unrecognized characters.', () => {
 			assert.throws(() => [...new LexerSample().generate(`-`)], LexError01);
+		});
+
+		it(`throws when token is unfinished.`, () => {
+			[`
+				[unfinished multiline
+				comment
+			`, `
+				[unfinished multiline containing U+0003 END OF TEXT
+				\u0003
+				comment
+			`].forEach((src) => {
+				assert.throws(() => [...new LexerSample().generate(src)], LexError02);
+			});
 		});
 	});
 });

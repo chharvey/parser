@@ -99,65 +99,45 @@ The pseudo-code above outlines the basic concept of lexical analysis,
 but to define a usable lexer with this project, you’ll need to extend
 its `Token` and `Lexer` classes.
 
-#### Step 1a: Define Token Types
-First let’s tackle the tokens. Each kind of token (`NUMBER`, `OPERATOR`, `GROUPING`) must be a subclass of `Token`,
-where the constructor takes a lexer and the first character of the token, and then
-describes what the lexer should do next. See the [Token API](./docs/api/) for details.
-```ts
-//-- file: Token.ts
-import {
-	Token,
-	Lexer,
-} from '@chharvey/parser';
-
-/** NUMBER :::= [0-9]+; */
-export class TokenNumber extends Token {
-	constructor (lexer: Lexer) {
-		super('NUMBER', lexer, ...lexer.advance()); // already contains the 1st character
-		while (!this.lexer.isDone && /[0-9]/.test(this.lexer.c0.source)) {
-			this.advance();
-		};
-	}
-}
-/** OPERATOR :::= "^" | "*" | "+"; */
-export class TokenOperator extends Token {
-	constructor (lexer: Lexer) {
-		super('OPERATOR', lexer, ...lexer.advance()); // already contains the 1st character
-		// since only 1 character, no need to advance
-	}
-}
-/** GROUPING :::= "(" | ")"; */
-export class TokenGrouping extends Token {
-	constructor (lexer: Lexer) {
-		super('GROUPING', lexer, ...lexer.advance()); // already contains the 1st character
-		// since only 1 character, no need to advance
-	}
-}
-```
+#### Step 1a: Define The Lexer
+The name of our lexer must be `Lexer‹id›`, where `‹id›` is some identifier. Here we’ll use `LexerSExpr`.
+(The `‹id›` is important because we’ll use it when generating our parser later.)
+Each kind of token (`NUMBER`, `OPERATOR`, `GROUPING`) should correspond to a subroutine
+that describes what the lexer should do next.
 Whitespace tokens are already taken care of, so we don’t need to write it ourselves.
 (Thus this project *should not* be used for whitespace-sensitive languages.)
-
-#### Step 1b: Define The Lexer
-The name of your lexer must be `Lexer‹id›`, where `‹id›` is some identifier. Here we’ll use `LexerSExpr`.
-(The `‹id›` is important because we’ll use it when generating our parser later.)
 Put the conditions of the psuedo-code above into this lexer’s `generate_do()` method.
+See the [Lexer API](./docs/api/) for details.
 ```ts
 //-- file: Lexer.ts
 import {
+	NonemptyArray,
 	Char,
 	Token,
 	Lexer,
 } from '@chharvey/parser';
-import * as TOKEN from './Token';
 
 export class LexerSExpr extends Lexer {
 	protected generate_do(): Token | null {
-		return (
-			(/[0-9]/.test(this.c0.source))       ? TOKEN.TokenNumber  (this) :
-			(Char.inc(['^', '*', '+'], this.c0)) ? TOKEN.TokenOperator(this) :
-			(Char.inc(['(', ')'],      this.c0)) ? TOKEN.TokenGrouping(this) :
-			null
-		);
+		if (/[0-9]/.test(this.c0.source)) {
+			/** NUMBER :::= [0-9]+; */
+			const buffer: NonemptyArray<Char> = [...this.advance()];
+			while (!this.isDone && /[0-9]/.test(this.c0.source)) {
+				buffer.push(...this.advance());
+			};
+			return new Token('NUMBER', lexer, ...buffer);
+
+		} else if (Char.inc(['^', '*', '+'], this.c0)) {
+			/** OPERATOR :::= "^" | "*" | "+"; */
+			return new Token('OPERATOR', lexer, ...this.advance()); // since only 1 character, no need for buffer
+
+		} else if (Char.inc(['(', ')'],      this.c0)) {
+			/** GROUPING :::= "(" | ")"; */
+			return new Token('GROUPING', lexer, ...this.advance()); // since only 1 character, no need for buffer
+
+		} else {
+			return null;
+		};
 	}
 }
 ```

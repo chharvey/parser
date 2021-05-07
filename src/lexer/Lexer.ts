@@ -86,9 +86,15 @@ export class Lexer {
 		this._c3 = this._c0.lookahead(3n);
 		while (!this.isDone) {
 			if (Char.inc(TokenFilebound.CHARS, this.c0)) {
-				yield new TokenFilebound(this);
+				yield new TokenFilebound(this, ...this.advance());
+
 			} else if (Char.inc(TokenWhitespace.CHARS, this.c0)) {
-				yield new TokenWhitespace(this);
+				const buffer: NonemptyArray<Char> = [...this.advance()];
+				while (!this.isDone && Char.inc(TokenWhitespace.CHARS, this.c0)) {
+					buffer.push(...this.advance());
+				};
+				yield new TokenWhitespace(this, ...buffer);
+
 			} else {
 				yield this.generate_do() || (() => { throw new LexError01(this.c0); })();
 			};

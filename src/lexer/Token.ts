@@ -1,11 +1,8 @@
 import * as utils from '../utils';
 import {Filebound} from '../utils';
 import type {Serializable} from '../Serializable';
-import {Char} from '../scanner/Char';
+import type {Char} from '../scanner/Char';
 import type {Lexer} from './Lexer';
-import {
-	LexError02,
-} from '../error/LexError';
 
 
 
@@ -85,8 +82,8 @@ export class Token implements Serializable {
 	// declare readonly source: Filebound; // NB: https://github.com/microsoft/TypeScript/issues/40220
 
 
-	constructor (lexer: Lexer) {
-		super('FILEBOUND', lexer, ...lexer.advance());
+	constructor (lexer: Lexer, start_char: Char, ...more_chars: Char[]) {
+		super('FILEBOUND', lexer, start_char, ...more_chars);
 	}
 }
 
@@ -96,32 +93,15 @@ export class Token implements Serializable {
 	static readonly CHARS: readonly string[] = [' ', '\t', '\n'];
 
 
-	constructor (lexer: Lexer) {
-		super('WHITESPACE', lexer, ...lexer.advance());
-		while (!this.lexer.isDone && Char.inc(TokenWhitespace.CHARS, this.lexer.c0)) {
-			this.advance();
-		};
+	constructor (lexer: Lexer, start_char: Char, ...more_chars: Char[]) {
+		super('WHITESPACE', lexer, start_char, ...more_chars);
 	}
 }
 
 
 
-export abstract class TokenComment extends Token {
-	constructor (lexer: Lexer, start_delim: string, end_delim: string) {
-		super('COMMENT', lexer, ...lexer.advance(BigInt(start_delim.length)));
-		while (!this.lexer.isDone && !this.stopAdvancing()) {
-			if (Char.eq(Filebound.EOT, this.lexer.c0)) {
-				throw new LexError02(this);
-			};
-			this.advance();
-		};
-		// add end delim to token
-		this.advance(BigInt(end_delim.length));
+export class TokenComment extends Token {
+	constructor (lexer: Lexer, start_char: Char, ...more_chars: Char[]) {
+		super('COMMENT', lexer, start_char, ...more_chars);
 	}
-
-	/**
-	 * Helper method used in the constructor.
-	 * @returns When should the lexer stop advancing?
-	 */
-	protected abstract stopAdvancing(): boolean;
 }
