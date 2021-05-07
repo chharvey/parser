@@ -2,7 +2,6 @@ import * as utils from '../utils';
 import {Filebound} from '../utils';
 import type {Serializable} from '../Serializable';
 import type {Char} from '../scanner/Char';
-import type {Lexer} from './Lexer';
 
 
 
@@ -28,7 +27,6 @@ export class Token implements Serializable {
 	/**
 	 * Construct a new Token object.
 	 * @param tagname    The name of the type of this Token.
-	 * @param lexer      The lexer used to construct this Token.
 	 * @param start_char the starting character of this Token
 	 * @param more_chars additional characters to add upon construction
 	 * @throws           {LexError02} if the end of the file is reached before the end of the token
@@ -36,7 +34,6 @@ export class Token implements Serializable {
 	constructor (
 		/** @implements Serializable */
 		readonly tagname: string,
-		protected readonly lexer: Lexer,
 		start_char: Char,
 		...more_chars: Char[]
 	) {
@@ -63,16 +60,6 @@ export class Token implements Serializable {
 			['col',  (this.col_index  + 1).toString()],
 		])) }>${ utils.sanitizeContent(this.source) }</${ this.tagname }>`;
 	}
-
-	/**
-	 * Add to this Token’s cargo.
-	 * @param lexer the lexer whose characters to take from
-	 * @param n     the number of characters to append
-	 * @final
-	 */
-	protected advance(n: bigint = 1n): void {
-		this._cargo += this.lexer.advance(n).map((char) => char.source).join('');
-	}
 }
 
 
@@ -82,8 +69,8 @@ export class Token implements Serializable {
 	// declare readonly source: Filebound; // NB: https://github.com/microsoft/TypeScript/issues/40220
 
 
-	constructor (lexer: Lexer, start_char: Char, ...more_chars: Char[]) {
-		super('FILEBOUND', lexer, start_char, ...more_chars);
+	constructor (start_char: Char, ...more_chars: Char[]) {
+		super('FILEBOUND', start_char, ...more_chars);
 	}
 }
 
@@ -93,15 +80,15 @@ export class Token implements Serializable {
 	static readonly CHARS: readonly string[] = [' ', '\t', '\n'];
 
 
-	constructor (lexer: Lexer, start_char: Char, ...more_chars: Char[]) {
-		super('WHITESPACE', lexer, start_char, ...more_chars);
+	constructor (start_char: Char, ...more_chars: Char[]) {
+		super('WHITESPACE', start_char, ...more_chars);
 	}
 }
 
 
 
 export class TokenComment extends Token {
-	constructor (lexer: Lexer, start_char: Char, ...more_chars: Char[]) {
-		super('COMMENT', lexer, start_char, ...more_chars);
+	constructor (start_char: Char, ...more_chars: Char[]) {
+		super('COMMENT', start_char, ...more_chars);
 	}
 }

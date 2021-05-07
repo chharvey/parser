@@ -11,17 +11,17 @@ import * as TOKEN from './Token';
 export class LexerSample extends Lexer {
 	protected generate_do(): Token | null {
 		if (Char.inc(['(', ')', '^', '*', '+'], this.c0)) {
-			return new Token('PUNCTUATOR', this, ...this.advance());
+			return new Token('PUNCTUATOR', ...this.advance());
 
 		} else if (/[0-9]/.test(this.c0.source)) {
 			const buffer: NonemptyArray<Char> = [...this.advance()];
 			while (!this.isDone && /[0-9]/.test(this.c0.source)) {
 				buffer.push(...this.advance());
 			};
-			return new TOKEN.TokenNumber(this, ...buffer);
+			return new TOKEN.TokenNumber(...buffer);
 
 		} else if (Char.eq('[', this.c0)) {
-			return new TOKEN.TokenCommentSample(this, ...this.lexQuoted('[', ']'));
+			return new TOKEN.TokenCommentSample(...this.lexQuoted('[', ']'));
 
 		} else {
 			return null;

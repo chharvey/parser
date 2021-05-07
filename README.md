@@ -125,15 +125,15 @@ export class LexerSExpr extends Lexer {
 			while (!this.isDone && /[0-9]/.test(this.c0.source)) {
 				buffer.push(...this.advance());
 			};
-			return new Token('NUMBER', lexer, ...buffer);
+			return new Token('NUMBER', ...buffer);
 
 		} else if (Char.inc(['^', '*', '+'], this.c0)) {
 			/** OPERATOR :::= "^" | "*" | "+"; */
-			return new Token('OPERATOR', lexer, ...this.advance()); // since only 1 character, no need for buffer
+			return new Token('OPERATOR', ...this.advance()); // since only 1 character, no need for buffer
 
-		} else if (Char.inc(['(', ')'],      this.c0)) {
+		} else if (Char.inc(['(', ')'], this.c0)) {
 			/** GROUPING :::= "(" | ")"; */
-			return new Token('GROUPING', lexer, ...this.advance()); // since only 1 character, no need for buffer
+			return new Token('GROUPING', ...this.advance()); // since only 1 character, no need for buffer
 
 		} else {
 			return null;

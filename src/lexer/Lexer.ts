@@ -51,9 +51,9 @@ export class Lexer {
 	 * @throws    {RangeError} if the argument is not a positive integer
 	 * @final
 	 */
-	advance(n?: 1n): [Char];
-	advance(n: bigint): [Char, ...Char[]];
-	advance(n: bigint = 1n): [Char, ...Char[]] {
+	protected advance(n?: 1n): [Char];
+	protected advance(n: bigint): NonemptyArray<Char>;
+	protected advance(n: bigint = 1n): NonemptyArray<Char> {
 		if (n <= 0n) { throw new RangeError('Argument must be a positive integer.'); };
 		if (n === 1n) {
 			const returned: Char = this._c0!;
@@ -89,14 +89,14 @@ export class Lexer {
 		this._c3 = this._c0.lookahead(3n);
 		while (!this.isDone) {
 			if (Char.inc(TokenFilebound.CHARS, this.c0)) {
-				yield new TokenFilebound(this, ...this.advance());
+				yield new TokenFilebound(...this.advance());
 
 			} else if (Char.inc(TokenWhitespace.CHARS, this.c0)) {
 				const buffer: NonemptyArray<Char> = [...this.advance()];
 				while (!this.isDone && Char.inc(TokenWhitespace.CHARS, this.c0)) {
 					buffer.push(...this.advance());
 				};
-				yield new TokenWhitespace(this, ...buffer);
+				yield new TokenWhitespace(...buffer);
 
 			} else {
 				yield this.generate_do() || (() => { throw new LexError01(this.c0); })();
@@ -127,7 +127,7 @@ export class Lexer {
 		}
 		while (!this.isDone && !stopAdvancing(this)) {
 			if (Char.eq(Filebound.EOT, this.c0)) {
-				throw new LexError02(new Token('QUOTED', this, ...buffer));
+				throw new LexError02(new Token('QUOTED', ...buffer));
 			};
 			buffer.push(...this.advance());
 		};
