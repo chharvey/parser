@@ -1,3 +1,5 @@
+import {Filebound} from '../utils';
+import type {NonemptyArray} from '../types';
 import {Char} from '../scanner/Char';
 import {
 	Token,
@@ -7,6 +9,7 @@ import {
 import {Scanner} from '../scanner/Scanner';
 import {
 	LexError01,
+	LexError02,
 } from '../error/LexError';
 
 
@@ -102,5 +105,33 @@ export class Lexer {
 	}
 	protected generate_do(): Token | null {
 		return null;
+	}
+
+	/**
+	 * Lex a quoted token.
+	 * @param start_delim   the delimiter that starts the token (e.g., an open-quote)
+	 * @param end_delim     the delimiter that ends the token (e.g., a close-quote)
+	 * @returns             the characters from which to construct a new Token
+	 * @final
+	 */
+	protected lexQuoted(start_delim: string, end_delim: string = start_delim): NonemptyArray<Char> {
+		const buffer: NonemptyArray<Char> = [...this.advance(BigInt(start_delim.length))];
+		function stopAdvancing(lexer: Lexer): boolean {
+			return Char.eq(end_delim, lexer.c0, ...(end_delim.length >= 2 ? [
+				lexer.c1,
+				...(end_delim.length >= 3 ? [
+					lexer.c2,
+					...(end_delim.length >= 4 ? [lexer.c3] : []),
+				] : []),
+			] : []));
+		}
+		while (!this.isDone && !stopAdvancing(this)) {
+			if (Char.eq(Filebound.EOT, this.c0)) {
+				throw new LexError02(new Token('QUOTED', this, ...buffer));
+			};
+			buffer.push(...this.advance());
+		};
+		buffer.push(...this.advance(BigInt(end_delim.length))); // add end delim to token
+		return buffer;
 	}
 }

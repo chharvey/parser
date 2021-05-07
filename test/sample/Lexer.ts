@@ -1,4 +1,3 @@
-import {Filebound} from '../../src/utils';
 import type {NonemptyArray} from '../../src/types';
 import {Char} from '../../src/scanner/Char';
 import {
@@ -6,9 +5,6 @@ import {
 } from '../../src/lexer/Token';
 import {Lexer} from '../../src/lexer/Lexer';
 import * as TOKEN from './Token';
-import {
-	LexError02,
-} from '../../src/error/LexError';
 
 
 
@@ -25,16 +21,7 @@ export class LexerSample extends Lexer {
 			return new TOKEN.TokenNumber(this, ...buffer);
 
 		} else if (Char.eq('[', this.c0)) {
-			const buffer: NonemptyArray<Char> = [...this.advance(BigInt('['.length))];
-			while (!this.isDone && !Char.eq(']', this.c0)) {
-				if (Char.eq(Filebound.EOT, this.c0)) {
-					throw new LexError02(new TOKEN.TokenCommentSample(this, ...buffer));
-				};
-				buffer.push(...this.advance());
-			};
-			// add end delim to token
-			buffer.push(...this.advance(BigInt(']'.length)));
-			return new TOKEN.TokenCommentSample(this, ...buffer);
+			return new TOKEN.TokenCommentSample(this, ...this.lexQuoted('[', ']'));
 
 		} else {
 			return null;

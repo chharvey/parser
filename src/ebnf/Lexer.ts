@@ -1,14 +1,10 @@
-import {Filebound} from '../utils';
+import type {NonemptyArray} from '../types';
 import {Char} from '../scanner/Char';
-import {
-	LexError02,
-} from '../error/LexError';
 import type {
 	Token,
 } from '../lexer/Token';
 import {Lexer} from '../lexer/Lexer';
 import * as TOKEN from './Token'
-import type {NonemptyArray} from '../types';
 
 
 export class LexerEBNF extends Lexer {
@@ -44,40 +40,19 @@ export class LexerEBNF extends Lexer {
 			return new TOKEN.TokenIdentifier(this, ...buffer);
 
 		} else if (Char.eq(TOKEN.TokenString.DELIM, this.c0)) {
-			const buffer: NonemptyArray<Char> = [...this.advance()];
-			while (!this.isDone && !Char.eq(TOKEN.TokenString.DELIM, this.c0)) {
-				if (Char.eq(Filebound.EOT, this.c0)) {
-					throw new LexError02(new TOKEN.TokenString(this, ...buffer));
-				};
-				buffer.push(...this.advance());
-			}
-			// add ending delim to token
-			buffer.push(...this.advance());
-			return new TOKEN.TokenString(this, ...buffer);
+			return new TOKEN.TokenString(this, ...this.lexQuoted(TOKEN.TokenString.DELIM));
 
 		} else if (Char.eq(TOKEN.TokenCharClass.DELIM_START, this.c0)) {
-			const buffer: NonemptyArray<Char> = [...this.advance()];
-			while (!this.isDone && !Char.eq(TOKEN.TokenCharClass.DELIM_END, this.c0)) {
-				if (Char.eq(Filebound.EOT, this.c0)) {
-					throw new LexError02(new TOKEN.TokenCharClass(this, ...buffer));
-				};
-				buffer.push(...this.advance());
-			}
-			// add ending delim to token
-			buffer.push(...this.advance());
-			return new TOKEN.TokenCharClass(this, ...buffer);
+			return new TOKEN.TokenCharClass(this, ...this.lexQuoted(
+				TOKEN.TokenCharClass.DELIM_START,
+				TOKEN.TokenCharClass.DELIM_END,
+			));
 
 		} else if (Char.eq(TOKEN.TokenCommentEBNF.DELIM_START, this.c0, this.c1)) {
-			const buffer: NonemptyArray<Char> = [...this.advance(BigInt(TOKEN.TokenCommentEBNF.DELIM_START.length))];
-			while (!this.isDone && !Char.eq(TOKEN.TokenCommentEBNF.DELIM_END, this.c0)) {
-				if (Char.eq(Filebound.EOT, this.c0)) {
-					throw new LexError02(new TOKEN.TokenCommentEBNF(this, ...buffer));
-				};
-				buffer.push(...this.advance());
-			};
-			// add end delim to token
-			buffer.push(...this.advance(BigInt(TOKEN.TokenCommentEBNF.DELIM_END.length)));
-			return new TOKEN.TokenCommentEBNF(this, ...buffer);
+			return new TOKEN.TokenCommentEBNF(this, ...this.lexQuoted(
+				TOKEN.TokenCommentEBNF.DELIM_START,
+				TOKEN.TokenCommentEBNF.DELIM_END,
+			));
 
 		} else {
 			return null;
