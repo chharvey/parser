@@ -1,5 +1,6 @@
 import * as utils from '../utils';
 import {Filebound} from '../utils';
+import type {NonemptyArray} from '../types';
 import type {Serializable} from '../Serializable';
 import type {Char} from '../scanner/Char';
 
@@ -27,20 +28,18 @@ export class Token implements Serializable {
 	/**
 	 * Construct a new Token object.
 	 * @param tagname    The name of the type of this Token.
-	 * @param start_char the starting character of this Token
-	 * @param more_chars additional characters to add upon construction
+	 * @param chars      characters to add upon construction
 	 * @throws           {LexError02} if the end of the file is reached before the end of the token
 	 */
 	constructor (
 		/** @implements Serializable */
 		readonly tagname: string,
-		start_char: Char,
-		...more_chars: Char[]
+		...chars: NonemptyArray<Char>
 	) {
-		this._cargo       = [start_char, ...more_chars].map((char) => char.source).join('');
-		this.source_index = start_char.source_index;
-		this.line_index   = start_char.line_index;
-		this.col_index    = start_char.col_index;
+		this._cargo       = chars.map((char) => char.source).join('');
+		this.source_index = chars[0].source_index;
+		this.line_index   = chars[0].line_index;
+		this.col_index    = chars[0].col_index;
 	}
 
 	/**
@@ -69,8 +68,8 @@ export class Token implements Serializable {
 	// declare readonly source: Filebound; // NB: https://github.com/microsoft/TypeScript/issues/40220
 
 
-	constructor (start_char: Char, ...more_chars: Char[]) {
-		super('FILEBOUND', start_char, ...more_chars);
+	constructor (...chars: NonemptyArray<Char>) {
+		super('FILEBOUND', ...chars);
 	}
 }
 
@@ -80,15 +79,15 @@ export class Token implements Serializable {
 	static readonly CHARS: readonly string[] = [' ', '\t', '\n'];
 
 
-	constructor (start_char: Char, ...more_chars: Char[]) {
-		super('WHITESPACE', start_char, ...more_chars);
+	constructor (...chars: NonemptyArray<Char>) {
+		super('WHITESPACE', ...chars);
 	}
 }
 
 
 
 export class TokenComment extends Token {
-	constructor (start_char: Char, ...more_chars: Char[]) {
-		super('COMMENT', start_char, ...more_chars);
+	constructor (...chars: NonemptyArray<Char>) {
+		super('COMMENT', ...chars);
 	}
 }

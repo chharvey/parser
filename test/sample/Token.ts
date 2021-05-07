@@ -1,3 +1,4 @@
+import type {NonemptyArray} from '../../src/types';
 import type {Char} from '../../src/scanner/Char';
 import {
 	Token,
@@ -12,7 +13,7 @@ export class TokenCommentSample extends TokenComment {
 
 
 export class TokenNumber extends Token {
-	constructor (start_char: Char, ...more_chars: Char[]) {
-		super('NUMBER', start_char, ...more_chars);
+	constructor (...chars: NonemptyArray<Char>) {
+		super('NUMBER', ...chars);
 	}
 }
