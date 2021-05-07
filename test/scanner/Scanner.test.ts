@@ -1,14 +1,14 @@
 import * as assert from 'assert';
+import * as xjs from 'extrajs';
 
 import {Filebound} from '../../src/utils';
-import * as utils from '../../src/utils';
 import {Scanner} from '../../src/scanner/Scanner';
 
 
 
 describe('Scanner', () => {
 	describe('.normalize', () => {
-		const normalized: string = Scanner.normalize(utils.dedent`
+		const normalized: string = Scanner.normalize(xjs.String.dedent`
 			5  +  30 \u000d
 			6 ^ 2 - 37 *
 			( 4 * \u000d9 ^ 3

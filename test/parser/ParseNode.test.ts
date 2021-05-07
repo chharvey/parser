@@ -1,9 +1,9 @@
 import * as assert from 'assert';
+import * as xjs from 'extrajs';
 
 import type {
 	EBNFObject,
 } from '../../src/types.d';
-import * as utils from '../../src/utils';
 import {ParseNode} from '../../src/parser/ParseNode';
 import {
 	PARSER as PARSER_SAMPLE,
@@ -29,14 +29,14 @@ describe('ParseNode', () => {
 						['\\u0002', {prod: 'Unit'}, '\\u0003'],
 					],
 				},
-			] as EBNFObject[]).map((prod) => ParseNode.fromJSON(prod)), [utils.dedent`
+			] as EBNFObject[]).map((prod) => ParseNode.fromJSON(prod)), [xjs.String.dedent`
 				export class ParseNodeUnit extends ParseNode {
 					declare readonly children:
 						| readonly [Token]
 						| readonly [Token, Token, ParseNodeUnit, ParseNodeUnit, Token]
 					;
 				}
-			`, utils.dedent`
+			`, xjs.String.dedent`
 				export class ParseNodeGoal extends ParseNode {
 					declare readonly children:
 						| readonly [Token, Token]

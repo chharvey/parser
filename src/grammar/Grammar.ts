@@ -1,8 +1,9 @@
+import * as xjs from 'extrajs';
+
 import type {
 	NonemptyArray,
 	EBNFObject,
 } from '../types.d';
-import * as utils from '../utils';
 import {Terminal} from './Terminal';
 import {Production} from './Production';
 import type {Rule} from './Rule';
@@ -36,7 +37,7 @@ export class Grammar {
 	 * @returns          a string to print to a TypeScript file
 	 */
 	static fromJSON(jsons: EBNFObject[], langname: string): string {
-		return utils.dedent`
+		return xjs.String.dedent`
 			export const grammar_${ langname }: Grammar = new Grammar([
 				${ jsons.map((json) => `${ Production.classnameOf(json) }.instance`).join(',\n\t') },
 			], ProductionGoal.instance);

@@ -21,6 +21,8 @@ export {
 } from './Terminal';
 
 export * as PARSENODE from './Parser.auto';
-export {PARSER} from './Parser.auto';
+export {
+	PARSER,
+} from './Parser.auto';
 
 export {Decorator} from './Decorator';

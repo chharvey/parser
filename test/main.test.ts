@@ -1,9 +1,9 @@
 import * as assert from 'assert';
+import * as xjs from 'extrajs';
 
 import type {
 	EBNFObject,
 } from '../src/types.d';
-import * as utils from '../src/utils';
 import {ParseNode} from '../src/parser/ParseNode';
 import {Parser} from '../src/parser/Parser';
 import {Production} from '../src/grammar/Production';
@@ -23,7 +23,7 @@ describe('generate', () => {
 			Goal ::= #x02 Unit? #x03;
 		`;
 		const jsons: EBNFObject[] = Decorator.decorate(PARSER_EBNF.parse(ebnf)).transform();
-		assert.strictEqual(generate(ebnf, 'Sample'), utils.dedent`
+		assert.strictEqual(generate(ebnf, 'Sample'), xjs.String.dedent`
 			import {
 				NonemptyArray,
 				Token,

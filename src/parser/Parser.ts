@@ -1,7 +1,8 @@
+import * as xjs from 'extrajs';
+
 import type {
 	EBNFObject,
 } from '../types.d';
-import * as utils from '../utils';
 import {
 	Token,
 	TokenWhitespace,
@@ -41,7 +42,7 @@ export class Parser {
 	 * @returns          a string to print to a TypeScript file
 	 */
 	static fromJSON(jsons: EBNFObject[], langname: string): string {
-		return utils.dedent`
+		return xjs.String.dedent`
 			class Parser${ langname } extends Parser {
 				/**
 				 * Construct a new Parser${ langname } object.
@@ -153,13 +154,10 @@ export class Parser {
 	 * @returns        a new ParseNode object
 	 */
 	private makeParseNode(rule: Rule, children: readonly (Token | ParseNode)[]): ParseNode {
-		let returned: ParseNode = new ParseNode(children);
-		this.parsenode_map.forEach((nodetype, prod) => {
-			if (rule.production.equals(prod)) {
-				returned = new nodetype(children);
-			};
-		});
-		return returned;
+		const nodetype: typeof ParseNode | null = [...this.parsenode_map].find(([prod, _nodetype]) => rule.production.equals(prod))?.[1] || null;
+		return (!!nodetype)
+			? new nodetype(children)
+			: new ParseNode(children);
 	}
 
 	/**

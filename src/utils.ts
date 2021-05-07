@@ -2,20 +2,6 @@ import type {GrammarSymbol} from './grammar/Grammar';
 
 
 
-/**
- * A template literal ‘tag’.
- * @example
- * ```
- * declare const tag: TemplateTag;
- * declare const template: unknown;
- * tag`This is a ${ template } literal.`;
- * ```
- */
-type TemplateTag<Return, Interps extends unknown[] = unknown[]> =
-	(strings: TemplateStringsArray, ...interpolations: Interps) => Return;
-
-
-
 /** Characters representing bounds of a file. */
 export enum Filebound {
 	/** U+0002 START OF TEXT */
@@ -90,41 +76,6 @@ export function sanitizeContent(contents: string): string {
 		.replace(Filebound.EOT, '\u2403') // SYMBOL FOR END   OF TEXT
 	;
 }
-
-
-
-/**
- * Dedent a template literal with an auto-determined number of tabs.
- * Remove up to `n` number of tabs from the beginning of each *literal* line in the template literal.
- * Does not affect interpolated expressions.
- * `n` is determined by the number of tabs following the first line break in the literal.
- * If there are no line breaks, `0` is assumed.
- * @example
- * assert.strictEqual(dedent`
- * 			this will be
- * 	dedented by
- * 		up to
- * 				3 tabs
- * `, `
- * this will be
- * dedented by
- * up to
- * 	3 tabs
- * `);
- * @returns a string with each line dedented by the determined number of tabs
- */
-export function dedent(strings: TemplateStringsArray, ...interps: unknown[]): string {
-	const matched: RegExpMatchArray | null = strings[0].match(/\n\t*/);
-	const n: number = matched && matched[0] ? matched[0].slice(1).length : 0;
-	function replace(s: string, n: number): string {
-		return (n <= 0) ? s : s.replace(new RegExp(`\\n\\t{0,${ Math.floor(n) }}`, 'g'), '\n');
-	}
-	return [
-		...interps.flatMap((interp, i) => [replace(strings[i], n), interp]),
-		replace(strings[strings.length - 1], n), // COMBAK strings.lastItem
-	].join('');
-}
-dedent as TemplateTag<string>;
 
 
 

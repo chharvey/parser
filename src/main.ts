@@ -1,7 +1,8 @@
+import * as xjs from 'extrajs';
+
 import type {
 	EBNFObject,
 } from './types';
-import * as utils from './utils'
 import {ParseNode} from './parser/ParseNode';
 import {Parser} from './parser/Parser';
 import {Production} from './grammar/Production';
@@ -15,7 +16,7 @@ import {
 export function generate(ebnf: string, langname: string = 'Lang'): string {
 	const jsons: EBNFObject[] = Decorator.decorate(PARSER_EBNF.parse(ebnf)).transform()
 	const nonabstract: EBNFObject[] = jsons.filter((j) => j.family !== true);
-	return utils.dedent`
+	return xjs.String.dedent`
 		import {
 			NonemptyArray,
 			Token,
