@@ -162,13 +162,10 @@ export class Parser {
 	 * @returns        a new ParseNode object
 	 */
 	private makeParseNode(rule: Rule, children: readonly (Token | ParseNode)[]): ParseNode {
-		let returned: ParseNode = new ParseNode(children);
-		this.parsenode_map.forEach((nodetype, prod) => {
-			if (rule.production.equals(prod)) {
-				returned = new nodetype(children);
-			};
-		});
-		return returned;
+		const nodetype: typeof ParseNode | null = [...this.parsenode_map].find(([prod, _nodetype]) => rule.production.equals(prod))?.[1] || null;
+		return (!!nodetype)
+			? new nodetype(children)
+			: new ParseNode(children);
 	}
 
 	/**
