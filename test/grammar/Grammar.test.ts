@@ -12,10 +12,10 @@ import {
 describe('Grammar', () => {
 	describe('.fromJSON', () => {
 		it('returns a string representing a new instance of Grammar.', () => {
-			assert.strictEqual(Grammar.fromJSON(Decorator.decorate(new ParserEBNF(`
+			assert.strictEqual(Grammar.fromJSON(Decorator.decorate(new ParserEBNF().parse(`
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
-			`).parse()).transform(), 'Sample'), utils.dedent`
+			`)).transform(), 'Sample'), utils.dedent`
 				export const grammar_Sample: Grammar = new Grammar([
 					ProductionUnit.instance,
 					ProductionGoal.instance,

@@ -49,7 +49,7 @@ describe('ParseNode', () => {
 
 	describe('#serialize', () => {
 		it('prints a readable string.', () => {
-			assert.strictEqual(new ParserSample(`(+ (* 2 3) 5)`).parse().serialize(), `
+			assert.strictEqual(new ParserSample().parse(`(+ (* 2 3) 5)`).serialize(), `
 				<Goal line="0" col="1" source="␂ ( + ( * 2 3 ) 5 ) ␃">
 					<FILEBOUND line="0" col="1">␂</FILEBOUND>
 					<Unit line="1" col="1" source="( + ( * 2 3 ) 5 )">

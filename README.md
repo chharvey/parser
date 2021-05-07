@@ -270,7 +270,7 @@ This is because you’ll import from it when using it:
 import {ParserSExpr} from './Parser.auto';
 
 function run(): void {
-	const tree = new ParserSExpr('(+ 5 (* 2 3))').parse();
+	const tree = new ParserSExpr().parse('(+ 5 (* 2 3))');
 	console.log(tree.serialize());
 }
 ```

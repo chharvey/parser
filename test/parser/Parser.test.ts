@@ -30,23 +30,22 @@ import {
 describe('Parser', () => {
 	describe('.fromJSON', () => {
 		it('returns a string representing a new subclass of Parser.', () => {
-			assert.strictEqual(Parser.fromJSON(Decorator.decorate(new ParserEBNF(`
+			assert.strictEqual(Parser.fromJSON(Decorator.decorate(new ParserEBNF().parse(`
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
-			`).parse()).transform(), 'Sample'), (utils.dedent`
+			`)).transform(), 'Sample'), (utils.dedent`
 				export class ParserSample extends Parser {
 					/**
 					 * Construct a new ParserSample object.
-					 * @param source the source text to parse
 					 */
-					constructor (source: string) {
-						super(new LexerSample(), source, grammar_Sample, new Map<Production, typeof ParseNode>([
+					constructor () {
+						super(new LexerSample(), grammar_Sample, new Map<Production, typeof ParseNode>([
 							[ProductionUnit.instance, ParseNodeUnit],
 							[ProductionGoal.instance, ParseNodeGoal],
 						]));
 					}
 					// @ts-expect-error
-					declare parse(): ParseNodeGoal;
+					declare parse(source: string): ParseNodeGoal;
 				}
 			`));
 		});
@@ -55,19 +54,19 @@ describe('Parser', () => {
 	describe('#parse', () => {
 		context('Goal ::= #x02 #x03', () => {
 			it('returns only file bounds.', () => {
-				const tree: ParseNode = new ParserSample(``).parse();
+				const tree: ParseNode = new ParserSample().parse(``);
 				assert.strictEqual(tree.children.length, 2);
 				tree.children.forEach((child) => assert.ok(child instanceof TokenFilebound));
 			});
 		});
 
 		it('rejects unexpected tokens.', () => {
-			assert.throws(() => new ParserSample(`(+ 3 4 5)`).parse(), ParseError01);
+			assert.throws(() => new ParserSample().parse(`(+ 3 4 5)`), ParseError01);
 		});
 
 		describe('ParserSample', () => {
 			specify('Goal ::= #x02 Unit #x03;', () => {
-				const goal: ParseNode = new ParserSample(`(+ (* 2 3) 5)`).parse();
+				const goal: ParseNode = new ParserSample().parse(`(+ (* 2 3) 5)`);
 				/*
 					<Goal>
 						<FILEBOUND>␂</FILEBOUND>
@@ -85,7 +84,7 @@ describe('Parser', () => {
 			});
 
 			specify('Unit ::= "(" OPERATOR Unit Unit ")";', () => {
-				const unit: ParseNodeUnit = new ParserSample(`(+ (* 2 3) 5)`).parse().children[1] as ParseNodeUnit;
+				const unit: ParseNodeUnit = new ParserSample().parse(`(+ (* 2 3) 5)`).children[1] as ParseNodeUnit;
 				/*
 					<Unit>
 						<PUNCTUATOR>(</PUNCTUATOR>
@@ -106,10 +105,10 @@ describe('Parser', () => {
 
 		describe('ParserEBNF', () => {
 			specify('Goal ::= #x02 Production* #x03;', () => {
-				const goal: ParseNode = new ParserEBNF(`
+				const goal: ParseNode = new ParserEBNF().parse(`
 					Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 					Goal ::= #x02 Unit? #x03;
-				`).parse();
+				`);
 				/*
 					<Goal>
 						<FILEBOUND>␂</FILEBOUND>
@@ -142,12 +141,12 @@ describe('Parser', () => {
 			});
 
 			specify('Production ::= NonterminalName "::=" Definition ";";', () => {
-				const prod: EBNF.ParseNodeProduction = (new ParserEBNF(`
+				const prod: EBNF.ParseNodeProduction = (new ParserEBNF().parse(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
 					;
-				`).parse()
+				`)
 					.children[1] as EBNF.ParseNodeGoal__0__List)
 					.children[0] as EBNF.ParseNodeProduction
 				;
@@ -168,11 +167,11 @@ describe('Parser', () => {
 			});
 
 			specify('Definition ::= "." Altern;', () => {
-				const defn: EBNF.ParseNodeDefinition = ((new ParserEBNF(`
+				const defn: EBNF.ParseNodeDefinition = ((new ParserEBNF().parse(`
 					Unit ::=
 						. NUMBER | "(" OPERATOR Unit Unit ")"
 					;
-				`).parse()
+				`)
 					.children[1] as EBNF.ParseNodeGoal__0__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition
@@ -194,11 +193,11 @@ describe('Parser', () => {
 			});
 
 			specify('Definition ::= "&" Altern;', () => {
-				const defn: EBNF.ParseNodeDefinition = ((new ParserEBNF(`
+				const defn: EBNF.ParseNodeDefinition = ((new ParserEBNF().parse(`
 					Unit ::=
 						& NUMBER | "(" OPERATOR Unit Unit ")"
 					;
-				`).parse()
+				`)
 					.children[1] as EBNF.ParseNodeGoal__0__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition
@@ -220,12 +219,12 @@ describe('Parser', () => {
 			});
 
 			specify('Definition ::= "|" Altern;', () => {
-				const defn: EBNF.ParseNodeDefinition = ((new ParserEBNF(`
+				const defn: EBNF.ParseNodeDefinition = ((new ParserEBNF().parse(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
 					;
-				`).parse()
+				`)
 					.children[1] as EBNF.ParseNodeGoal__0__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition
@@ -247,12 +246,12 @@ describe('Parser', () => {
 			});
 
 			specify('Altern ::= Altern "|" Concat;', () => {
-				const altern: EBNF.ParseNodeAltern = (((new ParserEBNF(`
+				const altern: EBNF.ParseNodeAltern = (((new ParserEBNF().parse(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
 					;
-				`).parse()
+				`)
 					.children[1] as EBNF.ParseNodeGoal__0__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition)
@@ -274,12 +273,12 @@ describe('Parser', () => {
 			});
 
 			specify('Concat ::= Concat "&" Order;', () => {
-				const concat: EBNF.ParseNodeConcat = ((((new ParserEBNF(`
+				const concat: EBNF.ParseNodeConcat = ((((new ParserEBNF().parse(`
 					Unit ::=
 						| NUMBER
 						| NULL & "(" OPERATOR Unit Unit ")"
 					;
-				`).parse()
+				`)
 					.children[1] as EBNF.ParseNodeGoal__0__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition)
@@ -302,12 +301,12 @@ describe('Parser', () => {
 			});
 
 			specify('Order ::= Order Item;', () => {
-				const order: EBNF.ParseNodeOrder = (((((new ParserEBNF(`
+				const order: EBNF.ParseNodeOrder = (((((new ParserEBNF().parse(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
 					;
-				`).parse()
+				`)
 					.children[1] as EBNF.ParseNodeGoal__0__List)
 					.children[0] as EBNF.ParseNodeProduction)
 					.children[2] as EBNF.ParseNodeDefinition)

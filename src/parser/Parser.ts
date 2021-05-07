@@ -45,51 +45,39 @@ export class Parser {
 			export class Parser${ langname } extends Parser {
 				/**
 				 * Construct a new Parser${ langname } object.
-				 * @param source the source text to parse
 				 */
-				constructor (source: string) {
-					super(new Lexer${ langname }(), source, grammar_${ langname }, new Map<Production, typeof ParseNode>([
+				constructor () {
+					super(new Lexer${ langname }(), grammar_${ langname }, new Map<Production, typeof ParseNode>([
 						${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t') },
 					]));
 				}
 				// @ts-expect-error
-				declare parse(): ParseNodeGoal;
+				declare parse(source: string): ParseNodeGoal;
 			}
 		`;
 	}
 
 
 	/** A token generator produced by a Lexer. */
-	private readonly token_generator: Generator<Token>;
+	private token_generator?: Generator<Token>;
 	/** The result of the lexer iterator. */
-	private iterator_result_token: IteratorResult<Token, void>;
+	private iterator_result_token?: IteratorResult<Token, void>;
 	/** Working stack of tokens, nodes, and configuration states. */
-	private readonly stack: [Token | ParseNode, State][] = [];
+	private stack: [Token | ParseNode, State][] = [];
 	/** Lookahead into the input stream. */
-	private lookahead: Token;
+	private lookahead!: Token;
 
 	/**
 	 * Construct a new Parser object.
 	 * @param lexer         a fresh Lexer instance
-	 * @param source        source text to parse
 	 * @param grammar       The syntactic grammar of the language used in parsing.
 	 * @param parsenode_map A mapping of productions to parse node types.
 	 */
 	constructor (
-		lexer: Lexer,
-		source: string,
+		private readonly lexer: Lexer,
 		private readonly grammar: Grammar,
 		private readonly parsenode_map: ReadonlyMap<Production, typeof ParseNode>,
 	) {
-		this.token_generator = lexer.generate(source);
-		this.iterator_result_token = this.token_generator.next();
-		while (
-			this.iterator_result_token.value instanceof TokenWhitespace ||
-			this.iterator_result_token.value instanceof TokenComment
-		) {
-			this.iterator_result_token = this.token_generator.next();
-		};
-		this.lookahead = this.iterator_result_token.value as Token;
 	}
 
 	/**
@@ -109,12 +97,12 @@ export class Parser {
 		let shifted: boolean = false;
 		if (next_state.size > 0) {
 			this.stack.push([this.lookahead, this.grammar.closure(next_state)]);
-			this.iterator_result_token = this.token_generator.next();
+			this.iterator_result_token = this.token_generator!.next();
 			while (
 				this.iterator_result_token.value instanceof TokenWhitespace ||
 				this.iterator_result_token.value instanceof TokenComment
 			) {
-				this.iterator_result_token = this.token_generator.next();
+				this.iterator_result_token = this.token_generator!.next();
 			};
 			this.lookahead = this.iterator_result_token.value as Token;
 			shifted = true;
@@ -174,11 +162,22 @@ export class Parser {
 	}
 
 	/**
-	 * Main parsing function.
-	 * @returns a token representing the grammar’s goal symbol
+	 * Parse source text into a parse tree.
+	 * @param source the source text
+	 * @returns      a token representing the grammar’s goal symbol
 	 * @final
 	 */
-	parse(): ParseNode {
+	parse(source: string): ParseNode {
+		this.stack = []; // reset the stack for the next time parsing
+		this.token_generator = this.lexer.generate(source);
+		this.iterator_result_token = this.token_generator.next();
+		while (
+			this.iterator_result_token.value instanceof TokenWhitespace ||
+			this.iterator_result_token.value instanceof TokenComment
+		) {
+			this.iterator_result_token = this.token_generator.next();
+		};
+		this.lookahead = this.iterator_result_token.value as Token;
 		while (!this.iterator_result_token.done) {
 			const curr_state: State = this.stack.length
 				? this.stack[this.stack.length - 1][1]

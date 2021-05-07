@@ -22,7 +22,7 @@ describe('generate', () => {
 			Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 			Goal ::= #x02 Unit? #x03;
 		`;
-		const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse()).transform();
+		const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF().parse(ebnf)).transform();
 		assert.strictEqual(generate(ebnf, 'Sample'), utils.dedent`
 			import {
 				NonemptyArray,

@@ -20,7 +20,7 @@ import {
 describe('ASTNode', () => {
 	describe('#serialize', () => {
 		it('prints a readable string.', () => {
-			const tree: ParseNode = new ParserSample(`(+ (* 2 3) 5)`).parse();
+			const tree: ParseNode = new ParserSample().parse(`(+ (* 2 3) 5)`);
 			const add:   ParseNodeUnit = tree.children[1] as ParseNodeUnit;
 			const mult:  ParseNodeUnit = add .children[2] as ParseNodeUnit;
 			const five:  ParseNodeUnit = add .children[3] as ParseNodeUnit;
@@ -52,7 +52,7 @@ describe('ASTNode', () => {
 		describe('ASTNODE.ASTNodeExpr', () => {
 			describe('#transform', () => {
 				function makeProductionDefn(ebnf: string): EBNFChoice {
-					return Decorator.decorate(new ParserEBNF(ebnf).parse()).children[0].transform()[0].defn;
+					return Decorator.decorate(new ParserEBNF().parse(ebnf)).children[0].transform()[0].defn;
 				}
 
 				describe('ASTNODE.ASTNodeConst', () => {
@@ -262,9 +262,9 @@ describe('ASTNode', () => {
 
 				describe('ASTNODE.ASTNodeItem', () => {
 					it('includes the item if one of the conditions is met.', () => {
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 							Nonterm<Param> ::= <Param+>TERM "literal";
-						`).parse()).transform(), [
+						`)).transform(), [
 							{
 								name: 'Nonterm$',
 								family: true,
@@ -288,9 +288,9 @@ describe('ASTNode', () => {
 								],
 							},
 						]);
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 							Nonterm<Param> ::= <Param+, Par+>TERM "literal";
-						`).parse()).transform(), [
+						`)).transform(), [
 							{
 								name: 'Nonterm$',
 								family: true,
@@ -316,9 +316,9 @@ describe('ASTNode', () => {
 						]);
 					});
 					it('includes the item if nested and all conditions are met.', () => {
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 							Nonterm<Param, Par> ::= <Param+><Par+>TERM "literal";
-						`).parse()).transform(), [
+						`)).transform(), [
 							{
 								name: 'Nonterm$',
 								family: true,
@@ -360,9 +360,9 @@ describe('ASTNode', () => {
 						]);
 					});
 					it('does not include the item if all conditions are not met.', () => {
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 							Nonterm<Par> ::= <Param+>TERM "literal";
-						`).parse()).transform(), [
+						`)).transform(), [
 							{
 								name: 'Nonterm$',
 								family: true,
@@ -388,9 +388,9 @@ describe('ASTNode', () => {
 						]);
 					});
 					it('anti-includes the item if negated condition.', () => {
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 							Nonterm<Param> ::= <Param->TERM "literal";
-						`).parse()).transform(), [
+						`)).transform(), [
 							{
 								name: 'Nonterm$',
 								family: true,
@@ -419,9 +419,9 @@ describe('ASTNode', () => {
 
 				describe('ASTNODE.ASTNodeOpUn[operator=PLUS]', () => {
 					it('creates a new production with __0__List appended to the name.', () => {
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 							NonTerm ::= ALPHA BETA+ GAMMA;
-						`).parse()).children[0].transform(), [
+						`)).children[0].transform(), [
 							{
 								name: 'NonTerm__0__List',
 								defn: [
@@ -438,10 +438,10 @@ describe('ASTNode', () => {
 						]);
 					});
 					it('memoizes reusable plus-lists.', () => {
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 							Alpha ::= BETA GAMMA+;
 							Delta ::= GAMMA+ EPSILON;
-						`).parse()).transform(), [
+						`)).transform(), [
 							{
 								name: 'Alpha__0__List',
 								defn: [
@@ -467,9 +467,9 @@ describe('ASTNode', () => {
 
 				describe('ASTNODE.ASTNodeOpUn[operator=HASH]', () => {
 					it('creates a new production with __0__List appended to the name.', () => {
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 							NonTerm ::= ALPHA BETA# GAMMA;
-						`).parse()).children[0].transform(), [
+						`)).children[0].transform(), [
 							{
 								name: 'NonTerm__0__List',
 								defn: [
@@ -486,10 +486,10 @@ describe('ASTNode', () => {
 						]);
 					});
 					it('memoizes reusable hash-lists.', () => {
-						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+						assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 							Alpha ::= BETA GAMMA#;
 							Delta ::= GAMMA# EPSILON;
-						`).parse()).transform(), [
+						`)).transform(), [
 							{
 								name: 'Alpha__0__List',
 								defn: [
@@ -514,9 +514,9 @@ describe('ASTNode', () => {
 				});
 
 				specify('ASTNODE.ASTNodeOpUn[operator=OPT]', () => {
-					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 						NonTerm ::= ALPHA BETA? GAMMA;
-					`).parse()).children[0].transform(), [
+					`)).children[0].transform(), [
 						{
 							name: 'NonTerm',
 							defn: [
@@ -558,7 +558,7 @@ describe('ASTNode', () => {
 		describe('ASTNODE.ASTNodeNonterminal', () => {
 			describe('#expand', () => {
 				function testExpand(ebnf: string): string[] {
-					return Decorator.decorate(new ParserEBNF(ebnf).parse())
+					return Decorator.decorate(new ParserEBNF().parse(ebnf))
 						.children[0]
 						.children[0]
 						.expand().map((cn) => cn.toString())
@@ -639,9 +639,9 @@ describe('ASTNode', () => {
 		describe('ASTNODE.ASTNodeProduction', () => {
 			describe('#transform', () => {
 				it('spilts nonterminal parameters into several productions.', () => {
-					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF(`
+					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF().parse(`
 						NonTerm<Param> ::= TERM;
-					`).parse()).children[0]
+					`)).children[0]
 					assert.deepStrictEqual(prod.transform(), [
 						{
 							name: 'NonTerm$',
@@ -669,9 +669,9 @@ describe('ASTNode', () => {
 				});
 
 				it('memoizes same list productions for different params.', () => {
-					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF(`
+					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF().parse(`
 						NonTerm<Param> ::= TERM+;
-					`).parse()).children[0];
+					`)).children[0];
 					assert.deepStrictEqual(prod.transform(), [
 						{
 							name: 'NonTerm__0__List',
@@ -706,9 +706,9 @@ describe('ASTNode', () => {
 				});
 
 				it('generates different parameterized list productions for different params.', () => {
-					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF(`
+					const prod: ASTNODE.ASTNodeProduction = Decorator.decorate(new ParserEBNF().parse(`
 						NonTerm<Param> ::= Ref<?Param>+;
-					`).parse()).children[0];
+					`)).children[0];
 					assert.deepStrictEqual(prod.transform(), [
 						{
 							name: 'NonTerm__0__List',
@@ -754,10 +754,10 @@ describe('ASTNode', () => {
 		describe('ASTNODE.ASTNodeGoal', () => {
 			describe('#transform', () => {
 				specify('SemanticGoal ::= SemanticProduction*;', () => {
-					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF(`
+					assert.deepStrictEqual(Decorator.decorate(new ParserEBNF().parse(`
 						Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 						Goal ::= #x02 Unit? #x03;
-					`).parse()).transform(), [
+					`)).transform(), [
 						{
 							name: 'Unit',
 							defn: [

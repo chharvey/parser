@@ -13,7 +13,7 @@ import {
 
 
 export function generate(ebnf: string, langname: string = 'Lang'): string {
-	const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse()).transform()
+	const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF().parse(ebnf)).transform()
 	const nonabstract: EBNFObject[] = jsons.filter((j) => j.family !== true);
 	return utils.dedent`
 		import {

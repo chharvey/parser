@@ -16,10 +16,10 @@ import {
 describe('Decorator', () => {
 	describe('.decorate', () => {
 		context('transforms an EBNF parse node into an AST node.', () => {
-			const goal: ASTNODE.ASTNodeGoal = Decorator.decorate(new ParserEBNF(`
+			const goal: ASTNODE.ASTNodeGoal = Decorator.decorate(new ParserEBNF().parse(`
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
-			`).parse());
+			`));
 
 			specify('Goal ::= #x02 Production* #x03;', () => {
 				/*
@@ -55,9 +55,9 @@ describe('Decorator', () => {
 						</Op>
 					</Op>
 				*/
-				const outer: ASTNODE.ASTNodeExpr = (((Decorator.decorate(new ParserEBNF(`
+				const outer: ASTNODE.ASTNodeExpr = (((Decorator.decorate(new ParserEBNF().parse(`
 					Goal ::= #x02 Production* #x03;
-				`).parse()).children[0] as ASTNODE.ASTNodeProduction)
+				`)).children[0] as ASTNODE.ASTNodeProduction)
 					.children[1] as ASTNODE.ASTNodeOpBin) // source='#x02 Production* #x03'
 					.children[0] as ASTNODE.ASTNodeOpBin) // source='#x02 Production*'
 					.children[1] as ASTNODE.ASTNodeExpr   // source='Production*'
