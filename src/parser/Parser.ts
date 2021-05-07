@@ -47,7 +47,7 @@ export class Parser {
 				 * Construct a new Parser${ langname } object.
 				 */
 				constructor () {
-					super(new Lexer${ langname }(), grammar_${ langname }, new Map<Production, typeof ParseNode>([
+					super(LEXER, grammar_${ langname }, new Map<Production, typeof ParseNode>([
 						${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t') },
 					]));
 				}

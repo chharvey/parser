@@ -33,7 +33,7 @@ describe('generate', () => {
 				Grammar,
 				GrammarSymbol,
 			} from '@chharvey/parser';
-			import {LexerSample} from './Lexer';
+			import {LEXER} from './Lexer';
 			import * as TERMINAL from './Terminal';
 			${ jsons.map((prod) => Production.fromJSON(prod)).join('') }
 			${ jsons.map((prod) => ParseNode .fromJSON(prod)).join('') }

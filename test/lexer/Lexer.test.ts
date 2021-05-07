@@ -15,7 +15,7 @@ import {
 	lastItem,
 } from '../helpers';
 import {
-	LexerSample,
+	LEXER as LEXER_Sample,
 	TokenCommentSample,
 } from '../sample/';
 
@@ -24,7 +24,7 @@ import {
 describe('Lexer', () => {
 	describe('#generate', () => {
 		it('recognizes `TokenFilebound` conditions.', () => {
-			const tokens: Token[] = [...new LexerSample().generate(`
+			const tokens: Token[] = [...LEXER_Sample.generate(`
 				5  +  30 \u000d
 				6 ^ 2 +) 37 *
 				( 4 * \u000d9 ^ 3
@@ -48,7 +48,7 @@ describe('Lexer', () => {
 
 		context('recognizes `TokenComment` conditions.', () => {
 			it('recognizes empty multiline comment.', () => {
-				const tokens: Token[] = [...new LexerSample().generate(`
+				const tokens: Token[] = [...LEXER_Sample.generate(`
 					[]
 					[ ]
 				`)];
@@ -59,7 +59,7 @@ describe('Lexer', () => {
 			});
 
 			it('recognizes nonempty multiline comment.', () => {
-				const comment: Token = [...new LexerSample().generate(`
+				const comment: Token = [...LEXER_Sample.generate(`
 					[multiline
 					that has contents
 					comment]
@@ -69,7 +69,7 @@ describe('Lexer', () => {
 		});
 
 		it('rejects unrecognized characters.', () => {
-			assert.throws(() => [...new LexerSample().generate(`-`)], LexError01);
+			assert.throws(() => [...LEXER_Sample.generate(`-`)], LexError01);
 		});
 
 		it(`throws when token is unfinished.`, () => {
@@ -81,7 +81,7 @@ describe('Lexer', () => {
 				\u0003
 				comment
 			`].forEach((src) => {
-				assert.throws(() => [...new LexerSample().generate(src)], LexError02);
+				assert.throws(() => [...LEXER_Sample.generate(src)], LexError02);
 			});
 		});
 	});

@@ -5,7 +5,7 @@ export {
 
 
 
-export {LexerSample} from './Lexer';
+export {LEXER} from './Lexer';
 
 
 

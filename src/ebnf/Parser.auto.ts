@@ -19,7 +19,7 @@ import {
 	Grammar,
 	GrammarSymbol,
 } from '../grammar/Grammar';
-import {LexerEBNF} from './Lexer';
+import {LEXER} from './Lexer';
 import * as TERMINAL from './Terminal';
 
 export class ProductionParameterSet__0__List extends Production {
@@ -405,7 +405,7 @@ export class ParserEBNF extends Parser {
 	 * Construct a new ParserEBNF object.
 	 */
 	constructor () {
-		super(new LexerEBNF(), grammar_EBNF, new Map<Production, typeof ParseNode>([
+		super(LEXER, grammar_EBNF, new Map<Production, typeof ParseNode>([
 			[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],
 			[ProductionParameterSet.instance, ParseNodeParameterSet],
 			[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],

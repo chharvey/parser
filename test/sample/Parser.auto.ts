@@ -19,7 +19,7 @@ import {
 	Grammar,
 	GrammarSymbol,
 } from '../../src/grammar/Grammar';
-import {LexerSample} from './Lexer';
+import {LEXER} from './Lexer';
 import * as TERMINAL from './Terminal';
 
 export class ProductionUnit extends Production {
@@ -71,7 +71,7 @@ export class ParserSample extends Parser {
 	 * Construct a new ParserSample object.
 	 */
 	constructor () {
-		super(new LexerSample(), grammar_Sample, new Map<Production, typeof ParseNode>([
+		super(LEXER, grammar_Sample, new Map<Production, typeof ParseNode>([
 			[ProductionUnit.instance, ParseNodeUnit],
 			[ProductionGoal.instance, ParseNodeGoal],
 		]));

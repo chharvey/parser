@@ -100,8 +100,8 @@ but to define a usable lexer with this project, you’ll need to extend
 its `Token` and `Lexer` classes.
 
 #### Step 1a: Define The Lexer
-The name of our lexer must be `Lexer‹id›`, where `‹id›` is some identifier. Here we’ll use `LexerSExpr`.
-(The `‹id›` is important because we’ll use it when generating our parser later.)
+The name of our lexer instance must be `LEXER`. (Use all-caps since it’s a constant.
+This name is required because it’s used when generating our parser later.)
 Each kind of token (`NUMBER`, `OPERATOR`, `GROUPING`) should correspond to a subroutine
 that describes what the lexer should do next.
 Whitespace tokens are already taken care of, so we don’t need to write it ourselves.
@@ -117,7 +117,7 @@ import {
 	Lexer,
 } from '@chharvey/parser';
 
-export class LexerSExpr extends Lexer {
+class LexerSExpr extends Lexer {
 	protected generate_do(): Token | null {
 		if (/[0-9]/.test(this.c0.source)) {
 			/** NUMBER :::= [0-9]+; */
@@ -140,13 +140,15 @@ export class LexerSExpr extends Lexer {
 		};
 	}
 }
+
+export const LEXER: LexerSExpr = new LexerSExpr();
 ```
 
 If we want to check if our lexer is working property, we can call its `generate()` method,
 which returns a generator of tokens.
 ```ts
 function testLexer(): void {
-	const tokens: Token[] = [...new LexerSExpr().generate('(+ 500 (* 2 30))')];
+	const tokens: Token[] = [...LEXER.generate('(+ 500 (* 2 30))')];
 	console.log(tokens.map((t) => t.serialize()));
 }
 ```

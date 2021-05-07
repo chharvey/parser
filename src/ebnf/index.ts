@@ -13,8 +13,6 @@ export {
 	Binop,
 } from './ASTNode';
 
-export {LexerEBNF} from './Lexer';
-
 export {
 	TerminalIdentifier,
 	TerminalCharCode,

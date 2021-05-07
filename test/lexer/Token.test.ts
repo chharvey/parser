@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 
 import {
-	LexerSample,
+	LEXER as LEXER_Sample,
 } from '../sample/';
 
 
@@ -9,7 +9,7 @@ import {
 describe('Token', () => {
 	describe('#serialize', () => {
 		specify('TokenComment', () => {
-			assert.strictEqual([...new LexerSample().generate(`
+			assert.strictEqual([...LEXER_Sample.generate(`
 				[multiline
 				comment]
 			`)][2].serialize(), `

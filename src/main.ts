@@ -25,7 +25,7 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 			Grammar,
 			GrammarSymbol,
 		} from '@chharvey/parser';
-		import {Lexer${ langname }} from './Lexer';
+		import {LEXER} from './Lexer';
 		import * as TERMINAL from './Terminal';
 		${ nonabstract.map((j) => Production.fromJSON(j)).join('') }
 		${ jsons      .map((j) => ParseNode .fromJSON(j)).join('') }

@@ -39,7 +39,7 @@ describe('Parser', () => {
 					 * Construct a new ParserSample object.
 					 */
 					constructor () {
-						super(new LexerSample(), grammar_Sample, new Map<Production, typeof ParseNode>([
+						super(LEXER, grammar_Sample, new Map<Production, typeof ParseNode>([
 							[ProductionUnit.instance, ParseNodeUnit],
 							[ProductionGoal.instance, ParseNodeGoal],
 						]));

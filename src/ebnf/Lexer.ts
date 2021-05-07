@@ -7,7 +7,7 @@ import {Lexer} from '../lexer/Lexer';
 import * as TOKEN from './Token'
 
 
-export class LexerEBNF extends Lexer {
+class LexerEBNF extends Lexer {
 	protected generate_do(): Token | null {
 		if (Char.inc(TOKEN.TokenPunctuator.PUNCTUATORS_4, this.c0, this.c1, this.c2, this.c3)) {
 			return new TOKEN.TokenPunctuator(...this.advance(4n));
@@ -59,3 +59,5 @@ export class LexerEBNF extends Lexer {
 		};
 	}
 }
+
+export const LEXER: LexerEBNF = new LexerEBNF();

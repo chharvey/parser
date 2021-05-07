@@ -8,7 +8,7 @@ import * as TOKEN from './Token';
 
 
 
-export class LexerSample extends Lexer {
+class LexerSample extends Lexer {
 	protected generate_do(): Token | null {
 		if (Char.inc(['(', ')', '^', '*', '+'], this.c0)) {
 			return new Token('PUNCTUATOR', ...this.advance());
@@ -28,3 +28,5 @@ export class LexerSample extends Lexer {
 		};
 	}
 }
+
+export const LEXER: LexerSample = new LexerSample();
