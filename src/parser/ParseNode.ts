@@ -1,3 +1,5 @@
+import * as xjs from 'extrajs';
+
 import type {
 	EBNFObject,
 } from '../types.d';
@@ -52,7 +54,7 @@ export class ParseNode implements Serializable {
 	 * @returns      a string to print to a TypeScript file
 	 */
 	static fromJSON(json: EBNFObject): string {
-		return utils.dedent`
+		return xjs.String.dedent`
 			export ${ (json.family === true) ? 'abstract ' : '' }class ${ this.classnameOf(json) } extends ${ (typeof json.family === 'string')
 				? this.classnameOf({prod: json.family})
 				: 'ParseNode'

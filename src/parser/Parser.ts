@@ -1,7 +1,8 @@
+import * as xjs from 'extrajs';
+
 import type {
 	EBNFObject,
 } from '../types.d';
-import * as utils from '../utils';
 import {
 	Token,
 	TokenWhitespace,
@@ -41,7 +42,7 @@ export class Parser {
 	 * @returns          a string to print to a TypeScript file
 	 */
 	static fromJSON(jsons: EBNFObject[], langname: string): string {
-		return utils.dedent`
+		return xjs.String.dedent`
 			export class Parser${ langname } extends Parser {
 				/**
 				 * Construct a new Parser${ langname } object.
