@@ -406,7 +406,7 @@ export class ParserEBNF extends Parser {
 	 * @param source the source text to parse
 	 */
 	constructor (source: string) {
-		super(new LexerEBNF(source), grammar_EBNF, new Map<Production, typeof ParseNode>([
+		super(new LexerEBNF(), source, grammar_EBNF, new Map<Production, typeof ParseNode>([
 			[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],
 			[ProductionParameterSet.instance, ParseNodeParameterSet],
 			[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],

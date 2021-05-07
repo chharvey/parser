@@ -17,36 +17,29 @@ import {
  */
 export class Lexer {
 	/** A character generator produced by a Scanner. */
-	private readonly char_generator: Generator<Char>;
+	private char_generator?: Generator<Char>;
 	/** The result of the scanner iterator. */
-	private iterator_result_char: IteratorResult<Char, void>;
+	private iterator_result_char?: IteratorResult<Char, void>;
 	/** The current character. */
-	private _c0: Char;
+	private _c0?: Char;
 	/** The lookahead(1) character. */
-	private _c1: Char | null;
+	private _c1: Char | null = null;
 	/** The lookahead(2) character. */
-	private _c2: Char | null;
+	private _c2: Char | null = null;
 	/** The lookahead(3) character. */
-	private _c3: Char | null;
+	private _c3: Char | null = null;
 
 	/**
 	 * Construct a new Lexer object.
-	 * @param source the source text
 	 */
-	constructor (source: string) {
-		this.char_generator = Scanner.generate(source);
-		this.iterator_result_char = this.char_generator.next();
-		this._c0 = this.iterator_result_char.value as Char;
-		this._c1 = this._c0.lookahead();
-		this._c2 = this._c0.lookahead(2n);
-		this._c3 = this._c0.lookahead(3n);
+	constructor () {
 	}
 
-	/** @final */ get c0(): Char        { return this._c0; }
+	/** @final */ get c0(): Char        { return this._c0!; }
 	/** @final */ get c1(): Char | null { return this._c1; }
 	/** @final */ get c2(): Char | null { return this._c2; }
 	/** @final */ get c3(): Char | null { return this._c3; }
-	/** @final */ get isDone(): boolean { return !!this.iterator_result_char.done; }
+	/** @final */ get isDone(): boolean { return !!this.iterator_result_char?.done; }
 
 	/**
 	 * Advance this Lexer, scanning the next character and reassigning variables.
@@ -60,8 +53,8 @@ export class Lexer {
 	advance(n: bigint = 1n): [Char, ...Char[]] {
 		if (n <= 0n) { throw new RangeError('Argument must be a positive integer.'); };
 		if (n === 1n) {
-			const returned: Char = this._c0;
-			this.iterator_result_char = this.char_generator.next();
+			const returned: Char = this._c0!;
+			this.iterator_result_char = this.char_generator!.next();
 			if (!this.iterator_result_char.done) {
 				this._c0 = this.iterator_result_char.value;
 				this._c1 = this._c0.lookahead();
@@ -79,11 +72,18 @@ export class Lexer {
 
 	/**
 	 * Construct and return the next token in the source text.
+	 * @param source the source text
 	 * @returns the next token
 	 * @throws  {LexError01} if an unrecognized character was reached
 	 * @final
 	 */
-	* generate(): Generator<Token> {
+	* generate(source: string): Generator<Token> {
+		this.char_generator = Scanner.generate(source);
+		this.iterator_result_char = this.char_generator.next();
+		this._c0 = this.iterator_result_char.value as Char;
+		this._c1 = this._c0.lookahead();
+		this._c2 = this._c0.lookahead(2n);
+		this._c3 = this._c0.lookahead(3n);
 		while (!this.isDone) {
 			if (Char.inc(TokenFilebound.CHARS, this.c0)) {
 				yield new TokenFilebound(this);

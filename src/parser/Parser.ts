@@ -48,7 +48,7 @@ export class Parser {
 				 * @param source the source text to parse
 				 */
 				constructor (source: string) {
-					super(new Lexer${ langname }(source), grammar_${ langname }, new Map<Production, typeof ParseNode>([
+					super(new Lexer${ langname }(), source, grammar_${ langname }, new Map<Production, typeof ParseNode>([
 						${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t') },
 					]));
 				}
@@ -71,15 +71,17 @@ export class Parser {
 	/**
 	 * Construct a new Parser object.
 	 * @param lexer         a fresh Lexer instance
+	 * @param source        source text to parse
 	 * @param grammar       The syntactic grammar of the language used in parsing.
 	 * @param parsenode_map A mapping of productions to parse node types.
 	 */
 	constructor (
 		lexer: Lexer,
+		source: string,
 		private readonly grammar: Grammar,
 		private readonly parsenode_map: ReadonlyMap<Production, typeof ParseNode>,
 	) {
-		this.token_generator = lexer.generate();
+		this.token_generator = lexer.generate(source);
 		this.iterator_result_token = this.token_generator.next();
 		while (
 			this.iterator_result_token.value instanceof TokenWhitespace ||

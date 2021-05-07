@@ -18,7 +18,7 @@ describe('ParseError', () => {
 			const src: string = `lookahead`;
 			const chars: Char[] = [...Scanner.generate(src)].slice(2, -2); // slice off line normalization
 			assert.strictEqual(
-				new ParseError01(new Token('TOKEN', new LexerSample(src), chars[0], ...chars.slice(1))).message,
+				new ParseError01(new Token('TOKEN', new LexerSample(), chars[0], ...chars.slice(1))).message,
 				'Unexpected token: \`lookahead\` at line 1 col 1.',
 			);
 		});

@@ -19,9 +19,9 @@ describe('Terminal', () => {
 
 	describe('#match', () => {
 		it('returns whether a token satisfies a terminal.', () => {
-			const tokens: Token[] = [...new LexerSample(`
+			const tokens: Token[] = [...new LexerSample().generate(`
 				42 *
-			`).generate()];
+			`)];
 			assert.ok( TerminalNumber  .instance.match(tokens[2]));
 			assert.ok( TerminalOperator.instance.match(tokens[4]));
 			assert.ok(!TerminalNumber  .instance.match(tokens[4]));

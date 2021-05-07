@@ -23,7 +23,7 @@ import {
 describe('Lexer', () => {
 	describe('#generate', () => {
 		it('recognizes `TokenFilebound` conditions.', () => {
-			const tokens: Token[] = [...new LexerSample(`
+			const tokens: Token[] = [...new LexerSample().generate(`
 				5  +  30 \u000d
 				6 ^ 2 +) 37 *
 				( 4 * \u000d9 ^ 3
@@ -32,7 +32,7 @@ describe('Lexer', () => {
 				600    3  *  2
 				600    (3  *  2
 				4 * 2 ^ 3
-			`).generate()];
+			`)];
 			assert.ok(tokens[0] instanceof TokenFilebound);
 			assert.strictEqual(tokens[0].source, Filebound.SOT);
 			assert.ok(lastItem(tokens) instanceof TokenFilebound);
@@ -40,17 +40,17 @@ describe('Lexer', () => {
 		});
 
 		it('recognizes `TokenWhitespace` conditions.', () => {
-			[...new Lexer(TokenWhitespace.CHARS.join('')).generate()].slice(1, -1).forEach((value) => {
+			[...new Lexer().generate(TokenWhitespace.CHARS.join(''))].slice(1, -1).forEach((value) => {
 				assert.ok(value instanceof TokenWhitespace);
 			});
 		});
 
 		context('recognizes `TokenComment` conditions.', () => {
 			it('recognizes empty multiline comment.', () => {
-				const tokens: Token[] = [...new LexerSample(`
+				const tokens: Token[] = [...new LexerSample().generate(`
 					[]
 					[ ]
-				`).generate()];
+				`)];
 				assert.ok(tokens[2] instanceof TokenCommentSample);
 				assert.ok(tokens[4] instanceof TokenCommentSample);
 				assert.strictEqual(tokens[2].source, '[]');
@@ -58,17 +58,17 @@ describe('Lexer', () => {
 			});
 
 			it('recognizes nonempty multiline comment.', () => {
-				const comment: Token = [...new LexerSample(`
+				const comment: Token = [...new LexerSample().generate(`
 					[multiline
 					that has contents
 					comment]
-				`).generate()][2];
+				`)][2];
 				assert.ok(comment instanceof TokenCommentSample);
 			});
 		});
 
 		it('rejects unrecognized characters.', () => {
-			assert.throws(() => [...new LexerSample(`-`).generate()], LexError01);
+			assert.throws(() => [...new LexerSample().generate(`-`)], LexError01);
 		});
 	});
 });

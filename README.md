@@ -166,7 +166,7 @@ If we want to check if our lexer is working property, we can call its `generate(
 which returns a generator of tokens.
 ```ts
 function testLexer(): void {
-	const tokens: Token[] = [...new LexerSExpr('(+ 500 (* 2 30))').generate()];
+	const tokens: Token[] = [...new LexerSExpr().generate('(+ 500 (* 2 30))')];
 	console.log(tokens.map((t) => t.serialize()));
 }
 ```

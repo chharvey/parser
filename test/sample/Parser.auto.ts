@@ -72,7 +72,7 @@ export class ParserSample extends Parser {
 	 * @param source the source text to parse
 	 */
 	constructor (source: string) {
-		super(new LexerSample(source), grammar_Sample, new Map<Production, typeof ParseNode>([
+		super(new LexerSample(), source, grammar_Sample, new Map<Production, typeof ParseNode>([
 			[ProductionUnit.instance, ParseNodeUnit],
 			[ProductionGoal.instance, ParseNodeGoal],
 		]));
