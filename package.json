@@ -23,18 +23,16 @@
     "dist/",
     "docs/*",
     "!docs/api/",
-    "src/",
     "test/sample/",
     "tsconfig.json"
   ],
   "main": "./dist/index.js",
-  "types": "./src/index.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chharvey/parser.git"
   },
   "scripts": {
-    "build": "rm -rf ./dist/ ./docs/api/ && gulp build",
+    "build": "rm -rf ./dist/ ./docs/api/ && mkdir -p ./dist/ && cp ./src/types.d.ts ./dist/types.d.ts && gulp build",
     "prepublishOnly": "npm run build",
     "test": "gulp test"
   },
