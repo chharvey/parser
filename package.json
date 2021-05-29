@@ -25,11 +25,10 @@
     "!docs/api/",
     "src/",
     "test/sample/",
-    "index.js",
-    "index.ts",
     "tsconfig.json"
   ],
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chharvey/parser.git"
