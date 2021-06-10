@@ -10,10 +10,5 @@
 		"noUnusedParameters":     true,
 		"declaration":            true,
 		"noEmitOnError":          true
-	},
-	"typedocOptions": {
-		"name":        "@chharvey/parser",
-		"entryPoints": "./src/index.ts",
-		"out":         "./docs/api/"
 	}
 }

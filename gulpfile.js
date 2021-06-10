@@ -101,16 +101,7 @@ function test() {
 
 const testall = gulp.series(pretest, test)
 
-function docs() {
-	return gulp.src('./src/**/*.ts')
-		.pipe(typedoc(tsconfig.typedocOptions))
-	;
-}
-
-const build = gulp.parallel(
-	gulp.series(dist, testall),
-	docs,
-);
+const build = gulp.series(dist, testall);
 
 
 
@@ -120,5 +111,4 @@ module.exports = {
 		testall,
 			pretest,
 			test,
-		docs,
 };
