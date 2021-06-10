@@ -9,7 +9,7 @@ import {ErrorCode} from './ErrorCode';
  */
 export class ParseError extends ErrorCode {
 	/** The name of this class of errors. */
-	static readonly NAME: string = 'ParseError';
+	static override readonly NAME = 'ParseError';
 	/** The number series of this class of errors. */
 	static readonly CODE: number = 1200;
 
@@ -39,7 +39,7 @@ export class ParseError extends ErrorCode {
  */
 export class ParseError01 extends ParseError {
 	/** The number series of this class of errors. */
-	static readonly CODE = 1;
+	static override readonly CODE = 1;
 
 
 	/**
