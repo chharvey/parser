@@ -428,7 +428,7 @@ export class ParserEBNF extends Parser {
 		]));
 	}
 	// @ts-expect-error
-	declare parse(): ParseNodeGoal;
+	declare override parse(): ParseNodeGoal;
 }
 
 
