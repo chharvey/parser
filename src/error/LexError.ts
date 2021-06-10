@@ -10,7 +10,7 @@ import {ErrorCode} from './ErrorCode';
  */
 export class LexError extends ErrorCode {
 	/** The name of this class of errors. */
-	static readonly NAME: string = 'LexError';
+	static override readonly NAME = 'LexError';
 	/** The number series of this class of errors. */
 	static readonly CODE: number = 1100;
 
@@ -41,7 +41,7 @@ export class LexError extends ErrorCode {
  */
 export class LexError01 extends LexError {
 	/** The number series of this class of errors. */
-	static readonly CODE = 1;
+	static override readonly CODE = 1;
 
 
 	/**
@@ -61,7 +61,7 @@ export class LexError01 extends LexError {
  */
 export class LexError02 extends LexError {
 	/** The number series of this class of errors. */
-	static readonly CODE = 2;
+	static override readonly CODE = 2;
 
 
 	/**

@@ -7,7 +7,7 @@ import * as TOKEN from './Token'
 
 
 export class LexerEBNF extends Lexer {
-	protected generate_do(): Token | null {
+	protected override generate_do(): Token | null {
 		if (Char.inc(TOKEN.TokenPunctuator.PUNCTUATORS_4, this.c0, this.c1, this.c2, this.c3)) {
 			return new TOKEN.TokenPunctuator(this, 4n);
 		} else if (Char.inc(TOKEN.TokenPunctuator.PUNCTUATORS_3, this.c0, this.c1, this.c2)) {

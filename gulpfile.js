@@ -1,12 +1,11 @@
 const fs   = require('fs');
 const path = require('path');
+const xjs  = require('extrajs');
 
 const gulp       = require('gulp');
 const mocha      = require('gulp-mocha');
-const typedoc    = require('gulp-typedoc');
 const typescript = require('gulp-typescript');
 // require('ts-node');    // DO NOT REMOVE … peerDependency of `gulp-mocha`
-// require('typedoc');    // DO NOT REMOVE … peerDependency of `gulp-typedoc`
 // require('typescript'); // DO NOT REMOVE … peerDependency of `gulp-typescript`
 
 
@@ -21,12 +20,11 @@ function dist() {
 }
 
 async function pretest() {
-	const utils = require('./dist/utils.js');
 	const {generate} = require('./dist/main.js');
 	const grammar_ebnf   = fs.promises.readFile(path.join(__dirname, './src/ebnf/syntax.ebnf'),    'utf8');
 	const grammar_sample = fs.promises.readFile(path.join(__dirname, './test/sample/syntax.ebnf'), 'utf8');
 	function preamble(srcpath) {
-		return utils.dedent`
+		return xjs.String.dedent`
 			/*----------------------------------------------------------------/
 			| WARNING: Do not manually update this file!
 			| It is auto-generated via
@@ -36,9 +34,9 @@ async function pretest() {
 		`;
 	}
 	return Promise.all([
-		fs.promises.writeFile(path.join(__dirname, './src/ebnf/Parser.auto.ts'), utils.dedent`
+		fs.promises.writeFile(path.join(__dirname, './src/ebnf/Parser.auto.ts'), xjs.String.dedent`
 			${ preamble('@chharvey/parser//src/main.ts') }
-			${ generate(await grammar_ebnf, 'EBNF').replace(utils.dedent`
+			${ generate(await grammar_ebnf, 'EBNF').replace(xjs.String.dedent`
 				import {
 					NonemptyArray,
 					Token,
@@ -48,7 +46,7 @@ async function pretest() {
 					Grammar,
 					GrammarSymbol,
 				} from '@chharvey/parser';
-			`, utils.dedent`
+			`, xjs.String.dedent`
 				import type {
 					NonemptyArray,
 				} from '../types.d';
@@ -62,9 +60,9 @@ async function pretest() {
 				} from '../grammar/Grammar';
 			`) }
 		`),
-		fs.promises.writeFile(path.join(__dirname, './test/sample/Parser.auto.ts'), utils.dedent`
+		fs.promises.writeFile(path.join(__dirname, './test/sample/Parser.auto.ts'), xjs.String.dedent`
 			${ preamble('@chharvey/parser//src/main.ts') }
-			${ generate(await grammar_sample, 'Sample').replace(utils.dedent`
+			${ generate(await grammar_sample, 'Sample').replace(xjs.String.dedent`
 				import {
 					NonemptyArray,
 					Token,
@@ -74,7 +72,7 @@ async function pretest() {
 					Grammar,
 					GrammarSymbol,
 				} from '@chharvey/parser';
-			`, utils.dedent`
+			`, xjs.String.dedent`
 				import type {
 					NonemptyArray,
 				} from '../../src/types.d';
@@ -101,16 +99,7 @@ function test() {
 
 const testall = gulp.series(pretest, test)
 
-function docs() {
-	return gulp.src('./src/**/*.ts')
-		.pipe(typedoc(tsconfig.typedocOptions))
-	;
-}
-
-const build = gulp.parallel(
-	gulp.series(dist, testall),
-	docs,
-);
+const build = gulp.series(dist, testall);
 
 
 
@@ -120,5 +109,4 @@ module.exports = {
 		testall,
 			pretest,
 			test,
-		docs,
 };

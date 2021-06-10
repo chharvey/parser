@@ -1,14 +1,12 @@
 import * as assert from 'assert';
+import * as xjs from 'extrajs';
 
 import type {
 	EBNFObject,
 } from '../../src/types.d';
-import * as utils from '../../src/utils';
 import {Production} from '../../src/grammar/Production';
 import {Rule} from '../../src/grammar/Rule';
-import {
-	ProductionUnit,
-} from '../sample/';
+import {PARSER as PARSERSAMPLE} from '../sample/';
 
 
 
@@ -30,7 +28,7 @@ describe('Production', () => {
 						['\\u0002', {prod: 'Unit'}, '\\u0003'],
 					],
 				},
-			] as EBNFObject[]).map((prod) => Production.fromJSON(prod)), [utils.dedent`
+			] as EBNFObject[]).map((prod) => Production.fromJSON(prod)), [xjs.String.dedent`
 				export class ProductionUnit extends Production {
 					static readonly instance: ProductionUnit = new ProductionUnit();
 					/** @implements Production */
@@ -41,7 +39,7 @@ describe('Production', () => {
 						];
 					}
 				}
-			`, utils.dedent`
+			`, xjs.String.dedent`
 				export class ProductionGoal extends Production {
 					static readonly instance: ProductionGoal = new ProductionGoal();
 					/** @implements Production */
@@ -58,15 +56,15 @@ describe('Production', () => {
 
 	describe('#displayName', () => {
 		it('returns the display name.', () => {
-			assert.strictEqual(ProductionUnit.instance.displayName, 'Unit');
+			assert.strictEqual(PARSERSAMPLE.ProductionUnit.instance.displayName, 'Unit');
 		});
 	});
 
 	describe('#toRules', () => {
 		it('decomposes the production into a list of rules.', () => {
-			assert.deepStrictEqual(ProductionUnit.instance.toRules(), [
-				new Rule(ProductionUnit.instance, 0),
-				new Rule(ProductionUnit.instance, 1),
+			assert.deepStrictEqual(PARSERSAMPLE.ProductionUnit.instance.toRules(), [
+				new Rule(PARSERSAMPLE.ProductionUnit.instance, 0),
+				new Rule(PARSERSAMPLE.ProductionUnit.instance, 1),
 			]);
 		});
 	});

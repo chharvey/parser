@@ -1,3 +1,4 @@
+import * as xjs from 'extrajs';
 import deepStrictEqual from 'fast-deep-equal';
 
 import type {
@@ -8,7 +9,6 @@ import type {
 	EBNFSequence,
 	EBNFItem,
 } from '../types.d';
-import {MapEq} from '../MapEq';
 import type {Token} from '../lexer/Token';
 import type {ParseNode} from '../parser/ParseNode';
 import {ASTNode} from '../validator/ASTNode';
@@ -209,9 +209,9 @@ abstract class ASTNodeOp extends ASTNodeExpr {
 
 
 export class ASTNodeOpUn extends ASTNodeOp {
-	private static readonly memoized: ReadonlyMap<Unop, MapEq<EBNFChoice, string>> = new Map<Unop, MapEq<EBNFChoice, string>>([
-		[Unop.PLUS, new MapEq<EBNFChoice, string>(deepStrictEqual)],
-		[Unop.HASH, new MapEq<EBNFChoice, string>(deepStrictEqual)],
+	private static readonly memoized: ReadonlyMap<Unop, xjs.MapEq<EBNFChoice, string>> = new Map<Unop, xjs.MapEq<EBNFChoice, string>>([
+		[Unop.PLUS, new xjs.MapEq<EBNFChoice, string>(deepStrictEqual)],
+		[Unop.HASH, new xjs.MapEq<EBNFChoice, string>(deepStrictEqual)],
 	]);
 	declare readonly children: readonly [ASTNodeExpr];
 	constructor (
@@ -226,7 +226,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
 		return new Map<Unop, (operand: EBNFChoice) => EBNFChoice>([
 			[Unop.PLUS, (operand) => {
-				const memoized: MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.PLUS)!;
+				const memoized: xjs.MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.PLUS)!;
 				if (!memoized.has(operand)) {
 					const name: string = nt.newSubexprName;
 					memoized.set(operand, name);
@@ -243,7 +243,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 				];
 			}],
 			[Unop.HASH, (operand) => {
-				const memoized: MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.HASH)!;
+				const memoized: xjs.MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.HASH)!;
 				if (!memoized.has(operand)) {
 					const name: string = nt.newSubexprName;
 					memoized.set(operand, name);
