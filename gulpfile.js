@@ -4,10 +4,8 @@ const xjs  = require('extrajs');
 
 const gulp       = require('gulp');
 const mocha      = require('gulp-mocha');
-const typedoc    = require('gulp-typedoc');
 const typescript = require('gulp-typescript');
 // require('ts-node');    // DO NOT REMOVE … peerDependency of `gulp-mocha`
-// require('typedoc');    // DO NOT REMOVE … peerDependency of `gulp-typedoc`
 // require('typescript'); // DO NOT REMOVE … peerDependency of `gulp-typescript`
 
 
