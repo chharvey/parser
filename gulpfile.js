@@ -4,10 +4,8 @@ const xjs  = require('extrajs');
 
 const gulp       = require('gulp');
 const mocha      = require('gulp-mocha');
-const typedoc    = require('gulp-typedoc');
 const typescript = require('gulp-typescript');
 // require('ts-node');    // DO NOT REMOVE … peerDependency of `gulp-mocha`
-// require('typedoc');    // DO NOT REMOVE … peerDependency of `gulp-typedoc`
 // require('typescript'); // DO NOT REMOVE … peerDependency of `gulp-typescript`
 
 
@@ -101,16 +99,7 @@ function test() {
 
 const testall = gulp.series(pretest, test)
 
-function docs() {
-	return gulp.src('./src/**/*.ts')
-		.pipe(typedoc(tsconfig.typedocOptions))
-	;
-}
-
-const build = gulp.parallel(
-	gulp.series(dist, testall),
-	docs,
-);
+const build = gulp.series(dist, testall);
 
 
 
@@ -120,5 +109,4 @@ module.exports = {
 		testall,
 			pretest,
 			test,
-		docs,
 };

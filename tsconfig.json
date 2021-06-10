@@ -1,19 +1,21 @@
 {
 	"compilerOptions": {
-		"target":                 "ES2020",
-		"module":                 "commonjs",
-		"esModuleInterop":        true,
-		"strict":                 true,
+
+		"declaration": true,
+		"module":      "commonjs",
+		"target":      "ES2021",
+
+		"strict": true,
+
+		"esModuleInterop": true,
+
+		"noImplicitOverride": true,
+		"noImplicitReturns":  true,
+		"noUnusedLocals":     true,
+		"noUnusedParameters": true,
+
 		"importsNotUsedAsValues": "error",
-		"noImplicitReturns":      true,
-		"noUnusedLocals":         true,
-		"noUnusedParameters":     true,
-		"removeComments":         true,
-		"noEmitOnError":          true
-	},
-	"typedocOptions": {
-		"name":        "@chharvey/parser",
-		"entryPoints": "./index.ts",
-		"out":         "./docs/api/"
+		"noEmitOnError":          true,
+		"skipLibCheck":           true
 	}
 }

@@ -54,7 +54,7 @@ export class Parser {
 					]));
 				}
 				// @ts-expect-error
-				declare parse(): ParseNodeGoal;
+				declare override parse(): ParseNodeGoal;
 			}
 		`;
 	}
