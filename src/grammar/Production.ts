@@ -39,7 +39,7 @@ export abstract class Production {
 			export class ${ this.classnameOf(json) } extends Production {
 				static readonly instance: ${ this.classnameOf(json) } = new ${ this.classnameOf(json) }();
 				/** @implements Production */
-				get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+				override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
 						${ json.defn.map((seq) => `[${ seq.map((it) =>
 							(typeof it === 'string') ? `'${ it }'` :
