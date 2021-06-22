@@ -107,8 +107,7 @@ export class ASTNodeConst extends ASTNodeExpr {
 		super(p_node, {value: p_node.source});
 	}
 
-	/** @implements ASTNodeExpr */
-	transform(_nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
+	override transform(_nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
 		return [
 			[
 				(this.p_node instanceof TOKEN.TokenCharCode) ? `\\u${ this.source.slice(2).padStart(4, '0') }` : // remove '#x'
@@ -138,8 +137,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 	}
 	private readonly name: string = (this.ref instanceof ASTNodeRef) ? this.ref.name : this.ref.source;
 
-	/** @implements ASTNodeExpr */
-	transform(nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
+	override transform(nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
 		return (this.name === this.name.toUpperCase())
 			/* ALLCAPS: terminal identifier */
 			? [
@@ -189,8 +187,7 @@ export class ASTNodeItem extends ASTNodeExpr {
 		super(parse_node, {}, [item, ...conditions]);
 	}
 
-	/** @implements ASTNodeExpr */
-	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
+	override transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
 		return (this.conditions.some((cond) => cond.include === nt.hasSuffix(cond)))
 			? this.item.transform(nt, data)
 			: [
@@ -222,8 +219,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 		super(parse_node, operator, [operand]);
 	}
 
-	/** @implements ASTNodeExpr */
-	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
+	override transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
 		return new Map<Unop, (operand: EBNFChoice) => EBNFChoice>([
 			[Unop.PLUS, (operand) => {
 				const memoized: xjs.MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.PLUS)!;
@@ -281,8 +277,7 @@ export class ASTNodeOpBin extends ASTNodeOp {
 		super(parse_node, operator, [operand0, operand1]);
 	}
 
-	/** @implements ASTNodeExpr */
-	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
+	override transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
 		const trans0: EBNFChoice = this.operand0.transform(nt, data);
 		const trans1: EBNFChoice = this.operand1.transform(nt, data);
 		return new Map<Binop, () => EBNFChoice>([
