@@ -33,7 +33,7 @@ describe('Parser', () => {
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
 			`)).transform(), 'Sample'), (xjs.String.dedent`
-				class ParserSample extends Parser {
+				class ParserSample extends Parser<ParseNodeGoal> {
 					/**
 					 * Construct a new ParserSample object.
 					 */
@@ -43,8 +43,6 @@ describe('Parser', () => {
 							[ProductionGoal.instance, ParseNodeGoal],
 						]));
 					}
-					// @ts-expect-error
-					declare override parse(source: string): ParseNodeGoal;
 				}
 				export const PARSER: ParserSample = new ParserSample();
 			`));

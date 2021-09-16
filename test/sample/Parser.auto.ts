@@ -66,7 +66,7 @@ export const GRAMMAR: Grammar = new Grammar([
 ], ProductionGoal.instance);
 
 
-class ParserSample extends Parser {
+class ParserSample extends Parser<ParseNodeGoal> {
 	/**
 	 * Construct a new ParserSample object.
 	 */
@@ -76,8 +76,6 @@ class ParserSample extends Parser {
 			[ProductionGoal.instance, ParseNodeGoal],
 		]));
 	}
-	// @ts-expect-error
-	declare override parse(source: string): ParseNodeGoal;
 }
 export const PARSER: ParserSample = new ParserSample();
 

@@ -33,7 +33,7 @@ type State = ReadonlySet<Configuration>
  * An LR(1), shift-reduce Parser.
  * @see http://www2.lawrence.edu/fast/GREGGJ/CMSC515/parsing/LR_parsing.html
  */
-export class Parser {
+export class Parser<GoalNodeType extends ParseNode> {
 	/**
 	 * Takes a set of JSON objects representing syntactic productions
 	 * and returns a string in TypeScript language representing a subclass of {@link Parser}.
@@ -43,7 +43,7 @@ export class Parser {
 	 */
 	static fromJSON(jsons: EBNFObject[], langname: string): string {
 		return xjs.String.dedent`
-			class Parser${ langname } extends Parser {
+			class Parser${ langname } extends Parser<ParseNodeGoal> {
 				/**
 				 * Construct a new Parser${ langname } object.
 				 */
@@ -52,8 +52,6 @@ export class Parser {
 						${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t') },
 					]));
 				}
-				// @ts-expect-error
-				declare override parse(source: string): ParseNodeGoal;
 			}
 			export const PARSER: Parser${ langname } = new Parser${ langname }();
 		`;
@@ -166,7 +164,7 @@ export class Parser {
 	 * @returns      a token representing the grammar’s goal symbol
 	 * @final
 	 */
-	parse(source: string): ParseNode {
+	parse(source: string): GoalNodeType {
 		this.stack = []; // reset the stack for the next time parsing
 		this.token_generator = this.lexer.generate(source);
 		this.iterator_result_token = this.token_generator.next();
@@ -198,7 +196,7 @@ export class Parser {
 		};
 		if (this.stack.length < 1) { throw new Error('Somehow, the stack was emptied. It should have 1 final element, a top-level rule.'); };
 		if (this.stack.length > 1) { throw new Error('There is still unfinished business: The Stack should have only 1 element left.'); };
-		return this.stack[0][0] as ParseNode;
+		return this.stack[0][0] as GoalNodeType;
 	}
 
 	/**
