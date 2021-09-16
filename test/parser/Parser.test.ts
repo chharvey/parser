@@ -32,7 +32,7 @@ describe('Parser', () => {
 			assert.strictEqual(Parser.fromJSON(Decorator.decorate(PARSER_EBNF.parse(`
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
-			`)).transform(), 'Sample'), (xjs.String.dedent`
+			`)).transform()), (xjs.String.dedent`
 				export const PARSER: Parser<ParseNodeGoal> = new Parser<ParseNodeGoal>(
 					LEXER,
 					GRAMMAR,

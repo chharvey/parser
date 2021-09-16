@@ -38,11 +38,9 @@ export class Parser<GoalNodeType extends ParseNode> {
 	 * Takes a set of JSON objects representing syntactic productions
 	 * and returns a string in TypeScript language representing a subclass of {@link Parser}.
 	 * @param   jsons    a set of JSON productions
-	 * @param   langname the language name
 	 * @returns          a string to print to a TypeScript file
 	 */
-	static fromJSON(jsons: EBNFObject[], langname: string): string {
-		langname;
+	static fromJSON(jsons: EBNFObject[]): string {
 		return xjs.String.dedent`
 			export const PARSER: Parser<ParseNodeGoal> = new Parser<ParseNodeGoal>(
 				LEXER,

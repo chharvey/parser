@@ -38,7 +38,7 @@ describe('generate', () => {
 			${ jsons.map((prod) => Production.fromJSON(prod)).join('') }
 			${ jsons.map((prod) => ParseNode .fromJSON(prod)).join('') }
 			${ Grammar.fromJSON(jsons) }
-			${ Parser .fromJSON(jsons, 'Sample') }
+			${ Parser .fromJSON(jsons) }
 		`);
 	});
 });

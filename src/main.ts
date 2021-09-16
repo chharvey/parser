@@ -14,6 +14,7 @@ import {
 
 
 export function generate(ebnf: string, langname: string = 'Lang'): string {
+	langname;
 	const jsons: EBNFObject[] = Decorator.decorate(PARSER_EBNF.parse(ebnf)).transform()
 	const nonabstract: EBNFObject[] = jsons.filter((j) => j.family !== true);
 	return xjs.String.dedent`
@@ -31,6 +32,6 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 		${ nonabstract.map((j) => Production.fromJSON(j)).join('') }
 		${ jsons      .map((j) => ParseNode .fromJSON(j)).join('') }
 		${ Grammar.fromJSON(nonabstract) }
-		${ Parser .fromJSON(nonabstract, langname) }
+		${ Parser .fromJSON(nonabstract) }
 	`;
 }
