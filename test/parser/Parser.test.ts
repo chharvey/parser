@@ -44,7 +44,7 @@ describe('Parser', () => {
 						]));
 					}
 					// @ts-expect-error
-					declare parse(source: string): ParseNodeGoal;
+					declare override parse(source: string): ParseNodeGoal;
 				}
 				export const PARSER: ParserSample = new ParserSample();
 			`));

@@ -9,7 +9,7 @@ import * as TOKEN from './Token';
 
 
 class LexerSample extends Lexer {
-	protected generate_do(): Token | null {
+	protected override generate_do(): Token | null {
 		if (Char.inc(['(', ')', '^', '*', '+'], this.c0)) {
 			return new Token('PUNCTUATOR', ...this.advance());
 

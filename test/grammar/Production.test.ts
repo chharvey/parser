@@ -34,7 +34,7 @@ describe('Production', () => {
 				export class ProductionUnit extends Production {
 					static readonly instance: ProductionUnit = new ProductionUnit();
 					/** @implements Production */
-					get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+					override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 						return [
 							[TERMINAL.TerminalNumber.instance],
 							['(', TERMINAL.TerminalOperator.instance, ProductionUnit.instance, ProductionUnit.instance, ')'],
@@ -45,7 +45,7 @@ describe('Production', () => {
 				export class ProductionGoal extends Production {
 					static readonly instance: ProductionGoal = new ProductionGoal();
 					/** @implements Production */
-					get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+					override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 						return [
 							['\\u0002', '\\u0003'],
 							['\\u0002', ProductionUnit.instance, '\\u0003'],
