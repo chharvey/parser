@@ -258,7 +258,7 @@ async function beforeRun(): void {
 	const grammar: Promise<string> = fs.promises.readFile(path.join(__dirname, './syntax.ebnf'), 'utf8');
 	await fs.promises.writeFile(
 		path.join(__dirname, './Parser.auto.ts'),
-		generate(await grammar, 'SExpr'), // custom identifier from our lexer name
+		generate(await grammar),
 	);
 }
 ```

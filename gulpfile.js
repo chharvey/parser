@@ -36,7 +36,7 @@ async function pretest() {
 	return Promise.all([
 		fs.promises.writeFile(path.join(__dirname, './src/ebnf/Parser.auto.ts'), xjs.String.dedent`
 			${ preamble('@chharvey/parser//src/main.ts') }
-			${ generate(await grammar_ebnf, 'EBNF').replace(xjs.String.dedent`
+			${ generate(await grammar_ebnf).replace(xjs.String.dedent`
 				import {
 					NonemptyArray,
 					Token,
@@ -62,7 +62,7 @@ async function pretest() {
 		`),
 		fs.promises.writeFile(path.join(__dirname, './test/sample/Parser.auto.ts'), xjs.String.dedent`
 			${ preamble('@chharvey/parser//src/main.ts') }
-			${ generate(await grammar_sample, 'Sample').replace(xjs.String.dedent`
+			${ generate(await grammar_sample).replace(xjs.String.dedent`
 				import {
 					NonemptyArray,
 					Token,

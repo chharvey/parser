@@ -23,7 +23,7 @@ describe('generate', () => {
 			Goal ::= #x02 Unit? #x03;
 		`;
 		const jsons: EBNFObject[] = Decorator.decorate(PARSER_EBNF.parse(ebnf)).transform();
-		assert.strictEqual(generate(ebnf, 'Sample'), xjs.String.dedent`
+		assert.strictEqual(generate(ebnf), xjs.String.dedent`
 			import {
 				NonemptyArray,
 				Token,
