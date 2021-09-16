@@ -378,7 +378,7 @@ export class ParseNodeGoal extends ParseNode {
 }
 
 
-export const grammar_EBNF: Grammar = new Grammar([
+export const GRAMMAR: Grammar = new Grammar([
 	ProductionParameterSet__0__List.instance,
 	ProductionParameterSet.instance,
 	ProductionArgumentSet__0__List.instance,
@@ -405,7 +405,7 @@ class ParserEBNF extends Parser {
 	 * Construct a new ParserEBNF object.
 	 */
 	constructor () {
-		super(LEXER, grammar_EBNF, new Map<Production, typeof ParseNode>([
+		super(LEXER, GRAMMAR, new Map<Production, typeof ParseNode>([
 			[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],
 			[ProductionParameterSet.instance, ParseNodeParameterSet],
 			[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],
@@ -430,3 +430,5 @@ class ParserEBNF extends Parser {
 	declare override parse(source: string): ParseNodeGoal;
 }
 export const PARSER: ParserEBNF = new ParserEBNF();
+
+

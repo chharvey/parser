@@ -60,7 +60,7 @@ export class ParseNodeGoal extends ParseNode {
 }
 
 
-export const grammar_Sample: Grammar = new Grammar([
+export const GRAMMAR: Grammar = new Grammar([
 	ProductionUnit.instance,
 	ProductionGoal.instance,
 ], ProductionGoal.instance);
@@ -71,7 +71,7 @@ class ParserSample extends Parser {
 	 * Construct a new ParserSample object.
 	 */
 	constructor () {
-		super(LEXER, grammar_Sample, new Map<Production, typeof ParseNode>([
+		super(LEXER, GRAMMAR, new Map<Production, typeof ParseNode>([
 			[ProductionUnit.instance, ParseNodeUnit],
 			[ProductionGoal.instance, ParseNodeGoal],
 		]));
@@ -80,3 +80,5 @@ class ParserSample extends Parser {
 	declare override parse(source: string): ParseNodeGoal;
 }
 export const PARSER: ParserSample = new ParserSample();
+
+

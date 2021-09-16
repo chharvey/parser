@@ -37,7 +37,7 @@ describe('generate', () => {
 			import * as TERMINAL from './Terminal';
 			${ jsons.map((prod) => Production.fromJSON(prod)).join('') }
 			${ jsons.map((prod) => ParseNode .fromJSON(prod)).join('') }
-			${ Grammar.fromJSON(jsons, 'Sample') }
+			${ Grammar.fromJSON(jsons) }
 			${ Parser .fromJSON(jsons, 'Sample') }
 		`);
 	});

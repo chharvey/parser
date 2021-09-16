@@ -15,8 +15,8 @@ describe('Grammar', () => {
 			assert.strictEqual(Grammar.fromJSON(Decorator.decorate(PARSER_EBNF.parse(`
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
-			`)).transform(), 'Sample'), xjs.String.dedent`
-				export const grammar_Sample: Grammar = new Grammar([
+			`)).transform()), xjs.String.dedent`
+				export const GRAMMAR: Grammar = new Grammar([
 					ProductionUnit.instance,
 					ProductionGoal.instance,
 				], ProductionGoal.instance);

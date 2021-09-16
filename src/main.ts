@@ -30,7 +30,7 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 		import * as TERMINAL from './Terminal';
 		${ nonabstract.map((j) => Production.fromJSON(j)).join('') }
 		${ jsons      .map((j) => ParseNode .fromJSON(j)).join('') }
-		${ Grammar.fromJSON(nonabstract, langname) }
+		${ Grammar.fromJSON(nonabstract) }
 		${ Parser .fromJSON(nonabstract, langname) }
 	`;
 }
