@@ -42,18 +42,15 @@ export class Parser<GoalNodeType extends ParseNode> {
 	 * @returns          a string to print to a TypeScript file
 	 */
 	static fromJSON(jsons: EBNFObject[], langname: string): string {
+		langname;
 		return xjs.String.dedent`
-			class Parser${ langname } extends Parser<ParseNodeGoal> {
-				/**
-				 * Construct a new Parser${ langname } object.
-				 */
-				constructor () {
-					super(LEXER, GRAMMAR, new Map<Production, typeof ParseNode>([
-						${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t') },
-					]));
-				}
-			}
-			export const PARSER: Parser${ langname } = new Parser${ langname }();
+			export const PARSER: Parser<ParseNodeGoal> = new Parser<ParseNodeGoal>(
+				LEXER,
+				GRAMMAR,
+				new Map<Production, typeof ParseNode>([
+					${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t') },
+				]),
+			);
 		`;
 	}
 

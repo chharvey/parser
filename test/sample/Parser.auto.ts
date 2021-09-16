@@ -66,17 +66,13 @@ export const GRAMMAR: Grammar = new Grammar([
 ], ProductionGoal.instance);
 
 
-class ParserSample extends Parser<ParseNodeGoal> {
-	/**
-	 * Construct a new ParserSample object.
-	 */
-	constructor () {
-		super(LEXER, GRAMMAR, new Map<Production, typeof ParseNode>([
-			[ProductionUnit.instance, ParseNodeUnit],
-			[ProductionGoal.instance, ParseNodeGoal],
-		]));
-	}
-}
-export const PARSER: ParserSample = new ParserSample();
+export const PARSER: Parser<ParseNodeGoal> = new Parser<ParseNodeGoal>(
+	LEXER,
+	GRAMMAR,
+	new Map<Production, typeof ParseNode>([
+		[ProductionUnit.instance, ParseNodeUnit],
+		[ProductionGoal.instance, ParseNodeGoal],
+	]),
+);
 
 

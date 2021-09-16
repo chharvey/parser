@@ -33,18 +33,14 @@ describe('Parser', () => {
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
 			`)).transform(), 'Sample'), (xjs.String.dedent`
-				class ParserSample extends Parser<ParseNodeGoal> {
-					/**
-					 * Construct a new ParserSample object.
-					 */
-					constructor () {
-						super(LEXER, GRAMMAR, new Map<Production, typeof ParseNode>([
-							[ProductionUnit.instance, ParseNodeUnit],
-							[ProductionGoal.instance, ParseNodeGoal],
-						]));
-					}
-				}
-				export const PARSER: ParserSample = new ParserSample();
+				export const PARSER: Parser<ParseNodeGoal> = new Parser<ParseNodeGoal>(
+					LEXER,
+					GRAMMAR,
+					new Map<Production, typeof ParseNode>([
+						[ProductionUnit.instance, ParseNodeUnit],
+						[ProductionGoal.instance, ParseNodeGoal],
+					]),
+				);
 			`));
 		});
 	});

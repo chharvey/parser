@@ -400,33 +400,29 @@ export const GRAMMAR: Grammar = new Grammar([
 ], ProductionGoal.instance);
 
 
-class ParserEBNF extends Parser<ParseNodeGoal> {
-	/**
-	 * Construct a new ParserEBNF object.
-	 */
-	constructor () {
-		super(LEXER, GRAMMAR, new Map<Production, typeof ParseNode>([
-			[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],
-			[ProductionParameterSet.instance, ParseNodeParameterSet],
-			[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],
-			[ProductionArgumentSet.instance, ParseNodeArgumentSet],
-			[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],
-			[ProductionConditionSet.instance, ParseNodeConditionSet],
-			[ProductionReference.instance, ParseNodeReference],
-			[ProductionUnit.instance, ParseNodeUnit],
-			[ProductionUnary.instance, ParseNodeUnary],
-			[ProductionItem.instance, ParseNodeItem],
-			[ProductionOrder.instance, ParseNodeOrder],
-			[ProductionConcat.instance, ParseNodeConcat],
-			[ProductionAltern.instance, ParseNodeAltern],
-			[ProductionDefinition.instance, ParseNodeDefinition],
-			[ProductionNonterminalName.instance, ParseNodeNonterminalName],
-			[ProductionProduction.instance, ParseNodeProduction],
-			[ProductionGoal__0__List.instance, ParseNodeGoal__0__List],
-			[ProductionGoal.instance, ParseNodeGoal],
-		]));
-	}
-}
-export const PARSER: ParserEBNF = new ParserEBNF();
+export const PARSER: Parser<ParseNodeGoal> = new Parser<ParseNodeGoal>(
+	LEXER,
+	GRAMMAR,
+	new Map<Production, typeof ParseNode>([
+		[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],
+		[ProductionParameterSet.instance, ParseNodeParameterSet],
+		[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],
+		[ProductionArgumentSet.instance, ParseNodeArgumentSet],
+		[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],
+		[ProductionConditionSet.instance, ParseNodeConditionSet],
+		[ProductionReference.instance, ParseNodeReference],
+		[ProductionUnit.instance, ParseNodeUnit],
+		[ProductionUnary.instance, ParseNodeUnary],
+		[ProductionItem.instance, ParseNodeItem],
+		[ProductionOrder.instance, ParseNodeOrder],
+		[ProductionConcat.instance, ParseNodeConcat],
+		[ProductionAltern.instance, ParseNodeAltern],
+		[ProductionDefinition.instance, ParseNodeDefinition],
+		[ProductionNonterminalName.instance, ParseNodeNonterminalName],
+		[ProductionProduction.instance, ParseNodeProduction],
+		[ProductionGoal__0__List.instance, ParseNodeGoal__0__List],
+		[ProductionGoal.instance, ParseNodeGoal],
+	]),
+);
 
 
