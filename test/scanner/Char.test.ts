@@ -1,4 +1,5 @@
 import * as assert from 'assert';
+import * as xjs from 'extrajs';
 
 import {Filebound} from '../../src/utils';
 import {Char} from '../../src/scanner/Char';
@@ -10,7 +11,7 @@ import {
 
 
 describe('Char', () => {
-	const scanner: Scanner = new Scanner(`
+	const source_text: string = Scanner.normalize(xjs.String.dedent`
 		5  +  30 \u000d
 		6 ^ 2 - 37 *
 		( 4 * \u000d9 ^ 3
@@ -23,23 +24,22 @@ describe('Char', () => {
 
 	describe('.eq', () => {
 		it('compares one character.', () => {
-			assert.ok(Char.eq('+', new Char(scanner, 8)))
+			assert.ok(Char.eq('+', new Char(source_text, 6)))
 		});
-
 		it('compares several characters.', () => {
-			assert.ok(Char.eq('30', new Char(scanner, 11), new Char(scanner, 12)))
+			assert.ok(Char.eq('30', new Char(source_text, 9), new Char(source_text, 10)))
 		});
 	});
 
 	describe('.inc', () => {
 		it('the characters, concatenated, should be among the array entries.', () => {
-			assert.ok(Char.inc(['he', 'llo'], new Char(scanner, 77), new Char(scanner, 78)))
+			assert.ok(Char.inc(['he', 'llo'], new Char(source_text, 67), new Char(source_text, 68)))
 		});
 	});
 
-	describe('#source, #line, #column', () => {
+	describe('#{source,line,column}', () => {
 		it('returns the source text, line number, and column number.', () => {
-			const {source, line_index, col_index} = new Char(scanner, 43);
+			const {source, line_index, col_index} = new Char(source_text, 37);
 			assert.deepStrictEqual(
 				[source, line_index + 1, col_index + 1],
 				['3',    5,              5],
@@ -49,17 +49,16 @@ describe('Char', () => {
 
 	describe('#lookahead', () => {
 		it('is Char.', () => {
-			const lookahead: Char | null = new Char(scanner, 27).lookahead();
+			const lookahead: Char | null = new Char(source_text, 23).lookahead();
 			assert.ok(lookahead instanceof Char);
-			const {source, line_index, col_index} = lookahead!;
+			const {source, line_index, col_index} = lookahead;
 			assert.deepStrictEqual(
 				[source, line_index + 1, col_index + 1],
-				['*',    3,              14],
+				['*',    3,              12],
 			);
 		});
-
 		it('if last is null.', () => {
-			const char: Char = new Char(scanner, lastIndex(scanner.source_text));
+			const char: Char = new Char(source_text, lastIndex(source_text));
 			assert.strictEqual(char.source, Filebound.EOT);
 			assert.strictEqual(char.lookahead(), null);
 		});

@@ -13,8 +13,6 @@ export {
 	Binop,
 } from './ASTNode';
 
-export {LexerEBNF} from './Lexer';
-
 export {
 	TerminalIdentifier,
 	TerminalCharCode,
@@ -22,10 +20,9 @@ export {
 	TerminalCharClass,
 } from './Terminal';
 
+export * as PARSENODE from './Parser.auto';
 export {
-	ParserEBNF,
-	grammar_EBNF,
+	PARSER,
 } from './Parser.auto';
-export * as PARSER from './Parser.auto';
 
 export {Decorator} from './Decorator';

@@ -33,12 +33,11 @@ export class Grammar {
 	 * Takes a set of JSON objects representing syntactic productions
 	 * and returns a string in TypeScript language representing an instance of {@link Grammar}.
 	 * @param   jsons    a set of JSON productions
-	 * @param   langname the language name
 	 * @returns          a string to print to a TypeScript file
 	 */
-	static fromJSON(jsons: EBNFObject[], langname: string): string {
+	static fromJSON(jsons: EBNFObject[]): string {
 		return xjs.String.dedent`
-			export const grammar_${ langname }: Grammar = new Grammar([
+			export const GRAMMAR: Grammar = new Grammar([
 				${ jsons.map((json) => `${ Production.classnameOf(json) }.instance`).join(',\n\t') },
 			], ProductionGoal.instance);
 		`;
@@ -91,7 +90,7 @@ export class Grammar {
 			.filter((rule) => rule.symbols.includes(symbol))
 			.flatMap<GrammarTerminal>((rule) => {
 				const index: number = rule.symbols.indexOf(symbol);
-				return (index < rule.symbols.length - 1) // if (symbol !== rule.symbols.lastItem)
+				return (index < rule.symbols.length - 1) // COMBAK if (symbol !== rule.symbols.lastItem)
 					? [...this.first(rule.symbols[index + 1])]
 					: [...this.follow(rule.production)]
 			})

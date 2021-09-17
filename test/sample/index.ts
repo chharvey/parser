@@ -3,15 +3,14 @@ export {
 	TokenCommentSample,
 } from './Token';
 
-export {LexerSample} from './Lexer';
+export {LEXER} from './Lexer';
 
 export {
 	TerminalNumber,
 	TerminalOperator,
 } from './Terminal';
 
+export * as PARSENODE from './Parser.auto';
 export {
-	ParserSample,
-	grammar_Sample,
+	PARSER,
 } from './Parser.auto';
-export * as PARSER from './Parser.auto';

@@ -19,7 +19,7 @@ import {
 	Grammar,
 	GrammarSymbol,
 } from '../grammar/Grammar';
-import {LexerEBNF} from './Lexer';
+import {LEXER} from './Lexer';
 import * as TERMINAL from './Terminal';
 
 export class ProductionParameterSet__0__List extends Production {
@@ -378,7 +378,7 @@ export class ParseNodeGoal extends ParseNode {
 }
 
 
-export const grammar_EBNF: Grammar = new Grammar([
+export const GRAMMAR: Grammar = new Grammar([
 	ProductionParameterSet__0__List.instance,
 	ProductionParameterSet.instance,
 	ProductionArgumentSet__0__List.instance,
@@ -400,35 +400,29 @@ export const grammar_EBNF: Grammar = new Grammar([
 ], ProductionGoal.instance);
 
 
-export class ParserEBNF extends Parser {
-	/**
-	 * Construct a new ParserEBNF object.
-	 * @param source the source text to parse
-	 */
-	constructor (source: string) {
-		super(new LexerEBNF(source), grammar_EBNF, new Map<Production, typeof ParseNode>([
-			[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],
-			[ProductionParameterSet.instance, ParseNodeParameterSet],
-			[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],
-			[ProductionArgumentSet.instance, ParseNodeArgumentSet],
-			[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],
-			[ProductionConditionSet.instance, ParseNodeConditionSet],
-			[ProductionReference.instance, ParseNodeReference],
-			[ProductionUnit.instance, ParseNodeUnit],
-			[ProductionUnary.instance, ParseNodeUnary],
-			[ProductionItem.instance, ParseNodeItem],
-			[ProductionOrder.instance, ParseNodeOrder],
-			[ProductionConcat.instance, ParseNodeConcat],
-			[ProductionAltern.instance, ParseNodeAltern],
-			[ProductionDefinition.instance, ParseNodeDefinition],
-			[ProductionNonterminalName.instance, ParseNodeNonterminalName],
-			[ProductionProduction.instance, ParseNodeProduction],
-			[ProductionGoal__0__List.instance, ParseNodeGoal__0__List],
-			[ProductionGoal.instance, ParseNodeGoal],
-		]));
-	}
-	// @ts-expect-error
-	declare override parse(): ParseNodeGoal;
-}
+export const PARSER: Parser<ParseNodeGoal> = new Parser<ParseNodeGoal>(
+	LEXER,
+	GRAMMAR,
+	new Map<Production, typeof ParseNode>([
+		[ProductionParameterSet__0__List.instance, ParseNodeParameterSet__0__List],
+		[ProductionParameterSet.instance, ParseNodeParameterSet],
+		[ProductionArgumentSet__0__List.instance, ParseNodeArgumentSet__0__List],
+		[ProductionArgumentSet.instance, ParseNodeArgumentSet],
+		[ProductionConditionSet__0__List.instance, ParseNodeConditionSet__0__List],
+		[ProductionConditionSet.instance, ParseNodeConditionSet],
+		[ProductionReference.instance, ParseNodeReference],
+		[ProductionUnit.instance, ParseNodeUnit],
+		[ProductionUnary.instance, ParseNodeUnary],
+		[ProductionItem.instance, ParseNodeItem],
+		[ProductionOrder.instance, ParseNodeOrder],
+		[ProductionConcat.instance, ParseNodeConcat],
+		[ProductionAltern.instance, ParseNodeAltern],
+		[ProductionDefinition.instance, ParseNodeDefinition],
+		[ProductionNonterminalName.instance, ParseNodeNonterminalName],
+		[ProductionProduction.instance, ParseNodeProduction],
+		[ProductionGoal__0__List.instance, ParseNodeGoal__0__List],
+		[ProductionGoal.instance, ParseNodeGoal],
+	]),
+);
 
 

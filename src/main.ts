@@ -8,13 +8,13 @@ import {Parser} from './parser/Parser';
 import {Production} from './grammar/Production';
 import {Grammar} from './grammar/Grammar';
 import {
-	ParserEBNF,
+	PARSER as PARSER_EBNF,
 	Decorator,
 } from './ebnf/';
 
 
-export function generate(ebnf: string, langname: string = 'Lang'): string {
-	const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse()).transform()
+export function generate(ebnf: string): string {
+	const jsons: EBNFObject[] = Decorator.decorate(PARSER_EBNF.parse(ebnf)).transform()
 	const nonabstract: EBNFObject[] = jsons.filter((j) => j.family !== true);
 	return xjs.String.dedent`
 		import {
@@ -26,11 +26,11 @@ export function generate(ebnf: string, langname: string = 'Lang'): string {
 			Grammar,
 			GrammarSymbol,
 		} from '@chharvey/parser';
-		import {Lexer${ langname }} from './Lexer';
+		import {LEXER} from './Lexer';
 		import * as TERMINAL from './Terminal';
 		${ nonabstract.map((j) => Production.fromJSON(j)).join('') }
 		${ jsons      .map((j) => ParseNode .fromJSON(j)).join('') }
-		${ Grammar.fromJSON(nonabstract, langname) }
-		${ Parser .fromJSON(nonabstract, langname) }
+		${ Grammar.fromJSON(nonabstract) }
+		${ Parser .fromJSON(nonabstract) }
 	`;
 }

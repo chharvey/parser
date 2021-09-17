@@ -10,7 +10,7 @@ import {Production} from '../src/grammar/Production';
 import {Grammar} from '../src/grammar/Grammar';
 import {generate} from '../src/main';
 import {
-	ParserEBNF,
+	PARSER as PARSER_EBNF,
 	Decorator,
 } from '../src/ebnf/';
 
@@ -22,8 +22,8 @@ describe('generate', () => {
 			Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 			Goal ::= #x02 Unit? #x03;
 		`;
-		const jsons: EBNFObject[] = Decorator.decorate(new ParserEBNF(ebnf).parse()).transform();
-		assert.strictEqual(generate(ebnf, 'Sample'), xjs.String.dedent`
+		const jsons: EBNFObject[] = Decorator.decorate(PARSER_EBNF.parse(ebnf)).transform();
+		assert.strictEqual(generate(ebnf), xjs.String.dedent`
 			import {
 				NonemptyArray,
 				Token,
@@ -33,12 +33,12 @@ describe('generate', () => {
 				Grammar,
 				GrammarSymbol,
 			} from '@chharvey/parser';
-			import {LexerSample} from './Lexer';
+			import {LEXER} from './Lexer';
 			import * as TERMINAL from './Terminal';
 			${ jsons.map((prod) => Production.fromJSON(prod)).join('') }
 			${ jsons.map((prod) => ParseNode .fromJSON(prod)).join('') }
-			${ Grammar.fromJSON(jsons, 'Sample') }
-			${ Parser .fromJSON(jsons, 'Sample') }
+			${ Grammar.fromJSON(jsons) }
+			${ Parser .fromJSON(jsons) }
 		`);
 	});
 });

@@ -19,7 +19,7 @@ import {
 	Grammar,
 	GrammarSymbol,
 } from '../../src/grammar/Grammar';
-import {LexerSample} from './Lexer';
+import {LEXER} from './Lexer';
 import * as TERMINAL from './Terminal';
 
 export class ProductionUnit extends Production {
@@ -60,25 +60,19 @@ export class ParseNodeGoal extends ParseNode {
 }
 
 
-export const grammar_Sample: Grammar = new Grammar([
+export const GRAMMAR: Grammar = new Grammar([
 	ProductionUnit.instance,
 	ProductionGoal.instance,
 ], ProductionGoal.instance);
 
 
-export class ParserSample extends Parser {
-	/**
-	 * Construct a new ParserSample object.
-	 * @param source the source text to parse
-	 */
-	constructor (source: string) {
-		super(new LexerSample(source), grammar_Sample, new Map<Production, typeof ParseNode>([
-			[ProductionUnit.instance, ParseNodeUnit],
-			[ProductionGoal.instance, ParseNodeGoal],
-		]));
-	}
-	// @ts-expect-error
-	declare override parse(): ParseNodeGoal;
-}
+export const PARSER: Parser<ParseNodeGoal> = new Parser<ParseNodeGoal>(
+	LEXER,
+	GRAMMAR,
+	new Map<Production, typeof ParseNode>([
+		[ProductionUnit.instance, ParseNodeUnit],
+		[ProductionGoal.instance, ParseNodeGoal],
+	]),
+);
 
 

@@ -9,9 +9,6 @@ import {
 	LexError01,
 	LexError02,
 } from '../../src/error/LexError';
-import {
-	LexerSample,
-} from '../sample/';
 
 
 
@@ -19,16 +16,16 @@ describe('LexError', () => {
 	describe('#message', () => {
 		specify('LexError01', () => {
 			assert.strictEqual(
-				new LexError01(new Char(new Scanner(`-`), 2)).message,
+				new LexError01(new Char(`\u0002\n-\n\u0003`, 2)).message,
 				'Unrecognized character: \`-\` at line 1 col 1.',
 			);
 		});
 
 		specify('LexError02', () => {
 			const src: string = `unfinished`;
-			const chars: Char[] = [...new Scanner(src).generate()].slice(2, -2); // slice off line normalization
+			const chars: Char[] = [...Scanner.generate(src)].slice(2, -2); // slice off line normalization
 			assert.strictEqual(
-				new LexError02(new Token('TOKEN', new LexerSample(src), chars[0], ...chars.slice(1))).message,
+				new LexError02(new Token('TOKEN', chars[0], ...chars.slice(1))).message,
 				'Found end of file before end of TOKEN: \`unfinished\`.',
 			);
 		});
