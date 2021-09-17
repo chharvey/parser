@@ -212,18 +212,17 @@ The good news is that there’s only one method to override.
 import {
 	Terminal,
 } from '@chharvey/parser';
-import * as TOKEN from './Token';
 
 export class TerminalNumber extends Terminal {
 	static readonly instance: TerminalNumber = new TerminalNumber();
 	match(candidate: Token): boolean {
-		return candidate instanceof TOKEN.TokenNumber;
+		return candiate.tagname === 'NUMBER';
 	}
 }
 export class TerminalOperator extends Terminal {
 	static readonly instance: TerminalOperator = new TerminalOperator();
 	match(candidate: Token): boolean {
-		return candidate instanceof TOKEN.TokenOperator;
+		return candidate.tagname === 'OPERATOR';
 	}
 }
 ```
