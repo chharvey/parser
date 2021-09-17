@@ -3,7 +3,7 @@ import * as xjs from 'extrajs';
 
 import {Grammar} from '../../src/grammar/Grammar';
 import {
-	ParserEBNF,
+	PARSER as PARSER_EBNF,
 	Decorator,
 } from '../../src/ebnf/';
 
@@ -12,11 +12,11 @@ import {
 describe('Grammar', () => {
 	describe('.fromJSON', () => {
 		it('returns a string representing a new instance of Grammar.', () => {
-			assert.strictEqual(Grammar.fromJSON(Decorator.decorate(new ParserEBNF(`
+			assert.strictEqual(Grammar.fromJSON(Decorator.decorate(PARSER_EBNF.parse(`
 				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 				Goal ::= #x02 Unit? #x03;
-			`).parse()).transform(), 'Sample'), xjs.String.dedent`
-				export const grammar_Sample: Grammar = new Grammar([
+			`)).transform()), xjs.String.dedent`
+				export const GRAMMAR: Grammar = new Grammar([
 					ProductionUnit.instance,
 					ProductionGoal.instance,
 				], ProductionGoal.instance);

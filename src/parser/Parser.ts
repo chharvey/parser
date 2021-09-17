@@ -33,41 +33,34 @@ type State = ReadonlySet<Configuration>
  * An LR(1), shift-reduce Parser.
  * @see http://www2.lawrence.edu/fast/GREGGJ/CMSC515/parsing/LR_parsing.html
  */
-export class Parser {
+export class Parser<GoalNodeType extends ParseNode> {
 	/**
 	 * Takes a set of JSON objects representing syntactic productions
 	 * and returns a string in TypeScript language representing a subclass of {@link Parser}.
 	 * @param   jsons    a set of JSON productions
-	 * @param   langname the language name
 	 * @returns          a string to print to a TypeScript file
 	 */
-	static fromJSON(jsons: EBNFObject[], langname: string): string {
+	static fromJSON(jsons: EBNFObject[]): string {
 		return xjs.String.dedent`
-			export class Parser${ langname } extends Parser {
-				/**
-				 * Construct a new Parser${ langname } object.
-				 * @param source the source text to parse
-				 */
-				constructor (source: string) {
-					super(new Lexer${ langname }(source), grammar_${ langname }, new Map<Production, typeof ParseNode>([
-						${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t\t') },
-					]));
-				}
-				// @ts-expect-error
-				declare override parse(): ParseNodeGoal;
-			}
+			export const PARSER: Parser<ParseNodeGoal> = new Parser<ParseNodeGoal>(
+				LEXER,
+				GRAMMAR,
+				new Map<Production, typeof ParseNode>([
+					${ jsons.map((json) => `[${ Production.classnameOf(json) }.instance, ${ ParseNode.classnameOf(json) }]`).join(',\n\t\t') },
+				]),
+			);
 		`;
 	}
 
 
 	/** A token generator produced by a Lexer. */
-	private readonly token_generator: Generator<Token>;
+	private token_generator?: Generator<Token>;
 	/** The result of the lexer iterator. */
-	private iterator_result_token: IteratorResult<Token, void>;
+	private iterator_result_token?: IteratorResult<Token, void>;
 	/** Working stack of tokens, nodes, and configuration states. */
-	private readonly stack: [Token | ParseNode, State][] = [];
+	private stack: [Token | ParseNode, State][] = [];
 	/** Lookahead into the input stream. */
-	private lookahead: Token;
+	private lookahead!: Token;
 
 	/**
 	 * Construct a new Parser object.
@@ -76,19 +69,10 @@ export class Parser {
 	 * @param parsenode_map A mapping of productions to parse node types.
 	 */
 	constructor (
-		lexer: Lexer,
+		private readonly lexer: Lexer,
 		private readonly grammar: Grammar,
 		private readonly parsenode_map: ReadonlyMap<Production, typeof ParseNode>,
 	) {
-		this.token_generator = lexer.generate();
-		this.iterator_result_token = this.token_generator.next();
-		while (
-			this.iterator_result_token.value instanceof TokenWhitespace ||
-			this.iterator_result_token.value instanceof TokenComment
-		) {
-			this.iterator_result_token = this.token_generator.next();
-		};
-		this.lookahead = this.iterator_result_token.value as Token;
 	}
 
 	/**
@@ -108,12 +92,12 @@ export class Parser {
 		let shifted: boolean = false;
 		if (next_state.size > 0) {
 			this.stack.push([this.lookahead, this.grammar.closure(next_state)]);
-			this.iterator_result_token = this.token_generator.next();
+			this.iterator_result_token = this.token_generator!.next();
 			while (
 				this.iterator_result_token.value instanceof TokenWhitespace ||
 				this.iterator_result_token.value instanceof TokenComment
 			) {
-				this.iterator_result_token = this.token_generator.next();
+				this.iterator_result_token = this.token_generator!.next();
 			};
 			this.lookahead = this.iterator_result_token.value as Token;
 			shifted = true;
@@ -170,11 +154,22 @@ export class Parser {
 	}
 
 	/**
-	 * Main parsing function.
-	 * @returns a token representing the grammar’s goal symbol
+	 * Parse source text into a parse tree.
+	 * @param source the source text
+	 * @returns      a token representing the grammar’s goal symbol
 	 * @final
 	 */
-	parse(): ParseNode {
+	parse(source: string): GoalNodeType {
+		this.stack = []; // reset the stack for the next time parsing
+		this.token_generator = this.lexer.generate(source);
+		this.iterator_result_token = this.token_generator.next();
+		while (
+			this.iterator_result_token.value instanceof TokenWhitespace ||
+			this.iterator_result_token.value instanceof TokenComment
+		) {
+			this.iterator_result_token = this.token_generator.next();
+		};
+		this.lookahead = this.iterator_result_token.value as Token;
 		while (!this.iterator_result_token.done) {
 			const curr_state: State = this.stack.length
 				? this.stack[this.stack.length - 1][1]
@@ -196,7 +191,7 @@ export class Parser {
 		};
 		if (this.stack.length < 1) { throw new Error('Somehow, the stack was emptied. It should have 1 final element, a top-level rule.'); };
 		if (this.stack.length > 1) { throw new Error('There is still unfinished business: The Stack should have only 1 element left.'); };
-		return this.stack[0][0] as ParseNode;
+		return this.stack[0][0] as GoalNodeType;
 	}
 
 	/**

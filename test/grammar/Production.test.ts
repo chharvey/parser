@@ -6,7 +6,9 @@ import type {
 } from '../../src/types.d';
 import {Production} from '../../src/grammar/Production';
 import {Rule} from '../../src/grammar/Rule';
-import {PARSER as PARSERSAMPLE} from '../sample/';
+import {
+	PARSENODE as PARSENODE_SAMPLE,
+} from '../sample/';
 
 
 
@@ -32,7 +34,7 @@ describe('Production', () => {
 				export class ProductionUnit extends Production {
 					static readonly instance: ProductionUnit = new ProductionUnit();
 					/** @implements Production */
-					get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+					override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 						return [
 							[TERMINAL.TerminalNumber.instance],
 							['(', TERMINAL.TerminalOperator.instance, ProductionUnit.instance, ProductionUnit.instance, ')'],
@@ -43,7 +45,7 @@ describe('Production', () => {
 				export class ProductionGoal extends Production {
 					static readonly instance: ProductionGoal = new ProductionGoal();
 					/** @implements Production */
-					get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+					override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 						return [
 							['\\u0002', '\\u0003'],
 							['\\u0002', ProductionUnit.instance, '\\u0003'],
@@ -56,15 +58,15 @@ describe('Production', () => {
 
 	describe('#displayName', () => {
 		it('returns the display name.', () => {
-			assert.strictEqual(PARSERSAMPLE.ProductionUnit.instance.displayName, 'Unit');
+			assert.strictEqual(PARSENODE_SAMPLE.ProductionUnit.instance.displayName, 'Unit');
 		});
 	});
 
 	describe('#toRules', () => {
 		it('decomposes the production into a list of rules.', () => {
-			assert.deepStrictEqual(PARSERSAMPLE.ProductionUnit.instance.toRules(), [
-				new Rule(PARSERSAMPLE.ProductionUnit.instance, 0),
-				new Rule(PARSERSAMPLE.ProductionUnit.instance, 1),
+			assert.deepStrictEqual(PARSENODE_SAMPLE.ProductionUnit.instance.toRules(), [
+				new Rule(PARSENODE_SAMPLE.ProductionUnit.instance, 0),
+				new Rule(PARSENODE_SAMPLE.ProductionUnit.instance, 1),
 			]);
 		});
 	});

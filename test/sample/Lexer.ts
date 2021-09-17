@@ -1,3 +1,4 @@
+import type {NonemptyArray} from '../../src/types';
 import {Char} from '../../src/scanner/Char';
 import {
 	Token,
@@ -7,14 +8,25 @@ import * as TOKEN from './Token';
 
 
 
-export class LexerSample extends Lexer {
+class LexerSample extends Lexer {
 	protected override generate_do(): Token | null {
-		return (Char.inc(['(', ')', '^', '*', '+'], this.c0)) ?
-			new Token('PUNCTUATOR', this, ...this.advance())
-		: (/[0-9]/.test(this.c0.source)) ?
-			new TOKEN.TokenNumber(this)
-		: (Char.eq('[', this.c0)) ?
-			new TOKEN.TokenCommentSample(this)
-		: null;
+		if (Char.inc(['(', ')', '^', '*', '+'], this.c0)) {
+			return new Token('PUNCTUATOR', ...this.advance());
+
+		} else if (/[0-9]/.test(this.c0.source)) {
+			const buffer: NonemptyArray<Char> = [...this.advance()];
+			while (!this.isDone && /[0-9]/.test(this.c0.source)) {
+				buffer.push(...this.advance());
+			};
+			return new TOKEN.TokenNumber(...buffer);
+
+		} else if (Char.eq('[', this.c0)) {
+			return new TOKEN.TokenCommentSample(...this.lexQuoted('[', ']'));
+
+		} else {
+			return null;
+		};
 	}
 }
+
+export const LEXER: LexerSample = new LexerSample();

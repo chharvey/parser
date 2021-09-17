@@ -107,8 +107,7 @@ export class ASTNodeConst extends ASTNodeExpr {
 		super(p_node, {value: p_node.source});
 	}
 
-	/** @implements ASTNodeExpr */
-	transform(_nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
+	override transform(_nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
 		return [
 			[
 				(this.p_node instanceof TOKEN.TokenCharCode) ? `\\u${ this.source.slice(2).padStart(4, '0') }` : // remove '#x'
@@ -138,8 +137,7 @@ export class ASTNodeRef extends ASTNodeExpr {
 	}
 	private readonly name: string = (this.ref instanceof ASTNodeRef) ? this.ref.name : this.ref.source;
 
-	/** @implements ASTNodeExpr */
-	transform(nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
+	override transform(nt: ConcreteNonterminal, _data: EBNFObject[]): EBNFChoice {
 		return (this.name === this.name.toUpperCase())
 			/* ALLCAPS: terminal identifier */
 			? [
@@ -154,25 +152,32 @@ export class ASTNodeRef extends ASTNodeExpr {
 
 	/**
 	 * Expands this reference in its abstract form into a set of references with concrete arguments.
-	 * E.g., expands `R<+X, +Y>` into `[R_X, R_Y, R_X_Y]`.
+	 * - E.g., expands `R<+Z>` into `[R_Z]`.
+	 * - E.g., expands `R<+X, +Y>` into `[R_X, R_Y, R_X_Y]`.
+	 * - E.g., expands `R<+X, -Y>` into `[R, R_X]`.
+	 * - E.g., expands `R<-Y, +X>` into `[R, R_X]`.
+	 * - E.g., expands `R<-Z, +Z>` into `[R, R_Z]`.
 	 * @param   nt a specific nonterminal symbol that contains this expression
 	 * @returns    an array of objects representing references
 	 */
 	private expand(nt: ConcreteNonterminal): NonemptyArray<ConcreteReference> {
-		return (this.args.length)
+		const args: readonly ASTNodeArg[] = this.args.filter((arg) => arg.append === true || arg.append === 'inherit' && nt.hasSuffix(arg));
+		return (args.length)
 			? (this.ref as ASTNodeRef).expand(nt).flatMap((cr) =>
-				[...new Array(2 ** this.args.length)].map((_, count) =>
+				[...new Array(2 ** args.length)].map((_, count) =>
 					new ConcreteReference(cr.name, [
 						...cr.suffixes,
-						...[...count.toString(2).padStart(this.args.length, '0')]
-							.map((d, i) => [this.args[i], !!+d] as const)
+						...[...count.toString(2).padStart(args.length, '0')]
+							.map((d, i) => [args[i], !!+d] as const)
 							.filter(([_arg, b]) => !!b)
 							.map(([arg, _b]) => arg)
 						,
 					], nt)
-				).slice(1) // slice off the \b00 case because `R<+X, +Y>` should never give `R`.
+				).slice((this.args.length === args.length) ? 1 : 0) // slice off the \b00 case for `R<+X, +Y>` because it should never give `R`.
 			) as NonemptyArray<ConcreteReference>
-			: [new ConcreteReference(this.name)]
+			: (this.args.length)
+				? (this.ref as ASTNodeRef).expand(nt)
+				: [new ConcreteReference(this.name)]
 		;
 	}
 }
@@ -189,8 +194,7 @@ export class ASTNodeItem extends ASTNodeExpr {
 		super(parse_node, {}, [item, ...conditions]);
 	}
 
-	/** @implements ASTNodeExpr */
-	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
+	override transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
 		return (this.conditions.some((cond) => cond.include === nt.hasSuffix(cond)))
 			? this.item.transform(nt, data)
 			: [
@@ -222,8 +226,7 @@ export class ASTNodeOpUn extends ASTNodeOp {
 		super(parse_node, operator, [operand]);
 	}
 
-	/** @implements ASTNodeExpr */
-	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
+	override transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
 		return new Map<Unop, (operand: EBNFChoice) => EBNFChoice>([
 			[Unop.PLUS, (operand) => {
 				const memoized: xjs.MapEq<EBNFChoice, string> = ASTNodeOpUn.memoized.get(Unop.PLUS)!;
@@ -281,8 +284,7 @@ export class ASTNodeOpBin extends ASTNodeOp {
 		super(parse_node, operator, [operand0, operand1]);
 	}
 
-	/** @implements ASTNodeExpr */
-	transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
+	override transform(nt: ConcreteNonterminal, data: EBNFObject[]): EBNFChoice {
 		const trans0: EBNFChoice = this.operand0.transform(nt, data);
 		const trans1: EBNFChoice = this.operand1.transform(nt, data);
 		return new Map<Binop, () => EBNFChoice>([

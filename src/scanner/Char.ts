@@ -1,7 +1,6 @@
 import * as utils from '../utils';
 import {Filebound} from '../utils';
 import type {Serializable} from '../Serializable';
-import type {Scanner} from './Scanner';
 
 
 
@@ -55,7 +54,7 @@ export class Char implements Serializable {
 	/** @implements Serializable */
 	readonly tagname: string = 'char';
 	/** @implements Serializable */
-	readonly source: string = this.scanner.source_text[this.source_index];
+	readonly source: string = this.source_text[this.source_index];
 	/** @implements Serializable */
 	readonly line_index: number;
 	/** @implements Serializable */
@@ -63,20 +62,18 @@ export class Char implements Serializable {
 
 	/**
 	 * Construct a new Char object.
-	 * @param   scanner      The scanner containing the source text.
+	 * @param   source_text  The entire source text of the program.
 	 * @param   source_index The index of the character in source text.
 	 */
 	constructor (
-		private readonly scanner: Scanner,
+		private readonly source_text: string,
 		/** @implements Serializable */
 		readonly source_index: number,
 	) {
 		/** Array of characters from source start until current iteration (not including current character). */
-		const prev_chars: readonly string[] = [...this.scanner.source_text].slice(0, this.source_index);
-		this.line_index = prev_chars.filter((c) => c === '\n').length;
+		const prev_chars: readonly string[] = [...this.source_text.slice(0, this.source_index)];
+		this.line_index = prev_chars.filter((c) => c === '\n').length - 1; // subtract 1 line due to the prepended SOT + LF
 		this.col_index = this.source_index - (prev_chars.lastIndexOf('\n') + 1);
-
-		this.line_index--; // subtract 1 line due to the prepended STX + LF
 	}
 
 	/** @implements Serializable */
@@ -103,7 +100,7 @@ export class Char implements Serializable {
 	lookahead(n: bigint = 1n): Char | null {
 		if (n <= 0n) { throw new RangeError('Argument must be a positive integer.'); };
 		if (n === 1n) {
-			return (this.source === Filebound.EOT) ? null : new Char(this.scanner, this.source_index + 1);
+			return (this.source === Filebound.EOT) ? null : new Char(this.source_text, this.source_index + 1);
 		} else {
 			const recurse: Char | null = this.lookahead(n - 1n);
 			return recurse && recurse.lookahead();
