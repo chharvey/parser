@@ -639,3 +639,50 @@ This informative table summarizes the right-hand side appearances.
 `<X-><Y+>L` |     |       | `N_Y` |
 `<X-><Y->M` | `N` |       |       |
 `<X+><X->O` |     |       |       |
+
+
+
+## Aliases
+In addition to the formal productions described above, this specification’s EBNF language allows for
+**nonterminal aliases**, which are simply variables replaced with definitions at compile-time.
+These aliases exist only or the author’s benefit and do not change the structure of the CFG in which it exists.
+Aliases are delimited with the symbol `=:=` as to distinguish them from formal productions.
+By convention, alias names are written in `snake_case`.
+
+For example, the alias `item_list` below represents one or two nonterminals separated by a comma.
+It does not create a new production; it is simply replaced with its definition before being parsed.
+```
+item_list =:=
+	| First
+	| (First ",")? Second
+;
+
+MyList ::= "{" item_list "}"
+```
+This grammar is expanded to the following:
+```
+MyList ::= "{" (First | (First ",")? Second) "}"
+```
+
+Authors must be careful not to define aliases cyclically.
+```
+unit           =:= NUMBER | "(" Expression ")";
+multiplicative =:= (unit "*")? unit;
+additive       =:= (multiplicative "+")? multiplicative;
+Expression     ::= additive;
+```
+would expand to:
+```
+Expression ::=
+	. (
+		( ((NUMBER | "(" Expression ")") "*" )?
+		(NUMBER | "(" Expression ")")
+	) "+")?
+	. (
+		( (NUMBER | "(" Expression ")") "*" )?
+		(NUMBER | "(" Expression ")")
+	)
+;
+```
+The alias replacement mechanism is dumb; it simply searches for the alias name and replaces it with its definition.
+No reference errors or assignment errors will be thrown.
