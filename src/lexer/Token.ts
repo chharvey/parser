@@ -1,5 +1,8 @@
-import * as utils from '../utils';
-import {Filebound} from '../utils';
+import {
+	Filebound,
+	stringifyAttributes,
+	sanitizeContent,
+} from '../utils';
 import type {NonemptyArray} from '../types';
 import type {Serializable} from '../Serializable';
 import type {Char} from '../scanner/Char';
@@ -29,7 +32,6 @@ export class Token implements Serializable {
 	 * Construct a new Token object.
 	 * @param tagname    The name of the type of this Token.
 	 * @param chars      characters to add upon construction
-	 * @throws           {LexError02} if the end of the file is reached before the end of the token
 	 */
 	constructor (
 		/** @implements Serializable */
@@ -54,16 +56,17 @@ export class Token implements Serializable {
 
 	/** @implements Serializable */
 	serialize(): string {
-		return `<${ this.tagname } ${ utils.stringifyAttributes(new Map<string, string>([
+		return `<${ this.tagname } ${ stringifyAttributes(new Map<string, string>([
 			['line', (this.line_index + 1).toString()],
 			['col',  (this.col_index  + 1).toString()],
-		])) }>${ utils.sanitizeContent(this.source) }</${ this.tagname }>`;
+		])) }>${ sanitizeContent(this.source) }</${ this.tagname }>`;
 	}
 }
 
 
 
-/** @final */ export class TokenFilebound extends Token {
+/** @final */
+export class TokenFilebound extends Token {
 	static readonly CHARS: readonly Filebound[] = [Filebound.SOT, Filebound.EOT];
 	// declare readonly source: Filebound; // NB: https://github.com/microsoft/TypeScript/issues/40220
 
@@ -75,7 +78,8 @@ export class Token implements Serializable {
 
 
 
-/** @final */ export class TokenWhitespace extends Token {
+/** @final */
+export class TokenWhitespace extends Token {
 	static readonly CHARS: readonly string[] = [' ', '\t', '\n'];
 
 

@@ -1,25 +1,24 @@
 import * as assert from 'assert';
-
-import {
-	ASTNODE,
-	Unop,
-	Binop,
-	PARSER as PARSER_EBNF,
-	Decorator,
-} from '../../src/ebnf/';
+import {Op} from '../../src/validator/Operator';
+import * as ASTNODE from '../../src/validator/astnode/index';
+import {DECORATOR} from '../../src/validator/DecoratorEbnf';
+import {PARSER} from '../../src/ebnf/Parser.auto';
 import {
 	assert_arrayLength,
 } from '../helpers';
 
 
 
-describe('Decorator', () => {
-	describe('.decorate', () => {
+describe('DecoratorEbnf', () => {
+	describe('#decorate', () => {
 		context('transforms an EBNF parse node into an AST node.', () => {
-			const goal: ASTNODE.ASTNodeGoal = Decorator.decorate(PARSER_EBNF.parse(`
-				Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
-				Goal ::= #x02 Unit? #x03;
-			`));
+			let goal: ASTNODE.ASTNodeGoal;
+			before(() => {
+				goal = DECORATOR.decorate(PARSER.parse(`
+					Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
+					Goal ::= #x02 Unit? #x03;
+				`));
+			});
 
 			specify('Goal ::= #x02 Production* #x03;', () => {
 				/*
@@ -42,9 +41,9 @@ describe('Decorator', () => {
 						<Op source='NUMBER | "(" OPERATOR Unit Unit ")"'>...</Op>
 					</Production>
 				*/
-				const prod: ASTNODE.ASTNodeProduction = goal.children[0];
-				assert.strictEqual(prod.children[0]['name'], 'Unit');
-				assert.strictEqual(prod.children[1].source, 'NUMBER | "(" OPERATOR Unit Unit ")"');
+				const prod: ASTNODE.ASTNodeProduction = goal.productions[0];
+				assert.strictEqual(prod.nonterminal['name'], 'Unit');
+				assert.strictEqual(prod.definition.source, 'NUMBER | "(" OPERATOR Unit Unit ")"');
 			});
 
 			specify('Unary ::= Unit "*"', () => {
@@ -55,7 +54,7 @@ describe('Decorator', () => {
 						</Op>
 					</Op>
 				*/
-				const outer: ASTNODE.ASTNodeExpr = (((Decorator.decorate(PARSER_EBNF.parse(`
+				const outer: ASTNODE.ASTNodeExpr = (((DECORATOR.decorate(PARSER.parse(`
 					Goal ::= #x02 Production* #x03;
 				`)).children[0] as ASTNODE.ASTNodeProduction)
 					.children[1] as ASTNODE.ASTNodeOpBin) // source='#x02 Production* #x03'
@@ -64,13 +63,13 @@ describe('Decorator', () => {
 				;
 				assert.ok(outer instanceof ASTNODE.ASTNodeOpUn);
 				assert.deepStrictEqual(
-					[outer['operator'], outer.source],
-					[Unop.OPT,          'Production *'],
+					[outer.operator, outer.source],
+					[Op.OPT,         'Production *'],
 				);
-				const inner: ASTNODE.ASTNodeExpr = outer.children[0];
+				const inner: ASTNODE.ASTNodeExpr = outer.operand;
 				assert.ok(inner instanceof ASTNODE.ASTNodeOpUn);
-				assert.strictEqual(inner['operator'], Unop.PLUS);
-				const ref: ASTNODE.ASTNodeExpr = inner.children[0];
+				assert.strictEqual(inner.operator, Op.PLUS);
+				const ref: ASTNODE.ASTNodeExpr = inner.operand;
 				assert.ok(ref instanceof ASTNODE.ASTNodeRef);
 				assert.strictEqual(ref['name'], 'Production');
 			});
@@ -82,15 +81,15 @@ describe('Decorator', () => {
 						<Op operator=ORDER source='"(" OPERATOR Unit Unit ")"'>...</Op>
 					</Production>
 				*/
-				const altern: ASTNODE.ASTNodeExpr = goal.children[0].children[1];
+				const altern: ASTNODE.ASTNodeExpr = goal.productions[0].definition;
 				assert.ok(altern instanceof ASTNODE.ASTNodeOpBin);
-				assert.strictEqual(altern['operator'], Binop.ALTERN);
-				const left:  ASTNODE.ASTNodeExpr = altern.children[0];
-				const right: ASTNODE.ASTNodeExpr = altern.children[1];
+				assert.strictEqual(altern.operator, Op.ALTERN);
+				const left:  ASTNODE.ASTNodeExpr = altern.operand0;
+				const right: ASTNODE.ASTNodeExpr = altern.operand1;
 				assert.ok(left  instanceof ASTNODE.ASTNodeRef);
 				assert.ok(right instanceof ASTNODE.ASTNodeOpBin);
 				assert.strictEqual(left['name'], 'NUMBER');
-				assert.strictEqual(right['operator'], Binop.ORDER);
+				assert.strictEqual(right.operator, Op.ORDER);
 				assert.strictEqual(right.source, '"(" OPERATOR Unit Unit ")"');
 			});
 		});

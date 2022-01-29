@@ -1,5 +1,4 @@
 import * as xjs from 'extrajs';
-
 import type {
 	EBNFObject,
 } from './types';
@@ -7,14 +6,12 @@ import {ParseNode} from './parser/ParseNode';
 import {Parser} from './parser/Parser';
 import {Production} from './grammar/Production';
 import {Grammar} from './grammar/Grammar';
-import {
-	PARSER as PARSER_EBNF,
-	Decorator,
-} from './ebnf/';
+import {DECORATOR} from './validator/DecoratorEbnf';
+import {PARSER} from './ebnf/Parser.auto';
 
 
 export function generate(ebnf: string): string {
-	const jsons: EBNFObject[] = Decorator.decorate(PARSER_EBNF.parse(ebnf)).transform()
+	const jsons: EBNFObject[] = DECORATOR.decorate(PARSER.parse(ebnf)).transform()
 	const nonabstract: EBNFObject[] = jsons.filter((j) => j.family !== true);
 	return xjs.String.dedent`
 		import {

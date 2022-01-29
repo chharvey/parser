@@ -6,13 +6,22 @@ import type {
 } from '../../src/types.d';
 import {Production} from '../../src/grammar/Production';
 import {Rule} from '../../src/grammar/Rule';
-import {
-	PARSENODE as PARSENODE_SAMPLE,
-} from '../sample/';
 
 
 
 describe('Production', () => {
+	const MOCK = {
+		ProductionUnit: class ProductionUnit extends Production {
+			static readonly instance: ProductionUnit = new ProductionUnit();
+			override get sequences(): any {
+				return [
+					['(',                              ')'],
+					['(', ProductionUnit.instance, ')'],
+				];
+			}
+		}
+	};
+
 	describe('.fromJSON', () => {
 		it('returns a string representing new subclasses of Production.', () => {
 			assert.deepStrictEqual(([
@@ -31,9 +40,8 @@ describe('Production', () => {
 					],
 				},
 			] as EBNFObject[]).map((prod) => Production.fromJSON(prod)), [xjs.String.dedent`
-				export class ProductionUnit extends Production {
+				class ProductionUnit extends Production {
 					static readonly instance: ProductionUnit = new ProductionUnit();
-					/** @implements Production */
 					override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 						return [
 							[TERMINAL.TerminalNumber.instance],
@@ -42,9 +50,8 @@ describe('Production', () => {
 					}
 				}
 			`, xjs.String.dedent`
-				export class ProductionGoal extends Production {
+				class ProductionGoal extends Production {
 					static readonly instance: ProductionGoal = new ProductionGoal();
-					/** @implements Production */
 					override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 						return [
 							['\\u0002', '\\u0003'],
@@ -58,15 +65,15 @@ describe('Production', () => {
 
 	describe('#displayName', () => {
 		it('returns the display name.', () => {
-			assert.strictEqual(PARSENODE_SAMPLE.ProductionUnit.instance.displayName, 'Unit');
+			assert.strictEqual(MOCK.ProductionUnit.instance.displayName, 'Unit');
 		});
 	});
 
 	describe('#toRules', () => {
 		it('decomposes the production into a list of rules.', () => {
-			assert.deepStrictEqual(PARSENODE_SAMPLE.ProductionUnit.instance.toRules(), [
-				new Rule(PARSENODE_SAMPLE.ProductionUnit.instance, 0),
-				new Rule(PARSENODE_SAMPLE.ProductionUnit.instance, 1),
+			assert.deepStrictEqual(MOCK.ProductionUnit.instance.toRules(), [
+				new Rule(MOCK.ProductionUnit.instance, 0),
+				new Rule(MOCK.ProductionUnit.instance, 1),
 			]);
 		});
 	});

@@ -1,6 +1,6 @@
 import * as xjs from 'extrajs';
 
-import * as utils from '../utils';
+import {stringOfSymbols} from '../utils';
 import type {Production} from './Production';
 import type {GrammarSymbol} from './Grammar';
 
@@ -30,7 +30,7 @@ export class Rule {
 
 	/** @override */
 	toString(): string {
-		return `${ this.production.displayName } --> ${ utils.stringOfSymbols(this.symbols) }`
+		return `${ this.production.displayName } --> ${ stringOfSymbols(this.symbols) }`
 	}
 
 	/**

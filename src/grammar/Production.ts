@@ -4,7 +4,7 @@ import type {
 	NonemptyArray,
 	EBNFObject,
 } from '../types.d';
-import * as utils from '../utils';
+import {macroToTitle} from '../utils';
 import {Rule} from './Rule';
 import type {
 	GrammarSymbol,
@@ -36,14 +36,13 @@ export abstract class Production {
 	 */
 	static fromJSON(json: EBNFObject): string {
 		return (json.family === true) ? '' : xjs.String.dedent`
-			export class ${ this.classnameOf(json) } extends Production {
+			class ${ this.classnameOf(json) } extends Production {
 				static readonly instance: ${ this.classnameOf(json) } = new ${ this.classnameOf(json) }();
-				/** @implements Production */
 				override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 					return [
 						${ json.defn.map((seq) => `[${ seq.map((it) =>
 							(typeof it === 'string') ? `'${ it }'` :
-							('term' in it) ? `TERMINAL.Terminal${ utils.macroToTitle(it.term) }.instance` :
+							('term' in it) ? `TERMINAL.Terminal${ macroToTitle(it.term) }.instance` :
 							`${ this.classnameOf(it) }.instance`
 						).join(', ') }],`).join('\n\t\t\t') }
 					];

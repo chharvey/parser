@@ -2,28 +2,34 @@ import type {
 	NonemptyArray,
 } from '../types.d';
 import {Token} from '../lexer/Token';
+import type * as TOKEN from '../lexer/token/index';
 import type {ParseNode} from '../parser/ParseNode';
-import type * as TOKEN from './Token';
+import * as PARSENODE from '../ebnf/Parser.auto';
 import {
+	Op,
 	Unop,
 	Binop,
-} from './ASTNode';
-import * as ASTNODE from './ASTNode';
-import * as PARSER from './Parser.auto';
+} from './Operator';
+import * as ASTNODE from './astnode/index';
+import {
+	DecoratorReturnType,
+	Decorator,
+} from './Decorator';
 
 
 
-export class Decorator {
+
+export class DecoratorEbnf extends Decorator {
 	private static readonly OPS_UN: ReadonlyMap<string, Unop> = new Map<string, Unop>([
-		[`+`, Unop.PLUS],
-		[`#`, Unop.HASH],
-		[`?`, Unop.OPT],
+		[`+`, Op.PLUS],
+		[`#`, Op.HASH],
+		[`?`, Op.OPT],
 	]);
 
 	private static readonly OPS_BIN: ReadonlyMap<string, Binop> = new Map<string, Binop>([
-		[`.`, Binop.ORDER],
-		[`&`, Binop.CONCAT],
-		[`|`, Binop.ALTERN],
+		[`.`, Op.ORDER],
+		[`&`, Op.CONCAT],
+		[`|`, Op.ALTERN],
 	]);
 
 	private static readonly PARAMOPS: ReadonlyMap<string, boolean | 'inherit'> = new Map<string, boolean | 'inherit'>([
@@ -38,35 +44,35 @@ export class Decorator {
 	 * Similar to a node of the Semantic Tree or “decorated/abstract syntax tree”.
 	 * @returns a JSON object containing the parse node’s semantics
 	 */
-	static decorate(node:
-		| PARSER.ParseNodeParameterSet__0__List
-		| PARSER.ParseNodeParameterSet
+	override decorate(node:
+		| PARSENODE.ParseNodeParameterSet__0__List
+		| PARSENODE.ParseNodeParameterSet
 	): NonemptyArray<ASTNODE.ASTNodeParam>;
-	static decorate(node:
-		| PARSER.ParseNodeArgumentSet__0__List
-		| PARSER.ParseNodeArgumentSet
+	override decorate(node:
+		| PARSENODE.ParseNodeArgumentSet__0__List
+		| PARSENODE.ParseNodeArgumentSet
 	): NonemptyArray<ASTNODE.ASTNodeArg>;
-	static decorate(node:
-		| PARSER.ParseNodeConditionSet__0__List
-		| PARSER.ParseNodeConditionSet
+	override decorate(node:
+		| PARSENODE.ParseNodeConditionSet__0__List
+		| PARSENODE.ParseNodeConditionSet
 	): NonemptyArray<ASTNODE.ASTNodeCondition>;
-	static decorate(node: PARSER.ParseNodeReference): ASTNODE.ASTNodeRef;
-	static decorate(node:
-		| PARSER.ParseNodeUnit
-		| PARSER.ParseNodeUnary
-		| PARSER.ParseNodeItem
-		| PARSER.ParseNodeOrder
-		| PARSER.ParseNodeConcat
-		| PARSER.ParseNodeAltern
-		| PARSER.ParseNodeDefinition
+	override decorate(node: PARSENODE.ParseNodeReference): ASTNODE.ASTNodeRef;
+	override decorate(node:
+		| PARSENODE.ParseNodeUnit
+		| PARSENODE.ParseNodeUnary
+		| PARSENODE.ParseNodeItem
+		| PARSENODE.ParseNodeOrder
+		| PARSENODE.ParseNodeConcat
+		| PARSENODE.ParseNodeAltern
+		| PARSENODE.ParseNodeDefinition
 	): ASTNODE.ASTNodeExpr;
-	static decorate(node: PARSER.ParseNodeNonterminalName): ASTNODE.ASTNodeNonterminal;
-	static decorate(node: PARSER.ParseNodeProduction):      ASTNODE.ASTNodeProduction;
-	static decorate(node: PARSER.ParseNodeGoal__0__List):   NonemptyArray<ASTNODE.ASTNodeProduction>;
-	static decorate(node: PARSER.ParseNodeGoal):            ASTNODE.ASTNodeGoal;
-	static decorate(node: ParseNode): ASTNODE.ASTNodeEBNF | readonly ASTNODE.ASTNodeEBNF[];
-	static decorate(node: ParseNode): ASTNODE.ASTNodeEBNF | readonly ASTNODE.ASTNodeEBNF[] {
-		if (node instanceof PARSER.ParseNodeParameterSet__0__List) {
+	override decorate(node: PARSENODE.ParseNodeNonterminalName): ASTNODE.ASTNodeNonterminal;
+	override decorate(node: PARSENODE.ParseNodeProduction):      ASTNODE.ASTNodeProduction;
+	override decorate(node: PARSENODE.ParseNodeGoal__0__List):   NonemptyArray<ASTNODE.ASTNodeProduction>;
+	override decorate(node: PARSENODE.ParseNodeGoal):            ASTNODE.ASTNodeGoal;
+	override decorate(node: ParseNode): DecoratorReturnType;
+	override decorate(node: ParseNode): DecoratorReturnType {
+		if (node instanceof PARSENODE.ParseNodeParameterSet__0__List) {
 			function decorateParam(identifier: TOKEN.TokenIdentifier): ASTNODE.ASTNodeParam {
 				return new ASTNODE.ASTNodeParam(identifier);
 			}
@@ -80,12 +86,12 @@ export class Decorator {
 				]
 			;
 
-		} else if (node instanceof PARSER.ParseNodeParameterSet) {
+		} else if (node instanceof PARSENODE.ParseNodeParameterSet) {
 			return this.decorate(node.children[1]);
 
-		} else if (node instanceof PARSER.ParseNodeArgumentSet__0__List) {
+		} else if (node instanceof PARSENODE.ParseNodeArgumentSet__0__List) {
 			function decorateArg(identifier: TOKEN.TokenIdentifier, append: TOKEN.TokenPunctuator): ASTNODE.ASTNodeArg {
-				return new ASTNODE.ASTNodeArg(identifier, Decorator.PARAMOPS.get(append.source)!);
+				return new ASTNODE.ASTNodeArg(identifier, DecoratorEbnf.PARAMOPS.get(append.source)!);
 			}
 			return (node.children.length === 2)
 				? [
@@ -103,12 +109,12 @@ export class Decorator {
 				]
 			;
 
-		} else if (node instanceof PARSER.ParseNodeArgumentSet) {
+		} else if (node instanceof PARSENODE.ParseNodeArgumentSet) {
 			return this.decorate(node.children[1]);
 
-		} else if (node instanceof PARSER.ParseNodeConditionSet__0__List) {
+		} else if (node instanceof PARSENODE.ParseNodeConditionSet__0__List) {
 			function decorateCondition(identifier: TOKEN.TokenIdentifier, include: TOKEN.TokenPunctuator): ASTNODE.ASTNodeCondition {
-				return new ASTNODE.ASTNodeCondition(identifier, Decorator.PARAMOPS.get(include.source) as boolean);
+				return new ASTNODE.ASTNodeCondition(identifier, DecoratorEbnf.PARAMOPS.get(include.source) as boolean);
 			}
 			return (node.children.length === 2)
 				? [
@@ -126,10 +132,10 @@ export class Decorator {
 				]
 			;
 
-		} else if (node instanceof PARSER.ParseNodeConditionSet) {
+		} else if (node instanceof PARSENODE.ParseNodeConditionSet) {
 			return this.decorate(node.children[1]);
 
-		} else if (node instanceof PARSER.ParseNodeReference) {
+		} else if (node instanceof PARSENODE.ParseNodeReference) {
 			return (node.children.length === 1)
 				? new ASTNODE.ASTNodeRef(
 					node,
@@ -142,7 +148,7 @@ export class Decorator {
 				)
 			;
 
-		} else if (node instanceof PARSER.ParseNodeUnit) {
+		} else if (node instanceof PARSENODE.ParseNodeUnit) {
 			return (node.children.length === 1)
 				? (node.children[0] instanceof Token)
 					? new ASTNODE.ASTNodeConst(node.children[0] as TOKEN.TokenCharCode | TOKEN.TokenString | TOKEN.TokenCharClass)
@@ -150,36 +156,36 @@ export class Decorator {
 				: this.decorate(node.children[1])
 			;
 
-		} else if (node instanceof PARSER.ParseNodeUnary) {
+		} else if (node instanceof PARSENODE.ParseNodeUnary) {
 			let operand: ASTNODE.ASTNodeExpr = this.decorate(node.children[0]);
 			if (node.children.length > 1) {
 				const operator: string = node.children[1]!.source;
 				operand = (operator === '*')
 					? new ASTNODE.ASTNodeOpUn(
 						node,
-						Unop.OPT,
+						Op.OPT,
 						new ASTNODE.ASTNodeOpUn(
 							node,
-							Unop.PLUS,
+							Op.PLUS,
 							operand,
 						),
 					)
 					: new ASTNODE.ASTNodeOpUn(
 						node,
-						this.OPS_UN.get(operator)!,
+						DecoratorEbnf.OPS_UN.get(operator)!,
 						operand,
 					);
 				if (node.children.length > 2) {
 					operand = new ASTNODE.ASTNodeOpUn(
 						node,
-						Unop.OPT,
+						Op.OPT,
 						operand,
 					);
 				};
 			};
 			return operand;
 
-		} else if (node instanceof PARSER.ParseNodeItem) {
+		} else if (node instanceof PARSENODE.ParseNodeItem) {
 			return (node.children.length === 1)
 				? this.decorate(node.children[0])
 				: new ASTNODE.ASTNodeItem(
@@ -189,38 +195,38 @@ export class Decorator {
 				)
 			;
 
-		} else if (node instanceof PARSER.ParseNodeOrder) {
+		} else if (node instanceof PARSENODE.ParseNodeOrder) {
 			return (node.children.length === 1)
 				? this.decorate(node.children[0])
 				: new ASTNODE.ASTNodeOpBin(
 					node,
-					Binop.ORDER,
+					Op.ORDER,
 					this.decorate(node.children[0]),
 					this.decorate((node.children.length === 2) ? node.children[1] : node.children[2]),
 				)
 			;
 
 		} else if (
-			node instanceof PARSER.ParseNodeConcat ||
-			node instanceof PARSER.ParseNodeAltern
+			node instanceof PARSENODE.ParseNodeConcat ||
+			node instanceof PARSENODE.ParseNodeAltern
 		) {
 			return (node.children.length === 1)
 				? this.decorate(node.children[0])
 				: new ASTNODE.ASTNodeOpBin(
 					node,
-					this.OPS_BIN.get(node.children[1].source)!,
+					DecoratorEbnf.OPS_BIN.get(node.children[1].source)!,
 					this.decorate(node.children[0]),
 					this.decorate(node.children[2]),
 				)
 			;
 
-		} else if (node instanceof PARSER.ParseNodeDefinition) {
-			return this.decorate((node.children[0] instanceof PARSER.ParseNodeAltern)
+		} else if (node instanceof PARSENODE.ParseNodeDefinition) {
+			return this.decorate((node.children[0] instanceof PARSENODE.ParseNodeAltern)
 				? node.children[0]
-				: node.children[1] as PARSER.ParseNodeAltern
+				: node.children[1] as PARSENODE.ParseNodeAltern
 			);
 
-		} else if (node instanceof PARSER.ParseNodeNonterminalName) {
+		} else if (node instanceof PARSENODE.ParseNodeNonterminalName) {
 			return (node.children.length === 1)
 				? new ASTNODE.ASTNodeNonterminal(
 					node,
@@ -233,14 +239,14 @@ export class Decorator {
 				)
 			;
 
-		} else if (node instanceof PARSER.ParseNodeProduction) {
+		} else if (node instanceof PARSENODE.ParseNodeProduction) {
 			return new ASTNODE.ASTNodeProduction(
 				node,
 				this.decorate(node.children[0]),
 				this.decorate(node.children[2]),
 			);
 
-		} else if (node instanceof PARSER.ParseNodeGoal__0__List) {
+		} else if (node instanceof PARSENODE.ParseNodeGoal__0__List) {
 			return (node.children.length === 1)
 				? [
 					this.decorate(node.children[0]),
@@ -251,11 +257,15 @@ export class Decorator {
 				]
 			;
 
-		} else if (node instanceof PARSER.ParseNodeGoal) {
+		} else if (node instanceof PARSENODE.ParseNodeGoal) {
 			return new ASTNODE.ASTNodeGoal(node, (node.children.length === 2) ? [] : this.decorate(node.children[1]));
 
 		} else {
 			throw new ReferenceError(`Could not find type of parse node ${ node }.`);
-		};
+		}
 	}
 }
+
+
+
+export const DECORATOR: DecoratorEbnf = new DecoratorEbnf();
