@@ -1,7 +1,5 @@
-import * as utils from '../utils';
+import {stringifyAttributes} from '../utils';
 import type {Serializable} from '../Serializable';
-import type {Token} from '../lexer/Token';
-import type {ParseNode} from '../parser/ParseNode';
 
 
 
@@ -25,23 +23,23 @@ export class ASTNode implements Serializable {
 	/** @implements Serializable */
 	readonly tagname: string = this.constructor.name.slice('ASTNode'.length);
 	/** @implements Serializable */
-	readonly source: string = this.parse_node.source;
+	readonly source: string = this.start.source;
 	/** @implements Serializable */
-	readonly source_index: number = this.parse_node.source_index;
+	readonly source_index: number = this.start.source_index;
 	/** @implements Serializable */
-	readonly line_index: number = this.parse_node.line_index;
+	readonly line_index: number = this.start.line_index;
 	/** @implements Serializable */
-	readonly col_index: number = this.parse_node.col_index;
+	readonly col_index: number = this.start.col_index;
 
 	/**
 	 * Construct a new ASTNode object.
 	 *
-	 * @param parse_node The node in the parse tree to which this ASTNode corresponds.
+	 * @param start      The node in the parse tree to which this ASTNode corresponds.
 	 * @param attributes Any other attributes to attach.
 	 * @param children   The set of child inputs that creates this ASTNode.
 	 */
 	constructor (
-		private readonly parse_node: Token | ParseNode,
+		private readonly start: Serializable,
 		private readonly attributes: {[key: string]: unknown} = {},
 		readonly children: readonly ASTNode[] = [],
 	) {
@@ -58,6 +56,6 @@ export class ASTNode implements Serializable {
 			attributes.set(key, `${ value }`);
 		});
 		const contents: string = this.children.map((child) => child.serialize()).join('');
-		return `<${ this.tagname } ${ utils.stringifyAttributes(attributes) }${ (contents) ? `>${ contents }</${ this.tagname }>` : `/>` }`;
+		return `<${ this.tagname } ${ stringifyAttributes(attributes) }${ (contents) ? `>${ contents }</${ this.tagname }>` : `/>` }`;
 	}
 }

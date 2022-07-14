@@ -1,4 +1,4 @@
-import * as utils from '../utils';
+import {titleToMacro} from '../utils';
 import type {Token} from '../lexer/Token';
 
 
@@ -12,7 +12,7 @@ export abstract class Terminal {
 	}
 
 	/** @final */ get displayName(): string {
-		return utils.titleToMacro(this.constructor.name.slice('Terminal'.length));
+		return titleToMacro(this.constructor.name.slice('Terminal'.length));
 	}
 
 	/**

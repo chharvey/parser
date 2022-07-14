@@ -112,6 +112,7 @@ export class Lexer {
 	 * @param start_delim   the delimiter that starts the token (e.g., an open-quote)
 	 * @param end_delim     the delimiter that ends the token (e.g., a close-quote)
 	 * @returns             the characters from which to construct a new Token
+	 * @throws {LexError02} if the end of the file was reached before the end of the token
 	 * @final
 	 */
 	protected lexQuoted(start_delim: string, end_delim: string = start_delim): NonemptyArray<Char> {

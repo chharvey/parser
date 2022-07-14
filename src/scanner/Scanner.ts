@@ -31,6 +31,6 @@ export class Scanner {
 		const source_text: string = Scanner.normalize(source);
 		for (let source_index: number = 0; source_index < source_text.length; source_index++) {
 			yield new Char(source_text, source_index);
-		};
+		}
 	}
 }

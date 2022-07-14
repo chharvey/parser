@@ -1,6 +1,5 @@
 import * as assert from 'assert';
 import * as xjs from 'extrajs';
-
 import type {
 	EBNFObject,
 } from '../src/types.d';
@@ -8,11 +7,9 @@ import {ParseNode} from '../src/parser/ParseNode';
 import {Parser} from '../src/parser/Parser';
 import {Production} from '../src/grammar/Production';
 import {Grammar} from '../src/grammar/Grammar';
+import {DECORATOR} from '../src/validator/DecoratorEbnf';
+import {PARSER} from '../src/ebnf/Parser.auto';
 import {generate} from '../src/main';
-import {
-	PARSER as PARSER_EBNF,
-	Decorator,
-} from '../src/ebnf/';
 
 
 
@@ -22,7 +19,7 @@ describe('generate', () => {
 			Unit ::= NUMBER | "(" OPERATOR Unit Unit ")";
 			Goal ::= #x02 Unit? #x03;
 		`;
-		const jsons: EBNFObject[] = Decorator.decorate(PARSER_EBNF.parse(ebnf)).transform();
+		const jsons: EBNFObject[] = DECORATOR.decorate(PARSER.parse(ebnf)).transform();
 		assert.strictEqual(generate(ebnf), xjs.String.dedent`
 			import {
 				NonemptyArray,

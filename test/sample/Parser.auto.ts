@@ -22,9 +22,8 @@ import {
 import {LEXER} from './Lexer';
 import * as TERMINAL from './Terminal';
 
-export class ProductionUnit extends Production {
+class ProductionUnit extends Production {
 	static readonly instance: ProductionUnit = new ProductionUnit();
-	/** @implements Production */
 	override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 		return [
 			[TERMINAL.TerminalNumber.instance],
@@ -33,9 +32,8 @@ export class ProductionUnit extends Production {
 	}
 }
 
-export class ProductionGoal extends Production {
+class ProductionGoal extends Production {
 	static readonly instance: ProductionGoal = new ProductionGoal();
-	/** @implements Production */
 	override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 		return [
 			['\u0002', '\u0003'],

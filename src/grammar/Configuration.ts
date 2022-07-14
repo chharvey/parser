@@ -1,6 +1,5 @@
 import * as xjs from 'extrajs';
-
-import * as utils from '../utils';
+import {stringOfSymbols} from '../utils';
 import type {Token} from '../lexer/Token';
 import {Terminal} from './Terminal';
 import type {Rule} from './Rule';
@@ -45,7 +44,7 @@ export class Configuration {
 
 	/** @override */
 	toString(): string {
-		return `${ this.rule.production.displayName } --> ${ utils.stringOfSymbols(this.before) } \u2022 ${ utils.stringOfSymbols(this.after) } {${ utils.stringOfSymbols([...this.lookaheads]).replace(/\s/g, ', ') }}`;
+		return `${ this.rule.production.displayName } --> ${ stringOfSymbols(this.before) } \u2022 ${ stringOfSymbols(this.after) } {${ stringOfSymbols([...this.lookaheads]).replace(/\s/g, ', ') }}`;
 	}
 
 	/**

@@ -3,7 +3,7 @@ import * as xjs from 'extrajs';
 import type {
 	EBNFObject,
 } from '../types.d';
-import * as utils from '../utils';
+import {stringifyAttributes} from '../utils';
 import type {Serializable} from '../Serializable';
 import type {Token} from '../lexer/Token';
 
@@ -93,7 +93,7 @@ export class ParseNode implements Serializable {
 
 	/** @implements Serializable */
 	serialize(): string {
-		return `<${ this.tagname } ${ utils.stringifyAttributes(new Map<string, string>([
+		return `<${ this.tagname } ${ stringifyAttributes(new Map<string, string>([
 			['line',   (this.line_index + 1).toString()],
 			['col',    (this.col_index  + 1).toString()],
 			['source', this.source],

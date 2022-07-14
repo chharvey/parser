@@ -1,5 +1,8 @@
-import * as utils from '../utils';
-import {Filebound} from '../utils';
+import {
+	Filebound,
+	stringifyAttributes,
+	sanitizeContent,
+} from '../utils';
 import type {Serializable} from '../Serializable';
 
 
@@ -85,10 +88,10 @@ export class Char implements Serializable {
 			.replace('\n'     /* LINE FEED (LF)       \u000a */, '\u240a' /* SYMBOL FOR LINE FEED             */)
 			.replace('\r'     /* CARRIAGE RETURN (CR) \u000d */, '\u240d' /* SYMBOL FOR CARRIAGE RETURN       */)
 		;
-		return `<${ this.tagname } ${ utils.stringifyAttributes(new Map<string, string>([
+		return `<${ this.tagname } ${ stringifyAttributes(new Map<string, string>([
 			['line', (this.line_index + 1).toString()],
 			['col',  (this.col_index  + 1).toString()],
-		])) }>${ utils.sanitizeContent(formatted) }</${ this.tagname }>`;
+		])) }>${ sanitizeContent(formatted) }</${ this.tagname }>`;
 	}
 
 	/**
