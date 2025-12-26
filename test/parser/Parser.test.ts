@@ -168,33 +168,7 @@ describe('Parser', () => {
 				);
 			});
 
-			specify('Definition ::= "." Altern;', () => {
-				const defn: PARSENODE.ParseNodeDefinition = ((PARSER.parse(`
-					Unit ::=
-						. NUMBER | "(" OPERATOR Unit Unit ")"
-					;
-				`)
-					.children[1] as PARSENODE.ParseNodeGoal__0__List)
-					.children[0] as PARSENODE.ParseNodeProduction)
-					.children[2] as PARSENODE.ParseNodeDefinition
-				;
-				/*
-					<Definition>
-						<PUNCTUATOR>.<PUNCTUATOR>
-						<Altern source='NUMBER | "(" OPERATOR Unit Unit ")"'>...</Altern>
-					</Definition>
-				*/
-				assert_arrayLength(defn.children, 2, 'defn should have 2 children');
-				const children: readonly [Token, PARSENODE.ParseNodeAltern] | readonly [PARSENODE.ParseNodeAltern, Token] = defn.children;
-				assert.ok(children[0] instanceof Token);
-				assert.ok(children[1] instanceof PARSENODE.ParseNodeAltern);
-				assert.deepStrictEqual(
-					children.map((c) => c.source),
-					['.', 'NUMBER | "(" OPERATOR Unit Unit ")"'],
-				);
-			});
-
-			specify('Definition ::= "&" Altern;', () => {
+			specify('Definition ::= "&" Choice;', () => {
 				const defn: PARSENODE.ParseNodeDefinition = ((PARSER.parse(`
 					Unit ::=
 						& NUMBER | "(" OPERATOR Unit Unit ")"
@@ -207,20 +181,72 @@ describe('Parser', () => {
 				/*
 					<Definition>
 						<PUNCTUATOR>&<PUNCTUATOR>
-						<Altern source='NUMBER | "(" OPERATOR Unit Unit ")"'>...</Altern>
+						<Choice source='NUMBER | "(" OPERATOR Unit Unit ")"'>...</Choice>
 					</Definition>
 				*/
 				assert_arrayLength(defn.children, 2, 'defn should have 2 children');
-				const children: readonly [Token, PARSENODE.ParseNodeAltern] | readonly [PARSENODE.ParseNodeAltern, Token] = defn.children;
+				const children: readonly [Token, PARSENODE.ParseNodeChoice] | readonly [PARSENODE.ParseNodeChoice, Token] = defn.children;
 				assert.ok(children[0] instanceof Token);
-				assert.ok(children[1] instanceof PARSENODE.ParseNodeAltern);
+				assert.ok(children[1] instanceof PARSENODE.ParseNodeChoice);
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['&', 'NUMBER | "(" OPERATOR Unit Unit ")"'],
 				);
 			});
 
-			specify('Definition ::= "|" Altern;', () => {
+			specify('Definition ::= "&&" Choice;', () => {
+				const defn: PARSENODE.ParseNodeDefinition = ((PARSER.parse(`
+					Unit ::=
+						&& NUMBER | "(" OPERATOR Unit Unit ")"
+					;
+				`)
+					.children[1] as PARSENODE.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE.ParseNodeProduction)
+					.children[2] as PARSENODE.ParseNodeDefinition
+				;
+				/*
+					<Definition>
+						<PUNCTUATOR>&&<PUNCTUATOR>
+						<Choice source='NUMBER | "(" OPERATOR Unit Unit ")"'>...</Choice>
+					</Definition>
+				*/
+				assert_arrayLength(defn.children, 2, 'defn should have 2 children');
+				const children: readonly [Token, PARSENODE.ParseNodeChoice] | readonly [PARSENODE.ParseNodeChoice, Token] = defn.children;
+				assert.ok(children[0] instanceof Token);
+				assert.ok(children[1] instanceof PARSENODE.ParseNodeChoice);
+				assert.deepStrictEqual(
+					children.map((c) => c.source),
+					['&&', 'NUMBER | "(" OPERATOR Unit Unit ")"'],
+				);
+			});
+
+			specify('Definition ::= "||" Choice;', () => {
+				const defn: PARSENODE.ParseNodeDefinition = ((PARSER.parse(`
+					Unit ::=
+						|| NUMBER | "(" OPERATOR Unit Unit ")"
+					;
+				`)
+					.children[1] as PARSENODE.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE.ParseNodeProduction)
+					.children[2] as PARSENODE.ParseNodeDefinition
+				;
+				/*
+					<Definition>
+						<PUNCTUATOR>||<PUNCTUATOR>
+						<Choice source='NUMBER | "(" OPERATOR Unit Unit ")"'>...</Choice>
+					</Definition>
+				*/
+				assert_arrayLength(defn.children, 2, 'defn should have 2 children');
+				const children: readonly [Token, PARSENODE.ParseNodeChoice] | readonly [PARSENODE.ParseNodeChoice, Token] = defn.children;
+				assert.ok(children[0] instanceof Token);
+				assert.ok(children[1] instanceof PARSENODE.ParseNodeChoice);
+				assert.deepStrictEqual(
+					children.map((c) => c.source),
+					['||', 'NUMBER | "(" OPERATOR Unit Unit ")"'],
+				);
+			});
+
+			specify('Definition ::= "|" Choice;', () => {
 				const defn: PARSENODE.ParseNodeDefinition = ((PARSER.parse(`
 					Unit ::=
 						| NUMBER
@@ -234,21 +260,21 @@ describe('Parser', () => {
 				/*
 					<Definition>
 						<PUNCTUATOR>|<PUNCTUATOR>
-						<Altern source='NUMBER | "(" OPERATOR Unit Unit ")"'>...</Altern>
+						<Choice source='NUMBER | "(" OPERATOR Unit Unit ")"'>...</Choice>
 					</Definition>
 				*/
 				assert_arrayLength(defn.children, 2, 'defn should have 2 children');
-				const children: readonly [Token, PARSENODE.ParseNodeAltern] | readonly [PARSENODE.ParseNodeAltern, Token] = defn.children;
+				const children: readonly [Token, PARSENODE.ParseNodeChoice] | readonly [PARSENODE.ParseNodeChoice, Token] = defn.children;
 				assert.ok(children[0] instanceof Token);
-				assert.ok(children[1] instanceof PARSENODE.ParseNodeAltern);
+				assert.ok(children[1] instanceof PARSENODE.ParseNodeChoice);
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['|', 'NUMBER | "(" OPERATOR Unit Unit ")"'],
 				);
 			});
 
-			specify('Altern ::= Altern "|" Concat;', () => {
-				const altern: PARSENODE.ParseNodeAltern = (((PARSER.parse(`
+			specify('Choice ::= Choice "|" UnChoice;', () => {
+				const choice: PARSENODE.ParseNodeChoice = (((PARSER.parse(`
 					Unit ::=
 						| NUMBER
 						| "(" OPERATOR Unit Unit ")"
@@ -257,73 +283,131 @@ describe('Parser', () => {
 					.children[1] as PARSENODE.ParseNodeGoal__0__List)
 					.children[0] as PARSENODE.ParseNodeProduction)
 					.children[2] as PARSENODE.ParseNodeDefinition)
-					.children[1] as PARSENODE.ParseNodeAltern
+					.children[1] as PARSENODE.ParseNodeChoice
 				;
 				/*
-					<Altern>
-						<Altern source="NUMBER">...<Altern>
+					<Choice>
+						<Choice source="NUMBER">...<Choice>
 						<PUNCTUATOR>|<PUNCTUATOR>
-						<Concat source='"(" OPERATOR Unit Unit ")"'>...<Concat>
-					</Altern>
+						<UnChoice source='"(" OPERATOR Unit Unit ")"'>...<UnChoice>
+					</Choice>
 				*/
-				assert_arrayLength(altern.children, 3, 'altern should have 3 children');
-				const children: readonly [PARSENODE.ParseNodeAltern, Token, PARSENODE.ParseNodeConcat] = altern.children;
+				assert_arrayLength(choice.children, 3, 'choice should have 3 children');
+				const children: readonly [PARSENODE.ParseNodeChoice, Token, PARSENODE.ParseNodeUnChoice] = choice.children;
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['NUMBER', '|', '"(" OPERATOR Unit Unit ")"'],
 				);
 			});
 
-			specify('Concat ::= Concat "&" Order;', () => {
-				const concat: PARSENODE.ParseNodeConcat = ((((PARSER.parse(`
+			specify('UnChoice ::= UnChoice "||" UnSeq;', () => {
+				const unchoice: PARSENODE.ParseNodeUnChoice = ((((PARSER.parse(`
 					Unit ::=
-						| NUMBER
-						| NULL & "(" OPERATOR Unit Unit ")"
+						|| NUMBER
+						|| "(" OPERATOR Unit Unit ")"
 					;
 				`)
 					.children[1] as PARSENODE.ParseNodeGoal__0__List)
 					.children[0] as PARSENODE.ParseNodeProduction)
 					.children[2] as PARSENODE.ParseNodeDefinition)
-					.children[1] as PARSENODE.ParseNodeAltern)
-					.children[2] as PARSENODE.ParseNodeConcat
+					.children[1] as PARSENODE.ParseNodeChoice)
+					.children[0] as PARSENODE.ParseNodeUnChoice
 				;
 				/*
-					<Concat>
-						<Concat source="NULL">...<Concat>
-						<PUNCTUATOR>&<PUNCTUATOR>
-						<Order source='"(" OPERATOR Unit Unit ")"'>...<Order>
-					</Concat>
+					<UnChoice>
+						<UnChoice source="NUMBER">...<UnChoice>
+						<PUNCTUATOR>||<PUNCTUATOR>
+						<UnSeq source='"(" OPERATOR Unit Unit ")"'>...<UnSeq>
+					</UnChoice>
 				*/
-				assert_arrayLength(concat.children, 3, 'concat should have 3 children');
-				const children: readonly [PARSENODE.ParseNodeConcat, Token, PARSENODE.ParseNodeOrder] = concat.children;
+				assert_arrayLength(unchoice.children, 3, 'unchoice should have 3 children');
+				const children: readonly [PARSENODE.ParseNodeUnChoice, Token, PARSENODE.ParseNodeUnSeq] = unchoice.children;
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
-					['NULL', '&', '"(" OPERATOR Unit Unit ")"'],
+					['NUMBER', '||', '"(" OPERATOR Unit Unit ")"'],
 				);
 			});
 
-			specify('Order ::= Order Item;', () => {
-				const order: PARSENODE.ParseNodeOrder = (((((PARSER.parse(`
+			specify('UnSeq ::= UnSeq "&&" Seq;', () => {
+				const unseq: PARSENODE.ParseNodeUnSeq = (((((PARSER.parse(`
 					Unit ::=
-						| NUMBER
-						| "(" OPERATOR Unit Unit ")"
+						&& NUMBER
+						&& "(" OPERATOR Unit Unit ")"
 					;
 				`)
 					.children[1] as PARSENODE.ParseNodeGoal__0__List)
 					.children[0] as PARSENODE.ParseNodeProduction)
 					.children[2] as PARSENODE.ParseNodeDefinition)
-					.children[1] as PARSENODE.ParseNodeAltern)
-					.children[2] as PARSENODE.ParseNodeConcat)
-					.children[0] as PARSENODE.ParseNodeOrder
+					.children[1] as PARSENODE.ParseNodeChoice)
+					.children[0] as PARSENODE.ParseNodeUnChoice)
+					.children[0] as PARSENODE.ParseNodeUnSeq
 				;
 				/*
-					<Order>
-						<Order source='"(" OPERATOR Unit Unit'>...<Order>
-						<Item source='")"'>...<Item>
-					</Order>
+					<UnSeq>
+						<UnSeq source="NUMBER">...<UnSeq>
+						<PUNCTUATOR>&<PUNCTUATOR>
+						<Seq source='"(" OPERATOR Unit Unit ")"'>...<Seq>
+					</UnSeq>
 				*/
-				assert_arrayLength(order.children, 2, 'order should have 2 children');
-				const children: readonly [PARSENODE.ParseNodeOrder, PARSENODE.ParseNodeItem] = order.children;
+				assert_arrayLength(unseq.children, 3, 'unseq should have 3 children');
+				const children: readonly [PARSENODE.ParseNodeUnSeq, Token, PARSENODE.ParseNodeSeq] = unseq.children;
+				assert.deepStrictEqual(
+					children.map((c) => c.source),
+					['NUMBER', '&&', '"(" OPERATOR Unit Unit ")"'],
+				);
+			});
+
+			specify('Seq ::= Seq "&" Item;', () => {
+				const seq: PARSENODE.ParseNodeSeq = ((((((PARSER.parse(`
+					Unit ::=
+						& "(" & OPERATOR & Unit & Unit & ")"
+					;
+				`)
+					.children[1] as PARSENODE.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE.ParseNodeProduction)
+					.children[2] as PARSENODE.ParseNodeDefinition)
+					.children[1] as PARSENODE.ParseNodeChoice)
+					.children[0] as PARSENODE.ParseNodeUnChoice)
+					.children[0] as PARSENODE.ParseNodeUnSeq)
+					.children[0] as PARSENODE.ParseNodeSeq
+				;
+				/*
+					<Seq>
+						<Seq source='"(" & OPERATOR & Unit & Unit'>...<Seq>
+						<PUNCTUATOR>&<PUNCTUATOR>
+						<Item source='")"'>...<Item>
+					</Seq>
+				*/
+				assert_arrayLength(seq.children, 3, 'seq should have 3 children');
+				const children: readonly [PARSENODE.ParseNodeSeq, Token, PARSENODE.ParseNodeItem] = seq.children;
+				assert.deepStrictEqual(
+					children.map((c) => c.source),
+					['"(" & OPERATOR & Unit & Unit', '&', '")"'],
+				);
+			});
+
+			specify('Seq ::= Seq Item;', () => {
+				const seq: PARSENODE.ParseNodeSeq = ((((((PARSER.parse(`
+					Unit ::=
+						& "(" OPERATOR Unit Unit ")"
+					;
+				`)
+					.children[1] as PARSENODE.ParseNodeGoal__0__List)
+					.children[0] as PARSENODE.ParseNodeProduction)
+					.children[2] as PARSENODE.ParseNodeDefinition)
+					.children[1] as PARSENODE.ParseNodeChoice)
+					.children[0] as PARSENODE.ParseNodeUnChoice)
+					.children[0] as PARSENODE.ParseNodeUnSeq)
+					.children[0] as PARSENODE.ParseNodeSeq
+				;
+				/*
+					<Seq>
+						<Seq source='"(" OPERATOR Unit Unit'>...<Seq>
+						<Item source='")"'>...<Item>
+					</Seq>
+				*/
+				assert_arrayLength(seq.children, 2, 'seq should have 2 children');
+				const children: readonly [PARSENODE.ParseNodeSeq, PARSENODE.ParseNodeItem] = seq.children;
 				assert.deepStrictEqual(
 					children.map((c) => c.source),
 					['"(" OPERATOR Unit Unit', '")"'],

@@ -17,7 +17,7 @@ import {ASTNodeOp} from './ASTNodeOp';
 
 export class ASTNodeOpBin extends ASTNodeOp {
 	constructor (
-		parse_node: PARSENODE.ParseNodeOrder | PARSENODE.ParseNodeConcat | PARSENODE.ParseNodeAltern,
+		parse_node: PARSENODE.ParseNodeSeq | PARSENODE.ParseNodeUnSeq | PARSENODE.ParseNodeUnChoice | PARSENODE.ParseNodeChoice,
 		readonly operator: Binop,
 		readonly operand0: ASTNodeExpr,
 		readonly operand1: ASTNodeExpr,
@@ -29,18 +29,28 @@ export class ASTNodeOpBin extends ASTNodeOp {
 		const trans0: EBNFChoice = this.operand0.transform(nt, has_params, data);
 		const trans1: EBNFChoice = this.operand1.transform(nt, has_params, data);
 		return new Map<Binop, () => EBNFChoice>([
-			[Op.ORDER, () => trans0.flatMap((seq0) =>
+			[Op.SEQ, () => trans0.flatMap((seq0) =>
 				trans1.flatMap((seq1) => [
 					[...seq0, ...seq1],
 				] as const)
 			) as NonemptyArray<EBNFSequence>],
-			[Op.CONCAT, () => trans0.flatMap((seq0) =>
+			[Op.UNSEQ, () => trans0.flatMap((seq0) =>
 				trans1.flatMap((seq1) => [
 					[...seq0, ...seq1],
 					[...seq1, ...seq0],
 				] as const)
 			) as NonemptyArray<EBNFSequence>],
-			[Op.ALTERN, () => [
+			[Op.UNCHOICE, () => [
+				...trans0,
+				...trans1,
+				...trans0.flatMap((seq0) =>
+					trans1.flatMap((seq1) => [
+						[...seq0, ...seq1],
+						[...seq1, ...seq0],
+					] as const)
+				) as NonemptyArray<EBNFSequence>,
+			]],
+			[Op.CHOICE, () => [
 				...trans0,
 				...trans1,
 			]],

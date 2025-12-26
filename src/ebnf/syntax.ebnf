@@ -40,7 +40,7 @@ Item ::=
 
 Seq      ::= (Seq      "&"?)? Item;
 UnSeq    ::= (UnSeq    "&&")? Seq;
-UnChoice ::= (UnChoice "||")? Unseq;
+UnChoice ::= (UnChoice "||")? UnSeq;
 Choice   ::= (Choice   "|" )? UnChoice;
 
 

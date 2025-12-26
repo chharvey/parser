@@ -74,22 +74,22 @@ describe('DecoratorEbnf', () => {
 				assert.strictEqual(ref['name'], 'Production');
 			});
 
-			specify('Altern ::= Altern "|" Concat;', () => {
+			specify('Choice ::= Choice "|" Seq;', () => {
 				/*
-					<Op operator=ALTERN>
+					<Op operator=CHOICE>
 						<Ref name='NUMBER'/>
-						<Op operator=ORDER source='"(" OPERATOR Unit Unit ")"'>...</Op>
+						<Op operator=SEQ source='"(" OPERATOR Unit Unit ")"'>...</Op>
 					</Production>
 				*/
 				const altern: ASTNODE.ASTNodeExpr = goal.productions[0].definition;
 				assert.ok(altern instanceof ASTNODE.ASTNodeOpBin);
-				assert.strictEqual(altern.operator, Op.ALTERN);
+				assert.strictEqual(altern.operator, Op.CHOICE);
 				const left:  ASTNODE.ASTNodeExpr = altern.operand0;
 				const right: ASTNODE.ASTNodeExpr = altern.operand1;
 				assert.ok(left  instanceof ASTNODE.ASTNodeRef);
 				assert.ok(right instanceof ASTNODE.ASTNodeOpBin);
 				assert.strictEqual(left['name'], 'NUMBER');
-				assert.strictEqual(right.operator, Op.ORDER);
+				assert.strictEqual(right.operator, Op.SEQ);
 				assert.strictEqual(right.source, '"(" OPERATOR Unit Unit ")"');
 			});
 		});

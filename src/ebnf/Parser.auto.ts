@@ -49,8 +49,12 @@ class ProductionArgumentSet__0__List extends Production {
 			[ProductionArgumentSet__0__List.instance, ',', '+', TERMINAL.TerminalIdentifier.instance],
 			['-', TERMINAL.TerminalIdentifier.instance],
 			[ProductionArgumentSet__0__List.instance, ',', '-', TERMINAL.TerminalIdentifier.instance],
+			['∓', TERMINAL.TerminalIdentifier.instance],
+			[ProductionArgumentSet__0__List.instance, ',', '∓', TERMINAL.TerminalIdentifier.instance],
 			['?', TERMINAL.TerminalIdentifier.instance],
 			[ProductionArgumentSet__0__List.instance, ',', '?', TERMINAL.TerminalIdentifier.instance],
+			['!', TERMINAL.TerminalIdentifier.instance],
+			[ProductionArgumentSet__0__List.instance, ',', '!', TERMINAL.TerminalIdentifier.instance],
 		];
 	}
 }
@@ -134,33 +138,43 @@ class ProductionItem extends Production {
 	}
 }
 
-class ProductionOrder extends Production {
-	static readonly instance: ProductionOrder = new ProductionOrder();
+class ProductionSeq extends Production {
+	static readonly instance: ProductionSeq = new ProductionSeq();
 	override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 		return [
 			[ProductionItem.instance],
-			[ProductionOrder.instance, ProductionItem.instance],
-			[ProductionOrder.instance, '.', ProductionItem.instance],
+			[ProductionSeq.instance, ProductionItem.instance],
+			[ProductionSeq.instance, '&', ProductionItem.instance],
 		];
 	}
 }
 
-class ProductionConcat extends Production {
-	static readonly instance: ProductionConcat = new ProductionConcat();
+class ProductionUnSeq extends Production {
+	static readonly instance: ProductionUnSeq = new ProductionUnSeq();
 	override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 		return [
-			[ProductionOrder.instance],
-			[ProductionConcat.instance, '&', ProductionOrder.instance],
+			[ProductionSeq.instance],
+			[ProductionUnSeq.instance, '&&', ProductionSeq.instance],
 		];
 	}
 }
 
-class ProductionAltern extends Production {
-	static readonly instance: ProductionAltern = new ProductionAltern();
+class ProductionUnChoice extends Production {
+	static readonly instance: ProductionUnChoice = new ProductionUnChoice();
 	override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 		return [
-			[ProductionConcat.instance],
-			[ProductionAltern.instance, '|', ProductionConcat.instance],
+			[ProductionUnSeq.instance],
+			[ProductionUnChoice.instance, '||', ProductionUnSeq.instance],
+		];
+	}
+}
+
+class ProductionChoice extends Production {
+	static readonly instance: ProductionChoice = new ProductionChoice();
+	override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
+		return [
+			[ProductionUnChoice.instance],
+			[ProductionChoice.instance, '|', ProductionUnChoice.instance],
 		];
 	}
 }
@@ -169,10 +183,11 @@ class ProductionDefinition extends Production {
 	static readonly instance: ProductionDefinition = new ProductionDefinition();
 	override get sequences(): NonemptyArray<NonemptyArray<GrammarSymbol>> {
 		return [
-			[ProductionAltern.instance],
-			['.', ProductionAltern.instance],
-			['&', ProductionAltern.instance],
-			['|', ProductionAltern.instance],
+			[ProductionChoice.instance],
+			['&', ProductionChoice.instance],
+			['&&', ProductionChoice.instance],
+			['||', ProductionChoice.instance],
+			['|', ProductionChoice.instance],
 		];
 	}
 }
@@ -233,6 +248,10 @@ export class ParseNodeParameterSet extends ParseNode {
 
 export class ParseNodeArgumentSet__0__List extends ParseNode {
 	declare readonly children:
+		| readonly [Token, Token]
+		| readonly [ParseNodeArgumentSet__0__List, Token, Token, Token]
+		| readonly [Token, Token]
+		| readonly [ParseNodeArgumentSet__0__List, Token, Token, Token]
 		| readonly [Token, Token]
 		| readonly [ParseNodeArgumentSet__0__List, Token, Token, Token]
 		| readonly [Token, Token]
@@ -300,34 +319,42 @@ export class ParseNodeItem extends ParseNode {
 	;
 }
 
-export class ParseNodeOrder extends ParseNode {
+export class ParseNodeSeq extends ParseNode {
 	declare readonly children:
 		| readonly [ParseNodeItem]
-		| readonly [ParseNodeOrder, ParseNodeItem]
-		| readonly [ParseNodeOrder, Token, ParseNodeItem]
+		| readonly [ParseNodeSeq, ParseNodeItem]
+		| readonly [ParseNodeSeq, Token, ParseNodeItem]
 	;
 }
 
-export class ParseNodeConcat extends ParseNode {
+export class ParseNodeUnSeq extends ParseNode {
 	declare readonly children:
-		| readonly [ParseNodeOrder]
-		| readonly [ParseNodeConcat, Token, ParseNodeOrder]
+		| readonly [ParseNodeSeq]
+		| readonly [ParseNodeUnSeq, Token, ParseNodeSeq]
 	;
 }
 
-export class ParseNodeAltern extends ParseNode {
+export class ParseNodeUnChoice extends ParseNode {
 	declare readonly children:
-		| readonly [ParseNodeConcat]
-		| readonly [ParseNodeAltern, Token, ParseNodeConcat]
+		| readonly [ParseNodeUnSeq]
+		| readonly [ParseNodeUnChoice, Token, ParseNodeUnSeq]
+	;
+}
+
+export class ParseNodeChoice extends ParseNode {
+	declare readonly children:
+		| readonly [ParseNodeUnChoice]
+		| readonly [ParseNodeChoice, Token, ParseNodeUnChoice]
 	;
 }
 
 export class ParseNodeDefinition extends ParseNode {
 	declare readonly children:
-		| readonly [ParseNodeAltern]
-		| readonly [Token, ParseNodeAltern]
-		| readonly [Token, ParseNodeAltern]
-		| readonly [Token, ParseNodeAltern]
+		| readonly [ParseNodeChoice]
+		| readonly [Token, ParseNodeChoice]
+		| readonly [Token, ParseNodeChoice]
+		| readonly [Token, ParseNodeChoice]
+		| readonly [Token, ParseNodeChoice]
 	;
 }
 
@@ -371,9 +398,10 @@ export const GRAMMAR: Grammar = new Grammar([
 	ProductionUnit.instance,
 	ProductionUnary.instance,
 	ProductionItem.instance,
-	ProductionOrder.instance,
-	ProductionConcat.instance,
-	ProductionAltern.instance,
+	ProductionSeq.instance,
+	ProductionUnSeq.instance,
+	ProductionUnChoice.instance,
+	ProductionChoice.instance,
 	ProductionDefinition.instance,
 	ProductionNonterminalName.instance,
 	ProductionProduction.instance,
@@ -396,9 +424,10 @@ export const PARSER: Parser<ParseNodeGoal> = new Parser<ParseNodeGoal>(
 		[ProductionUnit.instance, ParseNodeUnit],
 		[ProductionUnary.instance, ParseNodeUnary],
 		[ProductionItem.instance, ParseNodeItem],
-		[ProductionOrder.instance, ParseNodeOrder],
-		[ProductionConcat.instance, ParseNodeConcat],
-		[ProductionAltern.instance, ParseNodeAltern],
+		[ProductionSeq.instance, ParseNodeSeq],
+		[ProductionUnSeq.instance, ParseNodeUnSeq],
+		[ProductionUnChoice.instance, ParseNodeUnChoice],
+		[ProductionChoice.instance, ParseNodeChoice],
 		[ProductionDefinition.instance, ParseNodeDefinition],
 		[ProductionNonterminalName.instance, ParseNodeNonterminalName],
 		[ProductionProduction.instance, ParseNodeProduction],
