@@ -27,15 +27,17 @@ export class DecoratorEbnf extends Decorator {
 	]);
 
 	private static readonly OPS_BIN: ReadonlyMap<string, Binop> = new Map<string, Binop>([
-		[`.`, Op.ORDER],
-		[`&`, Op.CONCAT],
-		[`|`, Op.ALTERN],
+		[`&`,  Op.SEQ],
+		[`&&`, Op.UNSEQ],
+		[`||`, Op.UNCHOICE],
+		[`|`,  Op.CHOICE],
 	]);
 
-	private static readonly PARAMOPS: ReadonlyMap<string, boolean | 'inherit'> = new Map<string, boolean | 'inherit'>([
+	private static readonly PARAMOPS: ReadonlyMap<string, boolean | 'inherit' | 'notinherit'> = new Map<string, boolean | 'inherit' | 'notinherit'>([
 		[`+`, true],
 		[`-`, false],
 		[`?`, 'inherit'],
+		[`!`, 'notinherit'],
 	]);
 
 
@@ -61,9 +63,10 @@ export class DecoratorEbnf extends Decorator {
 		| PARSENODE.ParseNodeUnit
 		| PARSENODE.ParseNodeUnary
 		| PARSENODE.ParseNodeItem
-		| PARSENODE.ParseNodeOrder
-		| PARSENODE.ParseNodeConcat
-		| PARSENODE.ParseNodeAltern
+		| PARSENODE.ParseNodeSeq
+		| PARSENODE.ParseNodeUnSeq
+		| PARSENODE.ParseNodeUnChoice
+		| PARSENODE.ParseNodeChoice
 		| PARSENODE.ParseNodeDefinition
 	): ASTNODE.ASTNodeExpr;
 	override decorate(node: PARSENODE.ParseNodeNonterminalName): ASTNODE.ASTNodeNonterminal;
@@ -90,19 +93,24 @@ export class DecoratorEbnf extends Decorator {
 			return this.decorate(node.children[1]);
 
 		} else if (node instanceof PARSENODE.ParseNodeArgumentSet__0__List) {
-			function decorateArg(identifier: TOKEN.TokenIdentifier, append: TOKEN.TokenPunctuator): ASTNODE.ASTNodeArg {
-				return new ASTNODE.ASTNodeArg(identifier, DecoratorEbnf.PARAMOPS.get(append.source)!);
+			function decorateArg(identifier: TOKEN.TokenIdentifier, append: TOKEN.TokenPunctuator): ASTNODE.ASTNodeArg[] {
+				// `R<∓Z>` is sugar for `R<-Z, +Z>`
+				if (append.source === '∓') {
+					return [
+						new ASTNODE.ASTNodeArg(identifier, DecoratorEbnf.PARAMOPS.get('-')!),
+						new ASTNODE.ASTNodeArg(identifier, DecoratorEbnf.PARAMOPS.get('+')!),
+					];
+				}
+				return [new ASTNODE.ASTNodeArg(identifier, DecoratorEbnf.PARAMOPS.get(append.source)!)];
 			}
 			return (node.children.length === 2)
-				? [
-					decorateArg(
-						node.children[1] as TOKEN.TokenIdentifier,
-						node.children[0] as TOKEN.TokenPunctuator,
-					),
-				]
+				? decorateArg(
+					node.children[1] as TOKEN.TokenIdentifier,
+					node.children[0] as TOKEN.TokenPunctuator,
+				)
 				: [
 					...this.decorate(node.children[0]),
-					decorateArg(
+					...decorateArg(
 						node.children[3] as TOKEN.TokenIdentifier,
 						node.children[2] as TOKEN.TokenPunctuator,
 					),
@@ -195,20 +203,21 @@ export class DecoratorEbnf extends Decorator {
 				)
 			;
 
-		} else if (node instanceof PARSENODE.ParseNodeOrder) {
+		} else if (node instanceof PARSENODE.ParseNodeSeq) {
 			return (node.children.length === 1)
 				? this.decorate(node.children[0])
 				: new ASTNODE.ASTNodeOpBin(
 					node,
-					Op.ORDER,
+					Op.SEQ,
 					this.decorate(node.children[0]),
 					this.decorate((node.children.length === 2) ? node.children[1] : node.children[2]),
 				)
 			;
 
 		} else if (
-			node instanceof PARSENODE.ParseNodeConcat ||
-			node instanceof PARSENODE.ParseNodeAltern
+			node instanceof PARSENODE.ParseNodeUnSeq ||
+			node instanceof PARSENODE.ParseNodeUnChoice ||
+			node instanceof PARSENODE.ParseNodeChoice
 		) {
 			return (node.children.length === 1)
 				? this.decorate(node.children[0])
@@ -221,9 +230,9 @@ export class DecoratorEbnf extends Decorator {
 			;
 
 		} else if (node instanceof PARSENODE.ParseNodeDefinition) {
-			return this.decorate((node.children[0] instanceof PARSENODE.ParseNodeAltern)
+			return this.decorate((node.children[0] instanceof PARSENODE.ParseNodeChoice)
 				? node.children[0]
-				: node.children[1] as PARSENODE.ParseNodeAltern
+				: node.children[1] as PARSENODE.ParseNodeChoice
 			);
 
 		} else if (node instanceof PARSENODE.ParseNodeNonterminalName) {

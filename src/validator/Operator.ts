@@ -2,9 +2,10 @@ export enum Op {
 	PLUS,
 	HASH,
 	OPT,
-	ORDER,
-	CONCAT,
-	ALTERN,
+	SEQ,
+	UNSEQ,
+	UNCHOICE,
+	CHOICE,
 }
 
 
@@ -18,7 +19,8 @@ export type Unop =
 
 
 export type Binop =
-	| Op.ORDER
-	| Op.CONCAT
-	| Op.ALTERN
+	| Op.SEQ
+	| Op.UNSEQ
+	| Op.UNCHOICE
+	| Op.CHOICE
 ;

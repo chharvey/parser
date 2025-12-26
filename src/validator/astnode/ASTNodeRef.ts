@@ -54,7 +54,11 @@ export class ASTNodeRef extends ASTNodeExpr {
 	 * @returns    an array of objects representing references
 	 */
 	private expand(nt: ConcreteNonterminal): NonemptyArray<ConcreteReference> {
-		const args: readonly ASTNodeArg[] = this.args.filter((arg) => arg.append === true || arg.append === 'inherit' && nt.hasSuffix(arg));
+		const args: readonly ASTNodeArg[] = this.args.filter((arg) => (
+			arg.append === true ||
+			arg.append === 'inherit'    &&  nt.hasSuffix(arg) ||
+			arg.append === 'notinherit' && !nt.hasSuffix(arg)
+		));
 		return (args.length)
 			? (this.ref as ASTNodeRef).expand(nt).flatMap((cr) =>
 				[...new Array(2 ** args.length)].map((_, count) =>
@@ -88,7 +92,10 @@ class ConcreteReference {
 	/** @override */
 	toString(): string {
 		return this.name.concat(...this.suffixes.flatMap((s) =>
-			(s.append === true || s.append === 'inherit' && this.nonterminal?.hasSuffix(s))
+			s.append === true || true && (
+				s.append === 'inherit'    && this.nonterminal!.hasSuffix(s) ||
+				s.append === 'notinherit' && !this.nonterminal!.hasSuffix(s)
+			)
 				? [PARAM_SEPARATOR, s.source]
 				: ''
 		));

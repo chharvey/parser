@@ -134,7 +134,7 @@ describe('ASTNodeOp', () => {
 
 
 
-	describe('ASTNodeOpBin[operator=ORDER]', () => {
+	describe('ASTNodeOpBin[operator=SEQ]', () => {
 		specify('#transform', () => {
 			assert.deepStrictEqual(makeProductionDefn(`
 				Nonterm ::= "TERM1" TERM2;
@@ -146,10 +146,10 @@ describe('ASTNodeOp', () => {
 
 
 
-	describe('ASTNodeOpBin[operator=CONCAT]', () => {
+	describe('ASTNodeOpBin[operator=UNSEQ]', () => {
 		specify('#transform', () => {
 			assert.deepStrictEqual(makeProductionDefn(`
-				Nonterm ::= "TERM1" & TERM2;
+				Nonterm ::= "TERM1" && TERM2;
 			`), [
 				['TERM1', {term: 'TERM2'}],
 				[{term: 'TERM2'}, 'TERM1'],
@@ -159,7 +159,22 @@ describe('ASTNodeOp', () => {
 
 
 
-	describe('ASTNodeOpBin[operator=ALTERN]', () => {
+	describe('ASTNodeOpBin[operator=UNCHOICE]', () => {
+		specify('#transform', () => {
+			assert.deepStrictEqual(makeProductionDefn(`
+				Nonterm ::= "TERM1" || TERM2;
+			`), [
+				['TERM1'],
+				[{term: 'TERM2'}],
+				['TERM1', {term: 'TERM2'}],
+				[{term: 'TERM2'}, 'TERM1'],
+			]);
+		});
+	});
+
+
+
+	describe('ASTNodeOpBin[operator=CHOICE]', () => {
 		specify('#transform', () => {
 			assert.deepStrictEqual(makeProductionDefn(`
 				Nonterm ::= "TERM1" | TERM2;

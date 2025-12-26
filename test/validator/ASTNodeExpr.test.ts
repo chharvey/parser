@@ -45,11 +45,39 @@ describe('ASTNodeExpr', () => {
 			it('appends arguments for a TitleCase identifier, with single argument.', () => {
 				assert.deepStrictEqual(makeProductionDefn(`
 					Gamma ::=
-						. Charlie0<+Cee>
-						. Charlie1<-Dee>
+						& Charlie0<+Cee>
+						& Charlie1<-Dee>
 					;
 				`), [
 					[{prod: 'Charlie0_Cee'}, {prod: 'Charlie1'}],
+				]);
+			});
+			it('appends parameter arguments for a TitleCase identifier, with single parameter argument.', () => {
+				assert.deepStrictEqual(DECORATOR.decorate(PARSER.parse(`
+					Epsilon<Gee> ::= Hotel0<?Gee> Hotel1<!Gee>;
+				`)).transform(), [
+					{
+						name: 'Epsilon$',
+						family: true,
+						defn: [
+							[{prod: 'Hotel0'},     {prod: 'Hotel1_Gee'}],
+							[{prod: 'Hotel0_Gee'}, {prod: 'Hotel1'}],
+						],
+					},
+					{
+						name: 'Epsilon',
+						family: 'Epsilon$',
+						defn: [
+							[{prod: 'Hotel0'}, {prod: 'Hotel1_Gee'}],
+						],
+					},
+					{
+						name: 'Epsilon_Gee',
+						family: 'Epsilon$',
+						defn: [
+							[{prod: 'Hotel0_Gee'}, {prod: 'Hotel1'}],
+						],
+					},
 				]);
 			});
 			it('appends arguments for a TitleCase identifier, with multiple arguments.', () => {
@@ -58,6 +86,7 @@ describe('ASTNodeExpr', () => {
 					makeProductionDefn(`Delta ::= Delta1<+Eee, -Eff>;`),
 					makeProductionDefn(`Delta ::= Delta2<-Eee, +Eff>;`),
 					makeProductionDefn(`Delta ::= Delta3<-Eee, -Eff>;`),
+					makeProductionDefn(`Delta ::= Delta4<∓Gee>;`),
 				], [
 					[
 						[{prod: 'Delta0_Eff'}],
@@ -74,6 +103,10 @@ describe('ASTNodeExpr', () => {
 					],
 					[
 						[{prod: 'Delta3'}],
+					],
+					[
+						[{prod: 'Delta4'}],
+						[{prod: 'Delta4_Gee'}],
 					],
 				]);
 				assert.deepStrictEqual([
